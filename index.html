@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JB×AX — 여의도 맛집 트래커</title>
+<meta name="description" content="여의도 JB빌딩 근처 점심·저녁·술집을 AI가 매일 추천해주는 맛집 트래커">
+<meta property="og:title" content="JB×AX 맛집 트래커">
+<meta property="og:description" content="여의도 JB빌딩 근처 점심·저녁·술집을 AI가 매일 추천">
+<meta property="og:type" content="website">
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+    min-height: 100vh; color: #1a2330;
+    background: radial-gradient(1200px 600px at 50% -10%, #1565c0 0%, #0a3d7a 45%, #062a57 100%);
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .card {
+    width: 100%; max-width: 460px; background: #fff; border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35); padding: 40px 30px 34px; text-align: center;
+  }
+  .logo {
+    width: 92px; height: 92px; margin: 0 auto 20px; border-radius: 24px;
+    background: linear-gradient(135deg, #1565c0, #0a3d7a);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 22px rgba(10,61,122,0.35); position: relative;
+  }
+  .logo .emoji { font-size: 2.6rem; line-height: 1; }
+  .logo .badge {
+    position: absolute; bottom: -8px; right: -8px;
+    background: #fff; color: #0a3d7a; font-weight: 900; font-size: 0.72rem;
+    padding: 3px 8px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+    letter-spacing: 0.3px;
+  }
+  .badge .hl { background: linear-gradient(90deg,#ffd54a,#ffb300); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  h1 { font-size: 1.5rem; font-weight: 900; margin-bottom: 6px; }
+  h1 .hl-ax { background: linear-gradient(90deg,#ffb300,#ff8f00); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .sub { font-size: 0.92rem; color: #6b7888; font-weight: 600; margin-bottom: 22px; }
+  .desc {
+    font-size: 0.92rem; color: #44566b; line-height: 1.7; text-align: left;
+    background: #f4f7fb; border-radius: 14px; padding: 16px 18px; margin-bottom: 14px;
+  }
+  .desc b { color: #0a3d7a; }
+  .features { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-bottom: 24px; }
+  .feat {
+    font-size: 0.76rem; font-weight: 700; color: #2b6cb0;
+    background: #eaf2fc; border-radius: 20px; padding: 6px 12px;
+  }
+  .cta {
+    display: block; width: 100%; text-decoration: none; cursor: pointer;
+    background: linear-gradient(135deg, #1565c0, #0a3d7a); color: #fff;
+    font-size: 1.05rem; font-weight: 800; padding: 15px; border-radius: 14px;
+    transition: transform 0.12s, box-shadow 0.12s; box-shadow: 0 8px 20px rgba(10,61,122,0.28);
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(10,61,122,0.36); }
+  .cta .arrow { margin-left: 4px; }
+  .foot { margin-top: 16px; font-size: 0.74rem; color: #aab4c0; }
+  .foot a { color: #6b7888; text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <span class="emoji">🍽️</span>
+      <span class="badge">JB<span class="hl">×AX</span></span>
+    </div>
+    <h1>JB<span class="hl-ax">×AX</span> 맛집 트래커</h1>
+    <div class="sub">여의도 JB빌딩 근처 · 점심·저녁·술집 추천</div>
+
+    <div class="desc">
+      여의도 <b>JB빌딩(여의나루로 77)</b> 근처 맛집을, <b>AI가 매일 새벽 자동으로</b>
+      골라 추천해드립니다. 날씨와 JB금융그룹 소식·주가까지 반영해 그날 분위기에
+      어울리는 곳을 점심·저녁·술집별로 제안해요.
+    </div>
+    <div class="features">
+      <span class="feat">🤖 AI 맞춤 추천</span>
+      <span class="feat">🌤️ 날씨 반영</span>
+      <span class="feat">🚶 도보 경로</span>
+      <span class="feat">📝 리뷰·예약</span>
+    </div>
+
+    <a class="cta" href="https://lunch.jbax.co.kr/">오늘의 맛집 보러가기<span class="arrow">→</span></a>
+
+    <div class="foot">
+      <a href="https://lunch.jbax.co.kr/">lunch.jbax.co.kr</a>
+    </div>
+  </div>
+</body>
+</html>
