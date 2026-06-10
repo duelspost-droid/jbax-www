@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JB×AX — 서비스</title>
-<meta name="description" content="JB×AX 서비스 모음 — 여의도 맛집 트래커 외 준비 중">
-<meta property="og:title" content="JB×AX">
-<meta property="og:description" content="JB×AX 서비스 모음">
+<title>JB×AX — 비공식 플레이그라운드</title>
+<meta name="description" content="개인 학습·실험용 비공식 플레이그라운드 · 여의도 맛집 트래커 외 준비 중">
+<meta property="og:title" content="JB×AX 플레이그라운드">
+<meta property="og:description" content="개인이 운영하는 비공식 플레이그라운드 (공식 서비스 아님)">
 <meta property="og:type" content="website">
 <style>
   :root { color-scheme: light; }
@@ -21,6 +21,12 @@
   .head h1 { color: #fff; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.5px; }
   .head h1 .hl { background: linear-gradient(90deg,#ffd54a,#ffb300); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .head p { color: #b9cde8; font-size: 0.86rem; font-weight: 600; margin-top: 5px; }
+  .head .notice {
+    display: inline-block; margin-top: 11px;
+    font-size: 0.72rem; font-weight: 700; color: #ffd98a;
+    background: rgba(255,193,7,0.12); border: 1px solid rgba(255,193,7,0.32);
+    border-radius: 20px; padding: 5px 13px;
+  }
 
   .grid {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
@@ -72,8 +78,10 @@
   .slot.empty .label { font-size: 0.92rem; font-weight: 800; color: #8a9ab0; }
   .slot.empty .soon { font-size: 0.74rem; color: #aab6c7; font-weight: 600; margin-top: 4px; }
 
-  .foot { margin-top: 20px; font-size: 0.74rem; color: #88a0c2; text-align: center; }
-  .foot a { color: #b9cde8; text-decoration: none; }
+  .foot { margin-top: 22px; text-align: center; max-width: 720px; }
+  .foot a { color: #b9cde8; text-decoration: none; font-size: 0.78rem; font-weight: 700; }
+  .foot a:hover { text-decoration: underline; }
+  .foot-note { margin-top: 7px; font-size: 0.7rem; color: #7e93b5; line-height: 1.5; }
 
   @media (max-width: 560px) {
     .grid { grid-template-columns: 1fr; max-width: 380px; }
@@ -86,6 +94,7 @@
   <div class="head">
     <h1>JB<span class="hl">×AX</span></h1>
     <p>서비스 모음</p>
+    <span class="notice">🧪 비공식 플레이그라운드 · 공식 서비스 아님</span>
   </div>
 
   <div class="grid">
@@ -122,6 +131,9 @@
     </div>
   </div>
 
-  <div class="foot"><a href="https://lunch.jbax.co.kr/">lunch.jbax.co.kr</a></div>
+  <div class="foot">
+    <a href="https://www.jbax.co.kr/">www.jbax.co.kr</a>
+    <div class="foot-note">개인이 학습·실험용으로 운영하는 비공식 플레이그라운드입니다. 어떤 기관·회사의 공식 서비스도 아닙니다.</div>
+  </div>
 </body>
 </html>
