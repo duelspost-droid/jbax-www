@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JBAX | JB금융그룹 AX 혁신 브랜드 아이덴티티</title>
+<meta name="description" content="JBAX는 JB금융의 신뢰 위에 AI와 데이터의 실행력을 더하는 AX 혁신 브랜드 아이덴티티입니다." />
+<!-- 공식 디자인 토큰을 그대로 사용 -->
+<link rel="stylesheet" href="./assets/tokens.css" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--white);color:var(--jb-navy);font-family:var(--font-kr);line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .wrap{padding:0 6vw}
+  h1,h2,h3{letter-spacing:-.045em;margin:0}
+  .num{font-weight:800;color:var(--ax-blue);letter-spacing:.12em;font-size:14px}
+
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:20;height:78px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 6vw;border-bottom:1px solid rgba(10,29,61,.08);background:rgba(255,255,255,.82);backdrop-filter:blur(16px)}
+  .nav .brand{display:flex;align-items:center;gap:14px;font-weight:800}
+  .nav .brand img{height:30px}
+  .nav .brand span{font-size:13px;letter-spacing:.1em;color:var(--neutral-gray)}
+  .nav nav a{margin-left:30px;font-weight:700;font-size:15px;color:var(--jb-dark)}
+  .nav nav a:hover{color:var(--ax-blue)}
+  .nav nav a.cta{padding:9px 18px;border-radius:999px;color:#fff;background:linear-gradient(135deg,#00B8D9,#1565FF)}
+
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:7vw 6vw;
+    background:radial-gradient(circle at 86% 16%,var(--light-blue),transparent 32%),linear-gradient(180deg,#fff,#f7fbff)}
+  .eyebrow{font-weight:800;color:var(--ax-blue);letter-spacing:.1em}
+  .hero h1{font-size:clamp(52px,7vw,100px);line-height:1.02;margin:22px 0;color:var(--jb-navy)}
+  .hero .sub{font-size:20px;color:var(--neutral-gray);max-width:620px}
+  .hero .button{display:inline-flex;margin-top:30px;padding:16px 26px;border-radius:999px;background:var(--jb-navy);color:#fff;font-weight:800;box-shadow:0 16px 36px rgba(6,26,64,.22)}
+  .hero-card{border-radius:32px;padding:84px 50px;color:#fff;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(6,26,64,.2)}
+  .hero-card img{width:100%}
+  .hero-card .line{width:56px;height:3px;background:var(--data-cyan);margin:34px 0}
+  .hero-card p{letter-spacing:.42em;color:#b9c7dd;font-weight:800;margin:0}
+
+  section.block{padding:100px 0;border-top:1px solid rgba(10,29,61,.07)}
+  section.block .wrap>h2{font-size:clamp(32px,4.2vw,58px);color:var(--jb-navy);margin:12px 0 14px}
+  .lead{font-size:19px;color:var(--neutral-gray);max-width:760px}
+  .tint{background:var(--light-blue)}
+
+  .grid4,.swatches,.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:42px}
+  .card{border:1px solid rgba(10,29,61,.08);border-radius:24px;background:#fff;padding:30px;box-shadow:0 14px 34px rgba(6,26,64,.05)}
+  .card span{font-weight:900;color:var(--ax-blue)}
+  .card h3{font-size:22px;margin:14px 0 8px;color:var(--jb-navy)}
+  .card p{color:var(--neutral-gray);margin:0}
+
+  .logos{display:grid;grid-template-columns:1.2fr 1.2fr .8fr;gap:22px;margin-top:42px}
+  .logos .box{border:1px solid rgba(10,29,61,.08);border-radius:24px;background:#fff;padding:34px;text-align:center;box-shadow:0 14px 34px rgba(6,26,64,.05)}
+  .logos .box img{width:100%;height:150px;object-fit:contain}
+  .logos .box small{display:block;margin-top:18px;color:var(--neutral-gray);font-weight:800}
+
+  .swatches i{display:block;height:150px;border-radius:18px;margin-bottom:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+  .swatches b,.swatches em{display:block;font-style:normal}
+  .swatches em{color:var(--neutral-gray);margin-top:4px}
+
+  .apps .mock{border:1px solid rgba(10,29,61,.08);border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 14px 34px rgba(6,26,64,.05)}
+  .apps .scr{height:210px;display:grid;place-items:center;padding:18px}
+  .apps .scr.navy{background:radial-gradient(circle at 72% 18%,rgba(21,101,255,.4),transparent 42%),linear-gradient(135deg,#0A1D3D,#020819)}
+  .apps .scr img{max-width:82%;max-height:140px;object-fit:contain}
+  .apps figcaption{padding:16px 22px;font-weight:800;color:var(--jb-navy);text-align:center}
+
+  /* sub-brand teaser */
+  .teaser{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  .teaser .copy h2{color:#fff}
+  .teaser .copy p{color:#aebfdb;font-size:18px;max-width:480px}
+  .teaser .copy .button{display:inline-flex;margin-top:24px;padding:15px 26px;border-radius:999px;font-weight:800;color:#fff;background:linear-gradient(135deg,#00B8D9,#1565FF);box-shadow:0 18px 42px rgba(21,101,255,.4)}
+  .teaser .visual{border-radius:26px;min-height:300px;display:grid;place-items:center;color:#fff;text-align:center;
+    background:var(--jbax-grad)}
+  .teaser .visual .big{font-weight:900;font-size:clamp(40px,6vw,72px);letter-spacing:-.05em;line-height:1}
+  .teaser .visual .sm{margin-top:10px;letter-spacing:.3em;font-weight:800;font-size:12px;opacity:.9}
+
+  footer{padding:38px 6vw;text-align:center;color:var(--neutral-gray);border-top:1px solid rgba(10,29,61,.08);font-size:14px}
+  :root{--jbax-grad:linear-gradient(135deg,#92F0FF 0%,#00B8D9 38%,#1565FF 100%)}
+  @media (max-width:920px){.nav nav a:not(.cta){display:none}.hero,.teaser{grid-template-columns:1fr}.grid4,.swatches,.apps,.logos{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#top"><img src="./assets/jbax-logo.svg" alt="JBAX"/><span>CI GUIDE</span></a>
+  <nav>
+    <a href="/">← 홈</a>
+    <a href="#concept">컨셉</a>
+    <a href="#system">로고 시스템</a>
+    <a href="#color">컬러</a>
+    <a href="#apply">활용 예시</a>
+    <a class="cta" href="./campaign.html">NOW 캠페인</a>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <p class="eyebrow">JB금융그룹 AX 혁신 아이덴티티</p>
+    <h1>금융의 신뢰를,<br/>AX의 속도로.</h1>
+    <p class="sub">JBAX는 JB의 안정적인 금융 기반 위에 AI와 데이터의 연결을 더해, 더 빠르고 더 똑똑한 금융 혁신을 실행하는 브랜드입니다.</p>
+    <a class="button" href="#concept">CI 컨셉 보기</a>
+  </div>
+  <div class="hero-card jbax-navy-panel">
+    <img src="./assets/jbax-logo.svg" alt="JBAX 로고" style="filter:brightness(0) invert(1)"/>
+    <div class="line"></div>
+    <p>AI · DIGITAL · HUMAN</p>
+  </div>
+</section>
+
+<!-- CONCEPT -->
+<section id="concept" class="block">
+  <div class="wrap">
+    <p class="num">01. CONCEPT</p>
+    <h2>연결 · 전환 · 가속</h2>
+    <p class="lead">JB의 신뢰 위에 AI와 데이터의 연결이 만나 새로운 가치로 전환되고, 더 빠르게 성장하는 AX 혁신을 상징합니다.</p>
+    <div class="grid4">
+      <div class="card"><span>01</span><h3>신뢰의 기반, JB</h3><p>고객과의 신뢰로 만들어가는 금융 공간을 상징합니다.</p></div>
+      <div class="card"><span>02</span><h3>전환의 사선, AX</h3><p>변화와 실행의 속도를 하나의 상승 사선으로 표현합니다.</p></div>
+      <div class="card"><span>03</span><h3>교차와 확장, X</h3><p>사람, 데이터, 기술이 만나는 접점을 뜻합니다.</p></div>
+      <div class="card"><span>04</span><h3>사람을 향한 혁신</h3><p>기술 중심이 아닌 고객 중심의 AX를 지향합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO SYSTEM -->
+<section id="system" class="block tint">
+  <div class="wrap">
+    <p class="num">02. LOGO SYSTEM</p>
+    <h2>JBAX Signature</h2>
+    <div class="logos">
+      <div class="box"><img src="./assets/jbax-logo.svg" alt="JBAX 기본 로고"/><small>기본형 (가로)</small></div>
+      <div class="box jbax-navy-panel"><img src="./assets/jbax-symbol.svg" alt="JBAX 앱 아이콘"/><small style="color:#b9c7dd">심볼 / 앱 아이콘</small></div>
+      <div class="box"><img src="./assets/jbax-mark.svg" alt="JBAX AX 심볼 마크"/><small>AX 심볼 마크</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOR -->
+<section id="color" class="block">
+  <div class="wrap">
+    <p class="num">03. COLOR SYSTEM</p>
+    <h2>신뢰와 속도의 컬러 체계</h2>
+    <div class="swatches">
+      <div><i style="background:var(--jb-navy)"></i><b>JB Navy</b><em>#061A40</em></div>
+      <div><i style="background:var(--ax-blue)"></i><b>AX Blue</b><em>#1565FF</em></div>
+      <div><i style="background:var(--data-cyan)"></i><b>Data Cyan</b><em>#00B8D9</em></div>
+      <div><i style="background:var(--human-gold)"></i><b>Human Gold</b><em>#F6B23C</em></div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLICATION -->
+<section id="apply" class="block tint">
+  <div class="wrap">
+    <p class="num">04. APPLICATION</p>
+    <h2>다양한 디지털 환경에 일관된 인상</h2>
+    <div class="apps">
+      <figure class="mock"><div class="scr navy"><img src="./assets/jbax-logo.svg" alt="" style="filter:brightness(0) invert(1)"/></div><figcaption>프레젠테이션</figcaption></figure>
+      <figure class="mock"><div class="scr navy"><img src="./assets/jbax-mark.svg" alt=""/></div><figcaption>디지털 배너</figcaption></figure>
+      <figure class="mock"><div class="scr"><img src="./assets/jbax-symbol.svg" alt=""/></div><figcaption>앱 아이콘</figcaption></figure>
+      <figure class="mock"><div class="scr"><img src="./assets/jbax-logo.svg" alt=""/></div><figcaption>기본 조합형</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- SUB-BRAND TEASER -->
+<section class="block jbax-navy-panel">
+  <div class="wrap teaser">
+    <div class="copy">
+      <p class="num" style="color:var(--data-cyan)">SUB-BRAND · 2026 CAMPAIGN</p>
+      <h2>JBAX NOW</h2>
+      <p>JBAX의 'AX 속도'를 고객 경험으로 옮긴 2026 캠페인 아이덴티티. "지금, 금융이 빨라진다."</p>
+      <a class="button" href="./campaign.html">캠페인 보기 →</a>
+    </div>
+    <div class="visual">
+      <div><div class="big">NOW</div><div class="sm">JBAX CAMPAIGN</div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>JBAX · 금융의 신뢰를, AX의 속도로.</footer>
+
+</body>
+</html>

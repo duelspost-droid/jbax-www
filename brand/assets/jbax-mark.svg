@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="JBAX AX mark">
+  <defs>
+    <linearGradient id="ax" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#92F0FF"/>
+      <stop offset="0.42" stop-color="#00B8D9"/>
+      <stop offset="1" stop-color="#1565FF"/>
+    </linearGradient>
+    <linearGradient id="whiteFacet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#D7E4FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="none"/>
+  <path d="M116 354 L232 158 L289 158 L174 354 Z" fill="#061A40"/>
+  <path d="M282 158 L404 354 L345 354 L255 211 Z" fill="#061A40" opacity="0.95"/>
+  <path d="M229 354 L329 194 L390 194 L290 354 Z" fill="url(#ax)"/>
+  <path d="M330 158 L418 158 L360 223 Z" fill="url(#ax)"/>
+</svg>

@@ -1,0 +1,22 @@
+:root {
+  --jb-navy: #061A40;
+  --jb-dark: #0A1D3D;
+  --ax-blue: #1565FF;
+  --data-cyan: #00B8D9;
+  --human-gold: #F6B23C;
+  --light-blue: #EAF3FF;
+  --neutral-gray: #8B95A1;
+  --white: #FFFFFF;
+  --font-kr: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  --font-en: "Satoshi", "Inter", "Pretendard", system-ui, sans-serif;
+}
+
+.jbax-gradient {
+  background: linear-gradient(135deg, #92F0FF 0%, #00B8D9 38%, #1565FF 100%);
+}
+
+.jbax-navy-panel {
+  background:
+    radial-gradient(circle at 72% 12%, rgba(21,101,255,.22), transparent 36%),
+    linear-gradient(135deg, #0A1D3D 0%, #020819 100%);
+}
