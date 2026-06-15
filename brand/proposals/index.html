@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JBAX CI — 디자인 제안 5종</title>
+<meta name="description" content="JBAX CI 키비주얼 디자인 방향 5종 제안. 모노리스 네이비 · 클린 그리드 · 벨로시티 그라데이션 · 에디토리얼 · 앱아이콘 시스템." />
+<link rel="stylesheet" href="../assets/tokens.css" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--white);color:var(--jb-navy);font-family:var(--font-kr);line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .nav{position:sticky;top:0;z-index:20;height:72px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 6vw;border-bottom:1px solid rgba(10,29,61,.08);background:rgba(255,255,255,.85);backdrop-filter:blur(16px)}
+  .nav .brand{display:flex;align-items:center;gap:12px;font-weight:800}
+  .nav .brand img{height:26px}
+  .nav .brand span{font-size:12px;letter-spacing:.1em;color:var(--neutral-gray)}
+  .nav nav a{margin-left:24px;font-weight:700;font-size:14px;color:var(--jb-dark)}
+  .nav nav a:hover{color:var(--ax-blue)}
+
+  .intro{padding:60px 6vw 18px;max-width:920px}
+  .intro .eyebrow{font-weight:800;color:var(--ax-blue);letter-spacing:.12em;font-size:13px}
+  .intro h1{font-size:clamp(30px,4.4vw,52px);letter-spacing:-.045em;margin:12px 0 12px}
+  .intro p{color:var(--neutral-gray);font-size:18px;margin:0}
+
+  .grid{padding:24px 6vw 80px;display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:1400px}
+  .card{border:1px solid rgba(10,29,61,.1);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 16px 44px rgba(6,26,64,.08)}
+  .card .frame{aspect-ratio:16/9;background:#fff}
+  .card .frame svg{display:block;width:100%;height:100%}
+  .card .meta{padding:22px 24px 26px;border-top:1px solid rgba(10,29,61,.07)}
+  .card .tag{display:inline-block;font-weight:800;font-size:12px;letter-spacing:.08em;color:var(--ax-blue);
+    background:var(--light-blue);padding:4px 12px;border-radius:999px}
+  .card h3{font-size:23px;letter-spacing:-.03em;margin:14px 0 8px}
+  .card p{color:var(--neutral-gray);font-size:15px;margin:0}
+  .card .use{margin-top:12px;font-size:13px;color:var(--jb-dark);font-weight:700}
+  .card .use b{color:var(--ax-blue)}
+
+  .foot{padding:0 6vw 90px;max-width:920px}
+  .foot .box{border:1px dashed rgba(21,101,255,.4);background:var(--light-blue);border-radius:18px;padding:24px 26px}
+  .foot .box b{color:var(--jb-navy)}
+  footer{padding:34px 6vw;text-align:center;color:var(--neutral-gray);border-top:1px solid rgba(10,29,61,.08);font-size:13px}
+  @media (max-width:860px){.grid{grid-template-columns:1fr}.nav nav a{display:none}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="../"><img src="../assets/jbax-logo.svg" alt="JBAX"/><span>CI 제안</span></a>
+  <nav>
+    <a href="/">← 홈</a>
+    <a href="../">현재 CI</a>
+    <a href="../campaign.html">NOW 캠페인</a>
+  </nav>
+</header>
+
+<section class="intro">
+  <p class="eyebrow">DESIGN PROPOSALS · 5 DIRECTIONS</p>
+  <h1>JBAX CI 디자인 제안 5종</h1>
+  <p>현재 보드 대비, 같은 JBAX 심볼·컬러 체계를 유지하면서 인상과 용도가 다른 5가지 키비주얼 방향을 제안합니다. 마음에 드는 안을 알려주시면 그 방향으로 풀 CI를 발전시킵니다.</p>
+</section>
+
+<section class="grid">
+
+  <!-- A. Monolith Navy -->
+  <article class="card">
+    <div class="frame">
+      <svg viewBox="0 0 880 495" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="안 A 모노리스 네이비">
+        <defs>
+          <linearGradient id="ndA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0A2452"/><stop offset="1" stop-color="#020A1F"/></linearGradient>
+          <linearGradient id="bgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80E3FF"/><stop offset=".45" stop-color="#155BFF"/><stop offset="1" stop-color="#0032A8"/></linearGradient>
+          <linearGradient id="cgA" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00D2E5"/><stop offset="1" stop-color="#1565FF"/></linearGradient>
+        </defs>
+        <rect width="880" height="495" fill="url(#ndA)"/>
+        <g stroke="#FFFFFF" stroke-width="1" opacity=".05"><path d="M147 0V495M293 0V495M440 0V495M587 0V495M733 0V495M0 124H880M0 248H880M0 371H880"/></g>
+        <text x="440" y="150" text-anchor="middle" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="6" fill="#7FA8E8">JBAX · AX IDENTITY</text>
+        <g transform="translate(225,300) scale(1.12)">
+          <text x="0" y="0" font-family="'Arial Black',Pretendard,sans-serif" font-size="120" font-weight="900" fill="#FFFFFF" letter-spacing="-5">JB</text>
+          <path d="M220 0 L270 -112 L320 0 L292 0 L270 -54 L246 0 Z" fill="#FFFFFF"/>
+          <path d="M274 -8 L360 -112" stroke="url(#bgA)" stroke-width="22" stroke-linecap="square"/>
+          <path d="M344 -112 L396 0" stroke="#FFFFFF" stroke-width="24" stroke-linecap="square"/>
+          <path d="M394 -112 L340 0" stroke="#FFFFFF" stroke-width="24" stroke-linecap="square" opacity=".95"/>
+          <path d="M348 -64 L392 -64" stroke="url(#cgA)" stroke-width="14" stroke-linecap="round" opacity=".95"/>
+        </g>
+        <text x="440" y="372" text-anchor="middle" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="22" font-weight="800" fill="#C7D6EE" letter-spacing="-.5">금융의 신뢰를, AX의 속도로.</text>
+      </svg>
+    </div>
+    <div class="meta">
+      <span class="tag">안 A</span>
+      <h3>모노리스 네이비</h3>
+      <p>딥 네이비 단색 배경에 로고를 중앙 정렬한 미니멀·프리미엄 방향. 가장 묵직하고 기관 신뢰감이 강합니다.</p>
+      <p class="use">추천 용도: <b>표지·인트로·키노트 타이틀</b></p>
+    </div>
+  </article>
+
+  <!-- B. Clean Grid -->
+  <article class="card">
+    <div class="frame">
+      <svg viewBox="0 0 880 495" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="안 B 클린 그리드">
+        <defs>
+          <linearGradient id="bgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80E3FF"/><stop offset=".45" stop-color="#155BFF"/><stop offset="1" stop-color="#0032A8"/></linearGradient>
+          <linearGradient id="cgB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00D2E5"/><stop offset="1" stop-color="#1565FF"/></linearGradient>
+        </defs>
+        <rect width="880" height="495" fill="#FAFCFF"/>
+        <g stroke="#D9E2EF" stroke-width="1"><path d="M64 70H816M64 425H816M448 70V425"/></g>
+        <text x="64" y="120" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="14" font-weight="800" letter-spacing="3" fill="#155BFF">01 · SIGNATURE</text>
+        <g transform="translate(64,300) scale(0.92)">
+          <text x="0" y="0" font-family="'Arial Black',Pretendard,sans-serif" font-size="120" font-weight="900" fill="#061A40" letter-spacing="-5">JB</text>
+          <path d="M220 0 L270 -112 L320 0 L292 0 L270 -54 L246 0 Z" fill="#061A40"/>
+          <path d="M274 -8 L360 -112" stroke="url(#bgB)" stroke-width="22" stroke-linecap="square"/>
+          <path d="M344 -112 L396 0" stroke="#061A40" stroke-width="24" stroke-linecap="square"/>
+          <path d="M394 -112 L340 0" stroke="#061A40" stroke-width="24" stroke-linecap="square" opacity=".95"/>
+          <path d="M348 -64 L392 -64" stroke="url(#cgB)" stroke-width="14" stroke-linecap="round" opacity=".95"/>
+        </g>
+        <text x="492" y="250" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="34" font-weight="800" fill="#061A40" letter-spacing="-1">JB금융지주</text>
+        <text x="492" y="288" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="16" font-weight="600" fill="#50627E">AX 혁신 브랜드</text>
+        <text x="64" y="400" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="18" font-weight="700" fill="#142845" letter-spacing="-.3">금융의 신뢰를, AX의 속도로.</text>
+      </svg>
+    </div>
+    <div class="meta">
+      <span class="tag">안 B</span>
+      <h3>클린 그리드 (라이트)</h3>
+      <p>흰 배경 + 얇은 그리드에 좌측 정렬. 현재 공식 톤을 더 단정하게 정제한 안으로, 문서·웹 어디에나 안정적입니다.</p>
+      <p class="use">추천 용도: <b>공식 문서·웹·보고서 기본형</b></p>
+    </div>
+  </article>
+
+  <!-- C. Velocity Gradient -->
+  <article class="card">
+    <div class="frame">
+      <svg viewBox="0 0 880 495" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="안 C 벨로시티 그라데이션">
+        <defs>
+          <linearGradient id="bgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80E3FF"/><stop offset=".45" stop-color="#155BFF"/><stop offset="1" stop-color="#0032A8"/></linearGradient>
+          <linearGradient id="cgC" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00D2E5"/><stop offset="1" stop-color="#1565FF"/></linearGradient>
+          <linearGradient id="ribC" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#00D2E5"/><stop offset="1" stop-color="#1565FF"/></linearGradient>
+        </defs>
+        <rect width="880" height="495" fill="#FBFDFF"/>
+        <path d="M0 400 L880 150 L880 300 L0 495 Z" fill="url(#ribC)" opacity=".16"/>
+        <path d="M0 470 L880 230 L880 268 L0 495 Z" fill="url(#ribC)" opacity=".5"/>
+        <g stroke="url(#cgC)" stroke-width="10" stroke-linecap="round" opacity=".85"><path d="M690 360 L760 250"/><path d="M735 372 L800 270"/><path d="M778 384 L835 296"/></g>
+        <text x="80" y="150" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="14" font-weight="800" letter-spacing="4" fill="#155BFF">MOTION · ACCELERATE</text>
+        <g transform="translate(80,320) scale(1.04)">
+          <text x="0" y="0" font-family="'Arial Black',Pretendard,sans-serif" font-size="120" font-weight="900" fill="#061A40" letter-spacing="-5">JB</text>
+          <path d="M220 0 L270 -112 L320 0 L292 0 L270 -54 L246 0 Z" fill="#061A40"/>
+          <path d="M274 -8 L360 -112" stroke="url(#bgC)" stroke-width="22" stroke-linecap="square"/>
+          <path d="M344 -112 L396 0" stroke="#061A40" stroke-width="24" stroke-linecap="square"/>
+          <path d="M394 -112 L340 0" stroke="#061A40" stroke-width="24" stroke-linecap="square" opacity=".95"/>
+          <path d="M348 -64 L392 -64" stroke="url(#cgC)" stroke-width="14" stroke-linecap="round" opacity=".95"/>
+        </g>
+        <text x="80" y="392" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="18" font-weight="700" fill="#142845" letter-spacing="-.3">지금, 금융이 빨라진다.</text>
+      </svg>
+    </div>
+    <div class="meta">
+      <span class="tag">안 C</span>
+      <h3>벨로시티 그라데이션</h3>
+      <p>시안→블루 그라데이션 리본과 사선 모션으로 '속도'를 전면화. 가장 역동적이라 캠페인·디지털과 잘 맞습니다.</p>
+      <p class="use">추천 용도: <b>캠페인·SNS·디지털 배너</b></p>
+    </div>
+  </article>
+
+  <!-- D. Editorial Mono -->
+  <article class="card">
+    <div class="frame">
+      <svg viewBox="0 0 880 495" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="안 D 에디토리얼">
+        <defs>
+          <linearGradient id="bgD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80E3FF"/><stop offset=".45" stop-color="#155BFF"/><stop offset="1" stop-color="#0032A8"/></linearGradient>
+          <linearGradient id="cgD" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00D2E5"/><stop offset="1" stop-color="#1565FF"/></linearGradient>
+        </defs>
+        <rect width="880" height="495" fill="#F6F4EE"/>
+        <circle cx="792" cy="92" r="13" fill="#F6B23C"/>
+        <g transform="translate(70,250) scale(1.0)">
+          <text x="0" y="0" font-family="'Arial Black',Pretendard,sans-serif" font-size="120" font-weight="900" fill="#061A40" letter-spacing="-5">JB</text>
+          <path d="M220 0 L270 -112 L320 0 L292 0 L270 -54 L246 0 Z" fill="#061A40"/>
+          <path d="M274 -8 L360 -112" stroke="url(#bgD)" stroke-width="22" stroke-linecap="square"/>
+          <path d="M344 -112 L396 0" stroke="#061A40" stroke-width="24" stroke-linecap="square"/>
+          <path d="M394 -112 L340 0" stroke="#061A40" stroke-width="24" stroke-linecap="square" opacity=".95"/>
+          <path d="M348 -64 L392 -64" stroke="url(#cgD)" stroke-width="14" stroke-linecap="round" opacity=".95"/>
+        </g>
+        <path d="M70 300 H250" stroke="#061A40" stroke-width="2"/>
+        <text x="70" y="345" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="16" font-weight="600" letter-spacing="1" fill="#3A4A63">금융의 신뢰를, AX의 속도로.</text>
+        <text x="70" y="372" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="13" font-weight="500" letter-spacing="3" fill="#8A93A1">SUB-BRAND IDENTITY · 2026</text>
+        <text x="828" y="300" transform="rotate(90,828,300)" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="13" font-weight="800" letter-spacing="6" fill="#B0B7C2">JBAX</text>
+      </svg>
+    </div>
+    <div class="meta">
+      <span class="tag">안 D</span>
+      <h3>에디토리얼 모노</h3>
+      <p>웜 그레이 배경, 넉넉한 여백, 골드 점 하나로 절제한 갤러리형 안. 가장 세련되고 브랜드 무드보드에 어울립니다.</p>
+      <p class="use">추천 용도: <b>브랜드북·전시·프리미엄 인쇄물</b></p>
+    </div>
+  </article>
+
+  <!-- E. App Icon System -->
+  <article class="card">
+    <div class="frame">
+      <svg viewBox="0 0 880 495" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="안 E 앱아이콘 시스템">
+        <defs>
+          <linearGradient id="ndE" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B2B67"/><stop offset="1" stop-color="#061A40"/></linearGradient>
+          <linearGradient id="bgE" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80E3FF"/><stop offset=".45" stop-color="#155BFF"/><stop offset="1" stop-color="#0032A8"/></linearGradient>
+          <linearGradient id="cgE" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00D2E5"/><stop offset="1" stop-color="#1565FF"/></linearGradient>
+        </defs>
+        <rect width="880" height="495" fill="#FAFCFF"/>
+        <g stroke="#E2EAF4" stroke-width="1"><path d="M0 360H880"/></g>
+        <text x="64" y="92" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="14" font-weight="800" letter-spacing="3" fill="#155BFF">05 · SYMBOL APPLICATION</text>
+        <g transform="translate(64,150) scale(0.42)">
+          <text x="0" y="0" font-family="'Arial Black',Pretendard,sans-serif" font-size="120" font-weight="900" fill="#061A40" letter-spacing="-5">JB</text>
+          <path d="M220 0 L270 -112 L320 0 L292 0 L270 -54 L246 0 Z" fill="#061A40"/>
+          <path d="M274 -8 L360 -112" stroke="url(#bgE)" stroke-width="22" stroke-linecap="square"/>
+          <path d="M344 -112 L396 0" stroke="#061A40" stroke-width="24" stroke-linecap="square"/>
+          <path d="M394 -112 L340 0" stroke="#061A40" stroke-width="24" stroke-linecap="square" opacity=".95"/>
+          <path d="M348 -64 L392 -64" stroke="url(#cgE)" stroke-width="14" stroke-linecap="round" opacity=".95"/>
+        </g>
+        <g transform="translate(150,210)">
+          <rect width="128" height="128" rx="28" fill="url(#ndE)"/>
+          <path d="M34 94 L62 34 L90 94 L76 94 L62 62 L48 94 Z" fill="#FFFFFF" opacity=".97"/>
+          <path d="M58 94 L96 34" stroke="url(#bgE)" stroke-width="18" stroke-linecap="square"/>
+          <path d="M76 72 L100 72" stroke="url(#cgE)" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+        </g>
+        <g transform="translate(376,210)">
+          <rect width="128" height="128" rx="28" fill="#FFFFFF" stroke="#D9E2EF" stroke-width="2"/>
+          <path d="M34 94 L62 34 L90 94 L76 94 L62 62 L48 94 Z" fill="#061A40" opacity=".97"/>
+          <path d="M58 94 L96 34" stroke="url(#bgE)" stroke-width="18" stroke-linecap="square"/>
+          <path d="M76 72 L100 72" stroke="url(#cgE)" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+        </g>
+        <g transform="translate(602,210)">
+          <rect width="128" height="128" rx="28" fill="url(#bgE)"/>
+          <path d="M34 94 L62 34 L90 94 L76 94 L62 62 L48 94 Z" fill="#FFFFFF"/>
+          <path d="M58 94 L96 34" stroke="#FFFFFF" stroke-width="18" stroke-linecap="square" opacity=".55"/>
+        </g>
+        <text x="214" y="392" text-anchor="middle" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="15" font-weight="700" fill="#50627E">네이비</text>
+        <text x="440" y="392" text-anchor="middle" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="15" font-weight="700" fill="#50627E">라이트</text>
+        <text x="666" y="392" text-anchor="middle" font-family="Pretendard,'Noto Sans CJK KR',Arial,sans-serif" font-size="15" font-weight="700" fill="#50627E">그라데이션</text>
+      </svg>
+    </div>
+    <div class="meta">
+      <span class="tag">안 E</span>
+      <h3>앱아이콘 시스템</h3>
+      <p>AX 모노그램 앱아이콘을 네이비·라이트·그라데이션 3종 시스템으로 제안. 제품·서비스 라인업에 강합니다.</p>
+      <p class="use">추천 용도: <b>앱·서비스·프로덕트 아이덴티티</b></p>
+    </div>
+  </article>
+
+</section>
+
+<section class="foot">
+  <div class="box">
+    <p style="margin:0"><b>다음 단계</b> — 위 5안 중 끌리는 방향(예: "C로 가자")을 알려주세요. 선택한 안을 기준으로 컨셉·로고 시스템·컬러·심볼·활용 예시까지 풀 CI 보드로 발전시켜 다시 올리겠습니다. 둘을 섞어도(예: "B 레이아웃 + C 컬러") 됩니다.</p>
+  </div>
+</section>
+
+<footer>JBAX CI 디자인 제안 · JBAX 서브브랜드 시안 (JB금융그룹 공식 CI 원본의 직접 수정본 아님)</footer>
+
+</body>
+</html>
