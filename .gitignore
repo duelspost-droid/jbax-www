@@ -1,0 +1,13 @@
+# Supabase 로컬 임시
+supabase/.branches
+supabase/.temp
+supabase/.env
+
+# 환경/시크릿
+.env
+.env.local
+*.local
+
+# OS/에디터
+.DS_Store
+Thumbs.db
