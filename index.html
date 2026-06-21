@@ -15,7 +15,8 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
     min-height: 100vh; color: #1a2330;
     background: radial-gradient(1200px 600px at 50% -10%, #1565c0 0%, #0a3d7a 45%, #062a57 100%);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 20px;
+    background-attachment: fixed;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 48px 20px 44px;
   }
   .head { text-align: center; margin-bottom: 22px; }
   .head h1 { color: #fff; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.5px; }
@@ -83,6 +84,31 @@
   .foot a:hover { text-decoration: underline; }
   .foot-note { margin-top: 7px; font-size: 0.7rem; color: #7e93b5; line-height: 1.5; }
 
+  /* ── 모션 / 인터랙션 ── */
+  .head, .grid, .foot { position: relative; z-index: 1; }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(620px 320px at 82% 112%, rgba(0,184,217,0.20), transparent 62%);
+    animation: glow 9s ease-in-out infinite alternate;
+  }
+  @keyframes glow { from { transform: translateY(8px); opacity: .55; } to { transform: translateY(-26px); opacity: 1; } }
+  @keyframes floatUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  .head { animation: floatUp .7s cubic-bezier(.2,.7,.2,1) both; }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .grid .reveal:nth-child(even) { transition-delay: .08s; }
+  .slot { transition: transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s ease; }
+  .slot:not(.empty):hover { transform: translateY(-6px); box-shadow: 0 24px 58px rgba(0,0,0,0.36); }
+  .slot:not(.empty):hover .cta { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(10,61,122,0.40); }
+  .slot.empty { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  .slot.empty:hover { transform: translateY(-4px); border-color: #9fc0ea; box-shadow: 0 18px 44px rgba(0,0,0,0.22); }
+  .slot.empty .qmark { transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+  .slot.empty:hover .qmark { transform: scale(1.1) rotate(8deg); }
+  @media (prefers-reduced-motion: reduce) {
+    .head { animation: none; } body::before { animation: none; }
+    .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+  }
+
   @media (max-width: 560px) {
     .grid { grid-template-columns: 1fr; max-width: 380px; }
     .slot { min-height: auto; }
@@ -99,7 +125,7 @@
 
   <div class="grid">
     <!-- 슬롯 1: 맛집 트래커 -->
-    <div class="slot">
+    <div class="slot reveal">
       <div class="logo">
         <span class="emoji">🍽️</span>
         <span class="tag">JB<span class="hl">×AX</span></span>
@@ -114,7 +140,7 @@
     </div>
 
     <!-- 슬롯 2: JBAX 브랜드 아이덴티티 -->
-    <div class="slot">
+    <div class="slot reveal">
       <div class="logo" style="background:linear-gradient(135deg,#0A1D3D,#020819);padding:10px">
         <img src="./brand/assets/jbax-symbol.svg" alt="JBAX" style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -128,7 +154,7 @@
     </div>
 
     <!-- 슬롯 3: 외국인 금융 인사이트 -->
-    <div class="slot">
+    <div class="slot reveal">
       <div class="logo" style="background:linear-gradient(135deg,#0f766e,#0891b2)">
         <span class="emoji">📊</span>
         <span class="tag">JB<span class="hl">×AX</span></span>
@@ -140,12 +166,59 @@
       </div>
       <a class="cta" href="https://data.jbax.co.kr/" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#0f766e,#0891b2);box-shadow:0 6px 16px rgba(15,118,110,0.32)">바로가기 →</a>
     </div>
-    <div class="slot empty">
+
+    <!-- 슬롯 4: secuday 정보보호의 날 -->
+    <div class="slot reveal">
+      <div class="logo" style="background:linear-gradient(135deg,#0a2a5c,#155bff)">
+        <span class="emoji">🛡️</span>
+        <span class="tag">JB<span class="hl">×AX</span></span>
+      </div>
+      <h2>정보보호의 날</h2>
+      <div class="sub">secuday · 보안 인식</div>
+      <div class="desc">
+        매월 <b>정보보호의 날</b> 보안 인식 자료(포스터·뉴스레터·임직원 수칙)를
+        <b>AI가 자동 생성</b>하고 PDF로 받는 사내 서비스.
+      </div>
+      <a class="cta" href="https://secuday.jbax.co.kr/" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#0a2a5c,#155bff);box-shadow:0 6px 16px rgba(21,91,255,0.32)">바로가기 →</a>
+    </div>
+
+    <!-- 슬롯 5: JBAX 브랜드 홈 -->
+    <div class="slot reveal">
+      <div class="logo" style="background:linear-gradient(135deg,#155bff,#00b8d9)">
+        <span class="emoji">⚡</span>
+        <span class="tag">JB<span class="hl">×AX</span></span>
+      </div>
+      <h2>JBAX 브랜드 홈</h2>
+      <div class="sub">JB금융그룹 AX 혁신</div>
+      <div class="desc">
+        "데이터와 AI로 더 가까운 금융." <b>JBAX</b> 브랜드와 사내 AI 서비스 모음을
+        소개하는 랜딩 페이지.
+      </div>
+      <a class="cta" href="https://duelspost-droid.github.io/jbax-home/" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#155bff,#00b8d9);box-shadow:0 6px 16px rgba(0,184,217,0.32)">바로가기 →</a>
+    </div>
+
+    <!-- 준비 중 슬롯 ×5 -->
+    <div class="slot empty reveal">
       <div class="qmark">?</div>
       <div class="label">준비 중</div>
       <div class="soon">Coming soon</div>
     </div>
-    <div class="slot empty">
+    <div class="slot empty reveal">
+      <div class="qmark">?</div>
+      <div class="label">준비 중</div>
+      <div class="soon">Coming soon</div>
+    </div>
+    <div class="slot empty reveal">
+      <div class="qmark">?</div>
+      <div class="label">준비 중</div>
+      <div class="soon">Coming soon</div>
+    </div>
+    <div class="slot empty reveal">
+      <div class="qmark">?</div>
+      <div class="label">준비 중</div>
+      <div class="soon">Coming soon</div>
+    </div>
+    <div class="slot empty reveal">
       <div class="qmark">?</div>
       <div class="label">준비 중</div>
       <div class="soon">Coming soon</div>
@@ -156,5 +229,16 @@
     <a href="https://www.jbax.co.kr/">www.jbax.co.kr</a>
     <div class="foot-note">개인이 학습·실험용으로 운영하는 비공식 플레이그라운드입니다. 어떤 기관·회사의 공식 서비스도 아닙니다.</div>
   </div>
+
+  <script>
+    (function () {
+      var els = [].slice.call(document.querySelectorAll('.reveal'));
+      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+      els.forEach(function (e) { io.observe(e); });
+    })();
+  </script>
 </body>
 </html>
