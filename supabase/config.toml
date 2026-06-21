@@ -1,0 +1,10 @@
+# jbax-www — Supabase 설정 (secuday 프로젝트 ref nrdapzgtibbusvoaceuh 재사용)
+# 링크:  npx supabase link --project-ref nrdapzgtibbusvoaceuh
+project_id = "jbax-www"
+
+# 두 함수 모두 로그인(JWT) 필수 — 관리자만 진단/조치 실행
+[functions.vuln-scan]
+verify_jwt = true
+
+[functions.vuln-remediate]
+verify_jwt = true
