@@ -350,7 +350,7 @@
   .rail.dragging{ cursor:grabbing; scroll-snap-type:none; }
   .rail.dragging a{ pointer-events:none; }
   .rail .slot{ flex:0 0 300px; scroll-snap-align:start; }
-  .rail .slot.empty{ flex:0 0 212px; min-height:auto; }
+  .rail .slot.empty{ flex:0 0 212px; min-height:auto; display:none; }
   .rail .slot:not(.empty):hover{ transform:translateY(-8px) scale(1.035); z-index:4; }
   .rail-btn{ position:absolute; top:calc(50% - 6px); transform:translateY(-50%); z-index:30;
     width:48px; height:48px; border-radius:50%; border:1px solid rgba(255,255,255,.22);
@@ -385,7 +385,7 @@
   body.view-grid .rail{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px;
     overflow:visible; scroll-snap-type:none; cursor:default; padding:10px 0 14px; }
   body.view-grid .rail .slot{ flex:initial; width:auto; }
-  body.view-grid .rail .slot.empty{ flex:initial; min-height:320px; }
+  body.view-grid .rail .slot.empty{ flex:initial; min-height:320px; display:flex; }
   body.view-grid .rail .slot:not(.empty):hover{ transform:translateY(-6px) scale(1); }
   @media (max-width:560px){
     body.view-grid .rail{ grid-template-columns:1fr; }
@@ -589,6 +589,34 @@
         if (e.key === 'ArrowRight') { e.preventDefault(); rail.scrollBy({ left: step(), behavior: 'smooth' }); }
         else if (e.key === 'ArrowLeft') { e.preventDefault(); rail.scrollBy({ left: -step(), behavior: 'smooth' }); }
       });
+
+      /* 자동 슬라이드: 호버·포커스·터치·목록형 모드·모션축소 시 멈춤 */
+      var apTimer = null, apPaused = false;
+      function apCardStep() {
+        var c = rail.querySelector('.slot:not(.empty)');
+        var w = c ? c.getBoundingClientRect().width : rail.clientWidth * 0.8;
+        var gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 16;
+        return w + gap;
+      }
+      function apTick() {
+        if (apPaused || document.body.classList.contains('view-grid')) return;
+        if (rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 4) { rail.scrollTo({ left: 0, behavior: 'smooth' }); }
+        else { rail.scrollBy({ left: apCardStep(), behavior: 'smooth' }); }
+      }
+      function apStart() {
+        if (apTimer) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        apTimer = window.setInterval(apTick, 3500);
+      }
+      function apStop() { if (apTimer) { window.clearInterval(apTimer); apTimer = null; } }
+      wrap.addEventListener('mouseenter', function () { apPaused = true; });
+      wrap.addEventListener('mouseleave', function () { apPaused = false; });
+      wrap.addEventListener('focusin', function () { apPaused = true; });
+      wrap.addEventListener('focusout', function () { apPaused = false; });
+      wrap.addEventListener('touchstart', function () { apPaused = true; }, { passive: true });
+      wrap.addEventListener('touchend', function () { window.setTimeout(function () { apPaused = false; }, 4000); }, { passive: true });
+      document.addEventListener('visibilitychange', function () { if (document.hidden) { apStop(); } else { apStart(); } });
+      apStart();
     })();
   </script>
 
