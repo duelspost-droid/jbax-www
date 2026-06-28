@@ -579,8 +579,13 @@
       update();
       window.__railUpdate = update;
       var down = false, sx = 0, sl = 0, moved = false;
-      rail.addEventListener('mousedown', function (e) { down = true; moved = false; sx = e.pageX; sl = rail.scrollLeft; rail.classList.add('dragging'); });
-      window.addEventListener('mousemove', function (e) { if (!down) return; var dx = e.pageX - sx; if (Math.abs(dx) > 4) moved = true; rail.scrollLeft = sl - dx; });
+      rail.addEventListener('mousedown', function (e) { down = true; moved = false; sx = e.pageX; sl = rail.scrollLeft; });
+      window.addEventListener('mousemove', function (e) {
+        if (!down) return;
+        var dx = e.pageX - sx;
+        if (!moved && Math.abs(dx) > 6) { moved = true; rail.classList.add('dragging'); }
+        if (moved) rail.scrollLeft = sl - dx;
+      });
       window.addEventListener('mouseup', function () { if (down) { down = false; rail.classList.remove('dragging'); } });
       rail.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
       rail.setAttribute('tabindex', '0');
