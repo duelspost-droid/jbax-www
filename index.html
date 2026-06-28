@@ -368,6 +368,30 @@
     .rail .slot.empty{ flex:0 0 58vw; }
     .rail-btn{ display:none; }
   }
+
+  /* ── 보기 전환 토글 (가로 레일 / 목록형 그리드) ── */
+  .view-toggle{ display:inline-flex; gap:4px; margin:16px auto 0; padding:4px; border-radius:12px;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); }
+  .vt-btn{ display:inline-flex; align-items:center; gap:7px; border:0; cursor:pointer; background:transparent;
+    color:#b9cde8; font-size:.8rem; font-weight:800; padding:8px 15px; border-radius:9px; font-family:inherit;
+    transition:background .15s, color .15s, box-shadow .15s; }
+  .vt-btn[aria-pressed="true"]{ background:#fff; color:#0a2a5c; box-shadow:0 4px 14px rgba(0,0,0,.22); }
+  .vt-btn[aria-pressed="false"]:hover{ color:#fff; }
+  .vt-btn .ic{ font-size:.95rem; line-height:1; }
+  /* 목록형(그리드) 모드 */
+  body.view-grid .swipe-hint{ display:none; }
+  body.view-grid .rail-wrap{ max-width:760px; }
+  body.view-grid .rail-btn{ display:none; }
+  body.view-grid .rail{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px;
+    overflow:visible; scroll-snap-type:none; cursor:default; padding:10px 0 14px; }
+  body.view-grid .rail .slot{ flex:initial; width:auto; }
+  body.view-grid .rail .slot.empty{ flex:initial; min-height:320px; }
+  body.view-grid .rail .slot:not(.empty):hover{ transform:translateY(-6px) scale(1); }
+  @media (max-width:560px){
+    body.view-grid .rail{ grid-template-columns:1fr; }
+    body.view-grid .rail-wrap{ max-width:380px; }
+    body.view-grid .rail .slot.empty{ min-height:auto; }
+  }
 </style>
 </head>
 <body>
@@ -408,6 +432,10 @@
     <h1>JB<span class="hl">×AX</span></h1>
     <p>서비스 모음</p>
     <span class="notice">🧪 비공식 플레이그라운드 · 공식 서비스 아님</span>
+    <div class="view-toggle" role="group" aria-label="보기 방식 선택">
+      <button class="vt-btn" type="button" data-view="rail" aria-pressed="true"><span class="ic" aria-hidden="true">⇄</span> 가로 레일</button>
+      <button class="vt-btn" type="button" data-view="grid" aria-pressed="false"><span class="ic" aria-hidden="true">▦</span> 목록형</button>
+    </div>
     <div class="swipe-hint">← 좌우로 넘겨보세요 →</div>
   </div>
 
@@ -549,6 +577,7 @@
       rail.addEventListener('scroll', function () { window.requestAnimationFrame(update); }, { passive: true });
       window.addEventListener('resize', update);
       update();
+      window.__railUpdate = update;
       var down = false, sx = 0, sl = 0, moved = false;
       rail.addEventListener('mousedown', function (e) { down = true; moved = false; sx = e.pageX; sl = rail.scrollLeft; rail.classList.add('dragging'); });
       window.addEventListener('mousemove', function (e) { if (!down) return; var dx = e.pageX - sx; if (Math.abs(dx) > 4) moved = true; rail.scrollLeft = sl - dx; });
@@ -560,6 +589,25 @@
         if (e.key === 'ArrowRight') { e.preventDefault(); rail.scrollBy({ left: step(), behavior: 'smooth' }); }
         else if (e.key === 'ArrowLeft') { e.preventDefault(); rail.scrollBy({ left: -step(), behavior: 'smooth' }); }
       });
+    })();
+  </script>
+
+  <script>
+    /* 보기 전환: 가로 레일 / 목록형 그리드 (선택 기억) */
+    (function () {
+      var KEY = 'jbax_view';
+      var btns = [].slice.call(document.querySelectorAll('.vt-btn'));
+      if (!btns.length) return;
+      function apply(view) {
+        document.body.classList.toggle('view-grid', view === 'grid');
+        btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-view') === view ? 'true' : 'false'); });
+        try { localStorage.setItem(KEY, view); } catch (e) {}
+        if (view !== 'grid' && typeof window.__railUpdate === 'function') { window.__railUpdate(); }
+      }
+      var saved = 'rail';
+      try { saved = localStorage.getItem(KEY) || 'rail'; } catch (e) {}
+      apply(saved);
+      btns.forEach(function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-view')); }); });
     })();
   </script>
 
