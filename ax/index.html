@@ -340,20 +340,20 @@
   /* 다크 배경: 흰 박스 없이 화이트 음각 로고 직접 노출 */
   .ci-logo{display:inline-flex;align-items:center;background:transparent;border-radius:0;padding:0;
     box-shadow:none;line-height:0}
-  .ci-logo img{display:block;height:34px;width:auto}
+  .ci-logo img{display:block;height:56px;width:auto}
   .ci-logo.lg{border-radius:0;padding:0}
   .ci-logo.lg img{height:54px}
   .ci-logo.sm{padding:0;border-radius:0;box-shadow:none}
-  .ci-logo.sm img{height:24px}
+  .ci-logo.sm img{height:64px}
   /* 섹션 키커 — 전용색 라인 (CI 색만, 로고 미사용) */
   .kicker::before{background:linear-gradient(90deg,var(--jb-cyan),var(--jb-blue))}
 
   /* 네비 브랜드 = 공식 CI 엔도스 + 본부 서브브랜드 */
   .brand{gap:13px}
-  .brand .divider{width:1px;height:30px;background:rgba(255,255,255,.20);flex-shrink:0}
-  header.nav.scrolled .brand .ci-logo img{height:28px}
-  header.nav.scrolled .brand .divider{height:26px}
-  @media(max-width:640px){ .brand .divider,.brand .txt{display:none} .brand .ci-logo img{height:30px} }
+  .brand .divider{width:1px;height:50px;background:rgba(255,255,255,.20);flex-shrink:0}
+  header.nav.scrolled .brand .ci-logo img{height:46px}
+  header.nav.scrolled .brand .divider{height:42px}
+  @media(max-width:640px){ .brand .divider,.brand .txt{display:none} .brand .ci-logo img{height:52px} }
 
   /* 히어로 — 자체 상승선 모티프(로고 미사용, 순수 장식) */
   .hero-symbol{position:absolute;right:-6%;top:46%;transform:translateY(-50%);
@@ -373,8 +373,8 @@
     background:linear-gradient(120deg,rgba(28,55,138,.22),rgba(0,145,208,.10));
     border:1px solid rgba(40,120,210,.30);border-radius:16px;padding:18px 20px}
   .ci-note .ci-logo.sm{flex-shrink:0;margin-top:2px}
-  .ci-note .ci-logo.sm img{height:34px}
-  .foot-ci .ci-logo img{height:46px}
+  .ci-note .ci-logo.sm img{height:96px}
+  .foot-ci .ci-logo img{height:130px}
   .ci-note h4{font-size:.72rem;letter-spacing:2px;color:var(--jb-cyan);font-weight:800;margin-bottom:7px}
   .ci-note p{margin:0;color:#cdd9ec;font-size:.9rem;line-height:1.65;font-weight:500}
   .ci-note p b{color:#fff}
