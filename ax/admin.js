@@ -96,6 +96,24 @@
       { k: "cta_ghost", t: "text", label: "보조 버튼 텍스트" },
       { k: "cta_ghost_href", t: "text", label: "보조 버튼 링크" }
     ] },
+    { key: "sections", label: "섹션 제목", icon: "🏷️", fields: [
+      { k: "strategy_kicker", t: "text", label: "전략 kicker" },
+      { k: "strategy_title", t: "text", label: "전략 제목", full: true },
+      { k: "strategy_sub", t: "textarea", label: "전략 소제목", full: true },
+      { k: "impact_kicker", t: "text", label: "임팩트 kicker" },
+      { k: "impact_title", t: "text", label: "임팩트 제목", full: true },
+      { k: "impact_sub", t: "textarea", label: "임팩트 소제목", full: true },
+      { k: "roadmap_kicker", t: "text", label: "로드맵 kicker" },
+      { k: "roadmap_title", t: "text", label: "로드맵 제목", full: true },
+      { k: "roadmap_sub", t: "textarea", label: "로드맵 소제목", full: true },
+      { k: "org_kicker", t: "text", label: "조직 kicker" },
+      { k: "org_title", t: "text", label: "조직 제목" },
+      { k: "org_node", t: "text", label: "조직 노드(본부명)" },
+      { k: "org_node_en", t: "text", label: "조직 노드(영문)" },
+      { k: "news_kicker", t: "text", label: "소식 kicker" },
+      { k: "news_title", t: "text", label: "소식 제목" },
+      { k: "news_sub", t: "textarea", label: "소식 소제목", full: true }
+    ] },
     { key: "about", label: "About(소개)", icon: "📖", fields: [
       { k: "kicker", t: "text", label: "kicker" },
       { k: "title_pre", t: "text", label: "제목(앞)" },
