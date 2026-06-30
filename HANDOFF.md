@@ -1,6 +1,6 @@
 # JBAX 플레이그라운드 — 인수인계 (HANDOFF)
 
-다른 PC에서 이어서 작업하기 위한 전체 컨텍스트. (최종 업데이트: 2026-06-22)
+다른 PC에서 이어서 작업하기 위한 전체 컨텍스트. (최종 업데이트: 2026-07-01 — 섹션 8 AX 페이지 CMS 추가)
 
 ## 1. 이 레포가 뭔가
 - **jbax-www** = JB×AX 비공식 플레이그라운드. GitHub Pages 정적 사이트.
@@ -60,3 +60,70 @@ cd jbax-www
 ## 7. 검증 이력
 - 프런트: jsdom + Supabase mock E2E 통과(오류 0).
 - 백엔드: 다중 에이전트 적대적 리뷰(27건 → 11건 확정) 후 수정 — JWT base64url 디코딩, Set-Cookie 다중헤더(getSetCookie), 스캔 시작 원자적 전환, 승인 권한 요청자 한정, SRI 패치 정규식, progress.status CHECK, 대상 도달불가 조기실패. Edge Function TS는 esbuild 파싱 통과.
+
+---
+
+# 8. AX 미래성장본부 페이지 (CMS) — 2026-07-01 작업
+
+## 8.1 개요
+- **위치**: 같은 레포의 `ax/` 서브디렉터리. 별도 레포 아님.
+- **라이브**: **https://www.jbax.co.kr/ax/** (플레이그라운드 랜딩 `/` 의 **슬롯 0**에서 `/ax/`로 연결)
+- **정체**: JB금융지주 'AX·미래성장본부' 소개 페이지. 인트로 모션 → 히어로 → About → 6대 전략 → 임팩트 지표 → 로드맵 → 조직(본부장 포함) → 소식 → 연락처 → 푸터.
+- **백엔드**: VulnScan과 **동일 Supabase**(`nrdapzgtibbusvoaceuh`) + **동일 관리자 계정**(secuday/VulnScan). Edge Function 불필요(순수 DB CRUD + RLS).
+- **핵심 설계**: 페이지 콘텐츠를 관리자페이지에서 편집(CMS). 공개 페이지는 DB에서 읽어 렌더하되 **실패/빈값/미설정이면 HTML에 박힌 정적 콘텐츠로 폴백** → Supabase가 죽어도 안 깨짐.
+
+## 8.2 구성 파일 (ax/)
+| 파일 | 역할 |
+|---|---|
+| `ax/index.html` | 공개 페이지(인라인 CSS/JS). 섹션마다 `data-ax="키"`(텍스트)·`data-ax-href`/`data-ax-mailto`/`data-ax-src` 바인딩. 카운트업 엔진(소수점 `data-decimals`·접두 `data-prefix` 지원)과 `window.AX.rescan()`(하이드레이션 후 reveal/카운트 재적용) 노출. |
+| `ax/ax-content.js` | **공개 페이지 하이드레이션**. Supabase에서 published 행 읽어 섹션 렌더 + `applySettings()`로 단일텍스트 주입. 실패 시 정적 폴백. |
+| `ax/admin.html` + `ax/admin.js` | **관리자 CMS**. 로그인(동일 계정) → 탭별 CRUD. 제네릭 엔티티(ENTITIES)+설정그룹(SETTINGS) 구조. 반응형. `noindex`. |
+| `ax/assets/ci/` | 공식 JB CI SVG(ci-sig 1~6 등). 히어로 키비주얼은 `ci-sig-5.svg`의 컬러 facet 경로를 인라인. |
+| `config.js`(레포 루트) | Supabase URL+anon키. ax/에선 `../config.js`로 로드. |
+
+## 8.3 DB 모델 & 마이그레이션 (⚠ 시드 일부 미실행)
+**테이블(0011)**: `ax_settings`(key/jsonb 단일텍스트) · `ax_metrics` · `ax_news` · `ax_pillars` · `ax_org` · `ax_roadmap`. RLS: 익명=published만 SELECT, 로그인(authenticated)=전체 CRUD.
+**ax_settings 키**: `hero` · `about` · `contact` · `footer` · `leader`(본부장) · `sections`(섹션 헤더 문구).
+
+| 마이그레이션 | 내용 | 실행 상태 |
+|---|---|---|
+| `0011_ax_cms.sql` | 테이블 6 + RLS | ✅ 실행됨(SQL Editor) |
+| `0012_ax_seed.sql` | 지표·뉴스·전략·조직·로드맵·hero/about/contact/footer 시드 | ✅ 실행됨 |
+| `0013_ax_leader_seed.sql` | 본부장(박종춘) settings | ⏳ **미실행** (Supabase 대시보드 장애) |
+| `0014_ax_sections_seed.sql` | 섹션 제목/소제목 settings | ⏳ **미실행** (동일) |
+> 0013·0014 미실행이어도 **정적 폴백으로 라이브 정상 표시**. 단 관리자 '본부장'·'섹션 제목' 탭은 시드 전엔 빈칸(저장하면 그 값으로 DB 생성·반영). **대시보드 복구 시 0013·0014를 SQL Editor에 붙여 실행할 것.**
+
+## 8.4 배포 상태 (HEAD `9892e25`, master, 라이브 반영 확인)
+- `261c653` CMS화 + 히어로 키비주얼 모션그래픽(공식 JB DIAMOND 심볼 + 글로우·회전링·부유·샤인·마우스 패럴랙스).
+- `74d1486` 조직 섹션 **본부장 블록**(박종춘 AX·미래성장본부장 부사장).
+- `9892e25` **모든 섹션 제목/소제목 CMS화**(`sections.*`).
+- 전부 master push → Pages `built` → www.jbax.co.kr/ax 반영 확인.
+
+## 8.5 콘텐츠 출처 (중요 — 창작 금지 원칙)
+- 모든 실제 수치·뉴스·본부장 인용은 **다중 에이전트 웹조사 + 항목별 출처검증**(메인 40/41, 본부장 31/32 confirmed)으로 확보. **가짜를 실제로 교체하되 새 가짜를 만들지 않음.**
+- 핵심 수치: 2025 순이익 7,104억(사상최대)·총자산 약73조·ROE 12.4%·주주환원 45%·계열사 9·NewTech 66팀.
+- 본부장: 박종춘 = JB금융지주 AX·미래성장본부장 부사장(2026.1 전무→부사장, 본부명 미래성장본부→AX미래성장본부). 대표 인용 "10년 뒤를 준비하려면 은행 안에 없는 DNA를 들여와야 합니다"(헤럴드경제 2026-06-11). 1인칭 인사말 원문은 없으므로 **창작 금지**, 인용은 따옴표+출처로만.
+- 연락처: `jbfgir@jbfg.com`(가짜 ax@jbax.co.kr 폐기), 전주 본사주소. ※ 현재 라이브 연락처 이메일은 사용자가 관리자에서 `duels@jbfg.com`으로 변경해 둠.
+
+## 8.6 남은 일 (TODO)
+1. **0013·0014 시드 실행** — Supabase 대시보드 복구 후 SQL Editor에서 실행(또는 관리자 각 탭에서 저장).
+2. **본부장 사진** — 저작권 때문에 뉴스 사진 미게재. 현재 이니셜 플레이스홀더. **JB 홍보팀 공식 프로필 사진 URL**을 관리자 '본부장' 탭 `photo`에 입력하면 반영(`data-ax-src`).
+3. (선택) 네비 메뉴 라벨·푸터 하단 링크 라벨·인트로 문구 CMS화 — 아직 하드코딩.
+4. (선택) 모바일 실기기 스폿체크. (반응형은 적용·검증됨: 가로 오버플로 0, 그리드 단일열 붕괴, 관리자 탭/카드도 모바일 OK.)
+
+## 8.7 작업/배포 시 주의 (gotcha)
+- **master push는 매 변경마다 사용자 승인 필요**(자동 안전분류기가 기본브랜치 push를 차단). 비기능 작업이면 작업브랜치 권장.
+- **마이그레이션 수동**: `supabase/migrations/`에 파일만 추가하고 SQL Editor에 붙여 실행(secuday 이력과 분리). GitHub Actions가 자동 적용 안 함.
+- **카운트업 소수점**: `animateCount`는 `data-decimals`로 소수 자릿수 처리. 신규 지표 추가 시 ax-content.js가 value의 소수 자리수로 자동 설정.
+- **하이드레이션 후 재스캔**: DOM 교체 후 반드시 `window.AX.rescan()` 호출해야 reveal/카운트업 작동(ax-content.js가 처리).
+- **단일텍스트 추가법**: ① index.html 요소에 `data-ax="그룹.키"` 추가 ② admin.js `SETTINGS`의 해당 그룹에 필드 추가 ③ (선택) 시드 마이그레이션. 폴백 위해 HTML 기본 텍스트는 남겨둘 것.
+
+## 8.8 로컬 미리보기
+```bash
+cd jbax-www
+npx -y serve -l 4321 .        # 정적 서버
+# http://localhost:4321/ax/        공개 페이지 (인트로 스킵: SKIP 버튼 또는 Esc)
+# http://localhost:4321/ax/admin.html  관리자 (동일 계정 로그인)
+```
+- 로컬에서도 같은 Supabase(운영 DB)에 붙으므로 관리자 편집은 **실제 라이브 데이터에 반영**됨(주의).
+- 모바일 점검 팁: 일부 도구가 뷰포트를 고정 렌더할 때, 390px 폭 `<iframe src="/ax/">`에 넣으면 실제 모바일 미디어쿼리로 렌더됨(iframe 높이는 폰 높이 ~844로).
