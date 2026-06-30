@@ -340,11 +340,10 @@
     padding:7px 12px;box-shadow:0 8px 22px rgba(0,0,0,.30);line-height:0}
   .ci-plate img{display:block;height:26px;width:auto}
   .ci-plate.lg img{height:38px}
-  .ci-sym{display:inline-block;width:18px;height:18px;line-height:0;background:url(assets/ci/jb-symbol.svg) center/contain no-repeat}
-  /* 섹션 키커 — CI 다이아몬드 글리프 + 전용색 라인 */
+  .ci-plate.sm{padding:5px 9px;border-radius:7px;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .ci-plate.sm img{height:17px}
+  /* 섹션 키커 — 전용색 라인 (CI 색만, 로고 미사용) */
   .kicker::before{background:linear-gradient(90deg,var(--jb-cyan),var(--jb-blue))}
-  .kicker .dia{display:inline-block;width:12px;height:12px;margin-right:8px;vertical-align:middle;
-    background:url(assets/ci/jb-symbol.svg) center/contain no-repeat;transform:translateY(-1px)}
 
   /* 네비 브랜드 = 공식 CI 엔도스 + 본부 서브브랜드 */
   .brand{gap:13px}
@@ -353,24 +352,32 @@
   header.nav.scrolled .brand .divider{height:26px}
   @media(max-width:640px){ .brand .divider,.brand .txt{display:none} .brand .ci-plate img{height:24px} }
 
-  /* 히어로 — 공식 심볼 워터마크 */
-  .hero-symbol{position:absolute;right:-7%;top:46%;transform:translateY(-50%);
-    width:min(48vw,580px);aspect-ratio:1;background:url(assets/ci/jb-symbol.svg) center/contain no-repeat;
-    opacity:.08;z-index:0;pointer-events:none;animation:symFloat 12s ease-in-out infinite alternate}
-  @keyframes symFloat{from{transform:translateY(-52%) rotate(-2deg)}to{transform:translateY(-46%) rotate(2deg)}}
-  .hero-endorse{display:inline-flex;align-items:center;gap:10px;margin-top:30px;
+  /* 히어로 — 자체 상승선 모티프(로고 미사용, 순수 장식) */
+  .hero-symbol{position:absolute;right:-6%;top:46%;transform:translateY(-50%);
+    width:min(52vw,640px);aspect-ratio:1;opacity:.5;z-index:0;pointer-events:none;
+    background:repeating-linear-gradient(152deg,transparent 0 26px,rgba(255,224,138,.05) 26px 28px),
+               repeating-linear-gradient(28deg,transparent 0 26px,rgba(0,145,208,.06) 26px 28px);
+    -webkit-mask-image:radial-gradient(closest-side,#000,transparent 78%);
+    mask-image:radial-gradient(closest-side,#000,transparent 78%);
+    animation:symFloat 14s ease-in-out infinite alternate}
+  @keyframes symFloat{from{transform:translateY(-52%)}to{transform:translateY(-44%)}}
+  .hero-endorse{display:inline-flex;align-items:center;gap:11px;margin-top:30px;
     color:#9fb4d6;font-size:.74rem;font-weight:700;letter-spacing:.4px}
-  .hero-endorse .ci-sym{width:18px;height:18px}
   .hero-endorse b{color:#cfe0f6;font-weight:800}
 
   /* About — JB DIAMOND CI 의미 콜아웃 */
   .ci-note{margin-top:30px;display:flex;gap:16px;align-items:flex-start;
     background:linear-gradient(120deg,rgba(28,55,138,.22),rgba(0,145,208,.10));
     border:1px solid rgba(40,120,210,.30);border-radius:16px;padding:18px 20px}
-  .ci-note .ci-sym{width:46px;height:46px;flex-shrink:0;margin-top:2px}
+  .ci-note .ci-plate.sm{flex-shrink:0;margin-top:2px}
+  .ci-note .ci-plate.sm img{height:22px}
   .ci-note h4{font-size:.72rem;letter-spacing:2px;color:var(--jb-cyan);font-weight:800;margin-bottom:7px}
   .ci-note p{margin:0;color:#cdd9ec;font-size:.9rem;line-height:1.65;font-weight:500}
   .ci-note p b{color:#fff}
+  @media(max-width:640px){
+    .hero-endorse{flex-wrap:wrap;gap:8px}
+    .ci-note{gap:12px;padding:15px 16px}
+  }
 
   /* 푸터 — 공식 CI 시그니처 + 그룹 슬로건 */
   .foot-ci{display:flex;flex-direction:column;gap:14px;margin-bottom:6px}
@@ -383,12 +390,25 @@
   /* ==================  시네마틱 인트로 (KINETIC ASCENT)  ================= */
   /* ===================================================================== */
   #intro{display:none}                       /* JS 미동작/no-JS 시 절대 노출 안 됨 */
-  html.intro-active #intro{display:grid;place-items:center;position:fixed;inset:0;
+  html.intro-active #intro{display:block;position:fixed;inset:0;
     z-index:2147483600;background:#030f22;overflow:hidden}
   html.intro-active,html.intro-active body{overflow:hidden;height:100%}
   html.intro-active body{touch-action:none}
 
-  /* 히어로 진입 게이트 — 인트로 동안 히어로 자체 모션/카운터 보류 */
+  /* 정교한 이징 토큰 (싸구려 ease/linear 금지) */
+  :root{
+    --ease-expo-out:cubic-bezier(.16,1,.3,1);    /* 도착: 단조 → 1.0, 오버슈트 없음 */
+    --ease-out-soft:cubic-bezier(.22,1,.36,1);   /* 부드러운 ease-out */
+    --ease-settle:cubic-bezier(.2,.7,.2,1);      /* 정착 */
+    --ease-accel-in:cubic-bezier(.7,0,.84,0);    /* 단어 퇴장: 단호한 가속 이탈 */
+    --ease-smooth:cubic-bezier(.65,0,.35,1);     /* 컬랩스/입자/팁 — 대칭 스무스 */
+    --ease-wipe:cubic-bezier(.7,0,.2,1);         /* 언더라인/커튼 와이프 */
+    --ease-cam:cubic-bezier(.33,0,.2,1);         /* 10초 카메라 푸시 */
+  }
+
+  /* 히어로 진입 게이트 — 인트로 동안 히어로 자체 모션/카운터 보류.
+     계약: 게이트는 intro-active에만 건다. finishIntro()가 intro-active 제거 시 히어로 애니메이션이 자연 재생됨.
+     절대 html.intro-done .hero{animation:none} 류의 억제 규칙을 추가하지 말 것(히어로가 영영 숨겨짐). */
   html.intro-active .hero h1 .line>span{animation:none!important;transform:translateY(110%)}
   html.intro-active .hero p.lead,
   html.intro-active .hero-cta,
@@ -397,82 +417,104 @@
   html.intro-active .scroll-hint{animation:none!important;opacity:0}
   html.intro-active .blob,html.intro-active .spark,html.intro-active .hero-symbol{animation:none!important}
 
-  /* 콜드 오픈: 그리드 + 골드 점화 스파크 + 링 */
-  @keyframes i-gridIn{from{opacity:0}to{opacity:.07}}
-  @keyframes i-spark{0%{transform:scale(0);opacity:0}40%{opacity:1}100%{transform:scale(1);opacity:1}}
-  @keyframes i-glow{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:.85}}
-  @keyframes i-ring{from{transform:scale(0);opacity:.8}to{transform:scale(7);opacity:0}}
-  .intro__grid{position:absolute;inset:0;opacity:0;animation:i-gridIn .6s ease-out both;
+  /* 카메라 푸시인 — 10초 단일 transform (커튼/스킵은 cam 밖) */
+  @keyframes i-cam{from{transform:scale(1)}to{transform:scale(1.06)}}
+  .intro__cam{position:absolute;inset:0;display:grid;place-items:center;transform-origin:50% 56%;
+    animation:i-cam 10s var(--ease-cam) both;will-change:transform}
+  .intro__cam>.intro__stage,.intro__cam>.intro__lockup{grid-area:1/1}
+
+  /* ── ACT I · 점화 (0–2.2s) ── */
+  @keyframes i-gridIn{from{opacity:0;transform:translateY(10px)}to{opacity:.06;transform:none}}
+  @keyframes i-spark{0%{transform:scale(0);opacity:0}45%{opacity:1}100%{transform:scale(1);opacity:1}}
+  @keyframes i-glow{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:.82}}
+  @keyframes i-glowBlue{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:.5}}
+  @keyframes i-ring{from{transform:scale(0);opacity:.7}to{transform:scale(5.5);opacity:0}}
+  @keyframes i-conv{0%{transform:translate(var(--dx),var(--dy));opacity:0}34%{opacity:.85}100%{transform:translate(0,0);opacity:0}}
+  .intro__grid{position:absolute;inset:0;opacity:0;animation:i-gridIn .64s var(--ease-out-soft) .12s both;
     background:repeating-linear-gradient(0deg,transparent 0 63px,rgba(255,224,138,.5) 63px 64px),
                repeating-linear-gradient(90deg,transparent 0 63px,rgba(255,224,138,.5) 63px 64px);
-    mask-image:radial-gradient(circle at 50% 50%,#000,transparent 72%);
-    -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 72%)}
-  .intro__glow{position:absolute;width:540px;height:540px;border-radius:50%;will-change:transform,opacity;
-    background:radial-gradient(closest-side,rgba(255,224,138,.5),rgba(0,145,208,.14) 48%,transparent 72%);
-    filter:blur(28px);transform:scale(.3);opacity:0;animation:i-glow .9s ease-out both}
+    -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 64%);
+    mask-image:radial-gradient(circle at 50% 50%,#000,transparent 64%)}
+  .intro__glow,.intro__glow--blue{position:absolute;width:560px;height:560px;border-radius:50%;pointer-events:none;will-change:transform,opacity}
+  .intro__glow{background:radial-gradient(closest-side,rgba(255,224,138,.5),rgba(0,145,208,.12) 46%,transparent 72%);
+    filter:blur(30px);transform:scale(.3);opacity:0;animation:i-glow 1s var(--ease-out-soft) .18s both}
+  .intro__glow--blue{background:radial-gradient(closest-side,rgba(0,145,208,.42),rgba(28,55,138,.16) 46%,transparent 72%);
+    filter:blur(32px);transform:scale(.5);opacity:0;animation:i-glowBlue .9s var(--ease-out-soft) 6s both}
   .intro__spark{position:absolute;width:12px;height:12px;border-radius:50%;will-change:transform,opacity;
     background:radial-gradient(#fff6dc,#ffe08a 42%,rgba(255,206,106,0) 72%);
-    animation:i-spark .5s cubic-bezier(.2,.9,.25,1.4) both}
-  .intro__ring{position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid var(--teal);
-    animation:i-ring .75s ease-out both}
+    animation:i-spark .44s var(--ease-expo-out) .18s both}
+  .intro__ring{position:absolute;width:18px;height:18px;border-radius:50%;border:2px solid var(--teal);
+    animation:i-ring .66s var(--ease-expo-out) .52s both}
+  .intro__dots{position:absolute;inset:0;pointer-events:none}
+  .intro__dot{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;
+    background:radial-gradient(#ffe7b0,rgba(255,206,106,0) 70%);opacity:0;
+    animation:i-conv 1.1s var(--ease-smooth) var(--dl,.4s) both;will-change:transform,opacity}
 
-  /* 성장선(SVG stroke draw) */
+  /* ── ACT II · 성장선 + 키네틱 타이포 (2.2–6.0s) ── */
   @keyframes i-draw{to{stroke-dashoffset:0}}
-  @keyframes i-tip{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
-  .intro__stage{position:relative;width:min(92vw,1040px);will-change:transform}
+  @keyframes i-fadeTo0{to{opacity:0}}
+  @keyframes i-fadeTo1{to{opacity:.95}}
+  @keyframes i-tipfly{from{transform:translate(0,0);opacity:1}to{transform:translate(-170px,46px);opacity:0}}
+  .intro__stage{position:relative;width:min(92vw,1040px)}
   .intro__line{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);width:100%;
-    opacity:.92;filter:drop-shadow(0 0 8px rgba(255,224,138,.55))}
-  .intro__path{stroke-dasharray:1;stroke-dashoffset:1;animation:i-draw 1.6s cubic-bezier(.22,1,.36,1) .42s both}
-  .intro__tip{transform-box:fill-box;transform-origin:center;animation:i-tip 1s ease-in-out 2s 2 both}
+    filter:drop-shadow(0 0 9px rgba(255,224,138,.5))}
+  .intro__path{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+  .intro__path--gold{opacity:.95;animation:i-draw 1.76s var(--ease-expo-out) .76s both,i-fadeTo0 .55s var(--ease-out-soft) 6s both}
+  .intro__path--blue{opacity:0;animation:i-draw 1.76s var(--ease-expo-out) .76s both,i-fadeTo1 .55s var(--ease-out-soft) 6s both}
+  .intro__tip{transform-box:fill-box;transform-origin:center;fill:#ffe08a;animation:i-tipfly .6s var(--ease-smooth) 6s both}
 
-  /* 키네틱 워드(마스크 라이즈 = 히어로와 동일 메커니즘) */
-  @keyframes i-wIn{from{transform:translateY(110%)}to{transform:translateY(0)}}
-  @keyframes i-wOut{from{transform:translateY(0)}to{transform:translateY(-110%)}}
+  @keyframes i-wIn{from{transform:translateY(110%);filter:blur(8px);letter-spacing:.06em}to{transform:translateY(0);filter:blur(0);letter-spacing:0}}
+  @keyframes i-wIn3{from{transform:translateY(110%);filter:blur(8px)}to{transform:translateY(0);filter:blur(0)}}
+  @keyframes i-wOut{from{transform:translateY(0);opacity:1}to{transform:translateY(-120%);opacity:0}}
   @keyframes i-ul{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
   @keyframes i-fade{to{opacity:1}}
-  @keyframes i-fadeOut{to{opacity:0}}
-  .intro__words{position:relative;height:1.1em;text-align:center;
-    font-size:clamp(46px,11vw,132px);font-weight:800;line-height:1.05}
-  .intro__words .kw{position:absolute;left:0;right:0;top:0;overflow:hidden}
-  .intro__words .kw>span{display:inline-block;transform:translateY(110%);color:#eaf1ff;will-change:transform}
-  .kw1>span{animation:i-wIn .52s cubic-bezier(.16,1,.3,1) .42s both,i-wOut .46s cubic-bezier(.7,0,.3,1) 1.12s both}
+  @keyframes i-vanish{to{opacity:0}}
+  .intro__words{position:relative;height:1.14em;text-align:center;
+    font-size:clamp(46px,11vw,128px);font-weight:800;line-height:1.08}
+  .intro__words .kw{position:absolute;left:0;right:0;top:0;overflow:hidden;padding:.05em 0}
+  .intro__words .kw>span{display:inline-block;transform:translateY(110%);color:#eaf1ff;will-change:transform,filter}
+  /* 충돌 0: 퇴장끝 + 80ms 다크브레스 후 다음 입장, -120% 완전 이탈 */
+  .kw1>span{animation:i-wIn .46s var(--ease-expo-out) 2.52s both,i-wOut .30s var(--ease-accel-in) 3.34s both}
   .kw2{font-family:'Noto Sans KR',sans-serif}
-  .kw2>span{animation:i-wIn .52s cubic-bezier(.16,1,.3,1) 1.24s both,i-wOut .46s cubic-bezier(.7,0,.3,1) 1.88s both}
+  .kw2>span{animation:i-wIn .46s var(--ease-expo-out) 3.72s both,i-wOut .30s var(--ease-accel-in) 4.64s both}
   .kw3{font-family:'Noto Sans KR',sans-serif}
-  .kw3>span{animation:i-wIn .54s cubic-bezier(.16,1,.3,1) 2s both}
-  .kw3>span .gd{background:linear-gradient(96deg,var(--gold-300),var(--gold-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .intro__rule{position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);height:3px;width:34vw;max-width:420px;
+  .kw3>span{animation:i-wIn3 .52s var(--ease-expo-out) 5.02s both}
+  .kw3>span .gd{color:var(--gold-300);background:linear-gradient(96deg,var(--gold-300),var(--gold-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .intro__rule{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);height:3px;width:32vw;max-width:400px;
     background:linear-gradient(90deg,var(--gold-300),var(--gold-500));clip-path:inset(0 100% 0 0);
-    animation:i-ul .4s ease-out 2.3s both}
-  .intro__counter{position:absolute;right:2vw;top:-1.5em;font-family:Manrope,sans-serif;font-weight:800;
+    animation:i-ul .42s var(--ease-wipe) 5.3s both}
+  .intro__counter{position:absolute;right:1vw;top:-1.85em;font-family:Manrope,sans-serif;font-weight:800;text-align:right;
     font-size:clamp(20px,3vw,34px);font-variant-numeric:tabular-nums;color:var(--gold-400);letter-spacing:.04em;
-    opacity:0;animation:i-fade .4s ease 2s both}
-  .intro__counter small{font-size:.5em;color:#7f97bd;font-weight:700;letter-spacing:.18em;display:block;margin-top:2px}
+    opacity:0;animation:i-fade .5s var(--ease-out-soft) 2.3s both}
+  .intro__counter small{font-size:.42em;color:#7f97bd;font-weight:700;letter-spacing:.2em;display:block;margin-top:3px}
 
-  /* 컬랩스 → 공식 CI 클라이맥스(시그니처 플레이트) */
-  @keyframes i-collapse{to{transform:scale(.6) translateY(-12vh);opacity:0}}
-  @keyframes i-plate{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
-  @keyframes i-lift{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-  html.intro-active .intro__stage{animation:i-collapse .6s cubic-bezier(.65,0,.35,1) 2.82s both}
-  .intro__lockup{position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:16px;pointer-events:none}
-  .intro__lockup .ci-plate{transform:scale(.7);opacity:0;
-    animation:i-plate .6s cubic-bezier(.34,1.56,.64,1) 3.0s both;box-shadow:0 24px 60px rgba(0,0,0,.5)}
-  .intro__lockup .ci-plate::after{content:"";position:absolute;left:14px;right:14px;bottom:-9px;height:3px;border-radius:3px;
-    background:linear-gradient(90deg,var(--gold-300),var(--gold-500));clip-path:inset(0 100% 0 0);animation:i-ul .5s ease-out 3.5s both}
-  .intro__lockup .ci-plate{position:relative}
-  .intro__div{text-align:center;opacity:0;animation:i-lift .55s ease-out 3.6s both}
+  /* ── ACT III · 컬랩스 → 공식 CI 클라이맥스 (6.0–9.6s) ── */
+  @keyframes i-collapse{to{transform:scale(.62) translateY(-12vh);opacity:0}}
+  @keyframes i-plate{from{transform:scale(.965);opacity:0;filter:blur(6px);clip-path:inset(0 0 14% 0)}to{transform:scale(1);opacity:1;filter:blur(0);clip-path:inset(0 0 0 0)}}
+  @keyframes i-lift{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes i-logoIn{from{opacity:0}to{opacity:1}}
+  html.intro-active .intro__stage{animation:i-collapse .6s var(--ease-smooth) 6.1s both}
+  .intro__lockup{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;pointer-events:none}
+  /* 공식 CI 무변형: 스케일/블러/클립 리빌은 흰색 카드 배경(.intro__plate-bg)에만, 공식 시그니처 <img>는 opacity로만 등장(변형 0) */
+  .intro__lockup .ci-plate{position:relative;background:transparent!important;box-shadow:none;opacity:1;overflow:visible}
+  .intro__plate-bg{position:absolute;inset:0;background:#fff;border-radius:9px;box-shadow:0 30px 72px rgba(0,0,0,.5);z-index:1;
+    transform:scale(.965);opacity:0;filter:blur(6px);clip-path:inset(0 0 14% 0);
+    animation:i-plate .72s var(--ease-expo-out) 7.3s both;will-change:transform,opacity,filter}
+  .intro__lockup .ci-plate img{position:relative;z-index:2;opacity:0;animation:i-logoIn .5s var(--ease-out-soft) 7.55s both}
+  .intro__lockup .ci-plate::after{content:"";position:absolute;left:16px;right:16px;bottom:-10px;height:3px;border-radius:3px;z-index:2;
+    background:linear-gradient(90deg,var(--gold-300),var(--jb-blue));clip-path:inset(0 100% 0 0);animation:i-ul .5s var(--ease-wipe) 7.8s both}
+  .intro__div{text-align:center;opacity:0;animation:i-lift .55s var(--ease-settle) 8.1s both}
   .intro__div b{display:block;font-size:clamp(20px,3.4vw,30px);font-weight:900;color:#fff;letter-spacing:-.3px}
   .intro__div span{display:block;margin-top:5px;font-family:Manrope,sans-serif;font-size:.72rem;font-weight:800;
     letter-spacing:.34em;text-transform:uppercase;color:var(--gold-400)}
-  .intro__lockup .eyebrow{opacity:0;animation:i-lift .55s ease-out 3.78s both;margin:0}
+  .intro__lockup .eyebrow{opacity:0;animation:i-lift .55s var(--ease-settle) 8.28s both;margin:0}
 
-  /* 종료 커튼(네이비-온-네이비, 무점멸) */
-  @keyframes i-wipe{0%{transform:translateY(100%)}42%{transform:translateY(0)}100%{transform:translateY(-100%)}}
-  @keyframes i-vanish{to{opacity:0}}
+  /* ── ACT IV · 종료 커튼 (9.6–10.3s, 네이비-온-네이비) ── */
+  @keyframes i-wipe{0%{transform:translateY(100%)}44%{transform:translateY(0)}100%{transform:translateY(-100%)}}
   .intro__curtain{position:absolute;inset:0;background:#030f22;transform:translateY(100%);transform-origin:bottom;z-index:5}
-  html.intro-exit .intro__curtain{animation:i-wipe .72s cubic-bezier(.7,0,.3,1) both;will-change:transform}
-  html.intro-exit .intro__stage,html.intro-exit .intro__lockup{opacity:0;transition:opacity .26s ease}
-  html.intro-skip #intro{animation:i-vanish .24s ease both}
+  html.intro-exit .intro__curtain{animation:i-wipe .72s var(--ease-wipe) both;will-change:transform}
+  html.intro-exit .intro__cam{opacity:0;transition:opacity .3s ease}
+  html.intro-skip #intro{animation:i-vanish .26s ease both}
 
   /* SKIP 버튼 */
   #introSkip{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));right:20px;z-index:6;
@@ -482,39 +524,55 @@
   #introSkip:hover,#introSkip:focus-visible{opacity:1;color:var(--gold-300);background:rgba(255,224,138,.1);border-color:rgba(255,224,138,.6);outline:none}
 
   @media(prefers-reduced-motion:reduce){ #intro{display:none!important} }
-  @media(max-width:640px){ .hero-symbol{opacity:.06;right:-22%} .intro__counter{right:4vw} }
+  @media(max-width:640px){ .intro__counter{right:3vw} .intro__glow,.intro__glow--blue{width:380px;height:380px} }
 </style>
 </head>
 <body>
 
-<!-- ░░░ 시네마틱 인트로 (KINETIC ASCENT · ~5s) ░░░ -->
+<!-- ░░░ 시네마틱 인트로 (KINETIC ASCENT · ~10s) ░░░ -->
 <div id="intro" role="dialog" aria-modal="true" aria-label="JB 미래성장본부 인트로">
-  <div class="intro__grid" aria-hidden="true"></div>
-  <div class="intro__glow" aria-hidden="true"></div>
-  <span class="intro__spark" aria-hidden="true"></span>
-  <span class="intro__ring" aria-hidden="true"></span>
-
-  <div class="intro__stage" aria-hidden="true">
-    <svg class="intro__line" viewBox="0 0 1040 360" preserveAspectRatio="xMidYMid meet" focusable="false">
-      <defs><linearGradient id="iGold" x1="0" y1="1" x2="1" y2="0">
-        <stop offset="0" stop-color="#e6b84d"/><stop offset="1" stop-color="#ffe08a"/></linearGradient></defs>
-      <path class="intro__path" pathLength="1" d="M40 320 L280 250 L520 190 L760 110 L1000 50"
-        fill="none" stroke="url(#iGold)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle class="intro__tip" cx="1000" cy="50" r="7" fill="#ffe08a"/>
-    </svg>
-    <div class="intro__words">
-      <div class="intro__counter">20<span id="introYear">17</span><small>FUTURE GROWTH</small></div>
-      <div class="kw kw1"><span>AI</span></div>
-      <div class="kw kw2"><span>전환</span></div>
-      <div class="kw kw3"><span>미래성장, <span class="gd">다음 10년</span></span></div>
-      <i class="intro__rule"></i>
+  <div class="intro__cam" aria-hidden="true">
+    <div class="intro__grid"></div>
+    <div class="intro__glow"></div>
+    <div class="intro__glow intro__glow--blue"></div>
+    <span class="intro__spark"></span>
+    <span class="intro__ring"></span>
+    <div class="intro__dots">
+      <i class="intro__dot" style="--dx:-280px;--dy:-120px;--dl:.42s"></i>
+      <i class="intro__dot" style="--dx:300px;--dy:-90px;--dl:.50s"></i>
+      <i class="intro__dot" style="--dx:-240px;--dy:160px;--dl:.36s"></i>
+      <i class="intro__dot" style="--dx:260px;--dy:180px;--dl:.58s"></i>
+      <i class="intro__dot" style="--dx:-340px;--dy:30px;--dl:.64s"></i>
+      <i class="intro__dot" style="--dx:340px;--dy:60px;--dl:.30s"></i>
+      <i class="intro__dot" style="--dx:40px;--dy:-220px;--dl:.54s"></i>
     </div>
-  </div>
 
-  <div class="intro__lockup" aria-hidden="true">
-    <span class="ci-plate lg"><img src="assets/ci/ci-sig-1.svg" alt="JB금융지주" width="370" height="170"></span>
-    <div class="intro__div"><b>미래성장본부</b><span>JB · AX Division</span></div>
-    <span class="eyebrow"><span class="dot"></span>JB FINANCIAL GROUP · FUTURE GROWTH</span>
+    <div class="intro__stage">
+      <svg class="intro__line" viewBox="0 0 1040 360" preserveAspectRatio="xMidYMid meet" focusable="false">
+        <defs>
+          <linearGradient id="iGold" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#e6b84d"/><stop offset="1" stop-color="#ffe08a"/></linearGradient>
+          <linearGradient id="iBlue" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#28d2d9"/><stop offset=".55" stop-color="#0091D0"/><stop offset="1" stop-color="#1C378A"/></linearGradient>
+        </defs>
+        <path class="intro__path intro__path--gold" pathLength="1" d="M40 320 L280 250 L520 190 L760 110 L1000 50" stroke="url(#iGold)"/>
+        <path class="intro__path intro__path--blue" pathLength="1" d="M40 320 L280 250 L520 190 L760 110 L1000 50" stroke="url(#iBlue)"/>
+        <circle class="intro__tip" cx="1000" cy="50" r="7"/>
+      </svg>
+      <div class="intro__words">
+        <div class="intro__counter">20<span id="introYear">17</span><small>FUTURE GROWTH</small></div>
+        <div class="kw kw1"><span>AI</span></div>
+        <div class="kw kw2"><span>전환</span></div>
+        <div class="kw kw3"><span>미래성장, <span class="gd">다음 10년</span></span></div>
+        <i class="intro__rule"></i>
+      </div>
+    </div>
+
+    <div class="intro__lockup">
+      <span class="ci-plate lg intro__plate"><span class="intro__plate-bg" aria-hidden="true"></span><img src="assets/ci/ci-sig-1.svg" alt="JB금융지주" width="370" height="170"></span>
+      <div class="intro__div"><b>미래성장본부</b><span>JB · AX Division</span></div>
+      <span class="eyebrow"><span class="dot"></span>JB FINANCIAL GROUP · FUTURE GROWTH</span>
+    </div>
   </div>
 
   <div class="intro__curtain" aria-hidden="true"></div>
@@ -575,7 +633,7 @@
       <div class="hs"><b class="count" data-to="5">0</b><span>그룹 계열사 연계</span></div>
       <div class="hs"><b class="count" data-to="2027" data-group="false">0</b><span>도약 목표연도</span></div>
     </div>
-    <div class="hero-endorse"><span class="ci-sym"></span><span><b>JB금융지주</b> 미래성장본부 · JB Financial Group</span></div>
+    <div class="hero-endorse"><span class="ci-plate sm"><img src="assets/ci/ci-sig-1.svg" alt="JB금융지주" width="370" height="170"></span><span>미래성장본부 · JB Financial Group</span></div>
   </div>
   <div class="scroll-hint"><div class="mouse"></div>SCROLL</div>
 </section>
@@ -598,7 +656,7 @@
         <div class="cell reveal d3"><h4>VISION</h4><p>고객이 가장 먼저 떠올리는 'AI 네이티브' 금융그룹으로의 도약.</p></div>
       </div>
       <div class="ci-note reveal d3">
-        <span class="ci-sym" aria-hidden="true"></span>
+        <span class="ci-plate sm"><img src="assets/ci/ci-sig-1.svg" alt="JB금융지주" width="370" height="170"></span>
         <div>
           <h4>JB DIAMOND · 공식 심볼</h4>
           <p>JB금융그룹 CI의 심볼마크는 <b>PEOPLE</b>(고객 중심 소통), <b>JB DIAMOND</b>(성장·혁신하는 종합금융그룹),
@@ -964,9 +1022,9 @@
   document.addEventListener('keydown', onKey, true);
   skipBtn && skipBtn.addEventListener('click', onSkipClick);
 
-  timers.push(setTimeout(rollYear, 2000));
-  timers.push(setTimeout(startExit, 4320));   // 커튼 시작
-  timers.push(setTimeout(finishIntro, 5100)); // 안전 백스톱 — 히어로 절대 갇히지 않음
+  timers.push(setTimeout(rollYear, 4180));    // 카운터: 전환 단어 홀드 구간
+  timers.push(setTimeout(startExit, 9600));   // 커튼 시작 (9.6s)
+  timers.push(setTimeout(finishIntro, 10100));// 안전 백스톱 — 히어로 절대 갇히지 않음
   window.addEventListener('error', function(){ try{ finishIntro(); }catch(e){} }, {once:true});
 })();
 </script>
