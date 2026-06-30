@@ -355,15 +355,35 @@
   header.nav.scrolled .brand .divider{height:clamp(28px,7vw,44px)}
   @media(max-width:640px){ .brand .divider,.brand .txt{display:none} }
 
-  /* 히어로 — 자체 상승선 모티프(로고 미사용, 순수 장식) */
-  .hero-symbol{position:absolute;right:-6%;top:46%;transform:translateY(-50%);
-    width:min(52vw,640px);aspect-ratio:1;opacity:.5;z-index:0;pointer-events:none;
-    background:repeating-linear-gradient(152deg,transparent 0 26px,rgba(255,224,138,.05) 26px 28px),
-               repeating-linear-gradient(28deg,transparent 0 26px,rgba(0,145,208,.06) 26px 28px);
-    -webkit-mask-image:radial-gradient(closest-side,#000,transparent 78%);
-    mask-image:radial-gradient(closest-side,#000,transparent 78%);
-    animation:symFloat 14s ease-in-out infinite alternate}
-  @keyframes symFloat{from{transform:translateY(-52%)}to{transform:translateY(-44%)}}
+  /* 히어로 키비주얼 — 공식 JB DIAMOND 심볼 모션그래픽 */
+  .hero-symbol{position:absolute;right:-4%;top:50%;transform:translateY(-50%);
+    width:min(50vw,560px);aspect-ratio:1;z-index:0;pointer-events:none;opacity:.94;
+    display:flex;align-items:center;justify-content:center;will-change:transform}
+  .hero-symbol .kv-glow{position:absolute;inset:5%;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(0,145,208,.34),rgba(28,55,138,.13) 56%,transparent 73%);
+    animation:kvGlow 6s ease-in-out infinite alternate}
+  @keyframes kvGlow{from{opacity:.55;transform:scale(.95)}to{opacity:1;transform:scale(1.07)}}
+  .hero-symbol .kv-ring{position:absolute;inset:1%;border-radius:50%;
+    border:1px dashed rgba(0,156,216,.20);animation:spin 52s linear infinite}
+  .hero-symbol .kv-ring.r2{inset:12%;border-color:rgba(255,224,138,.15);animation-duration:36s;animation-direction:reverse}
+  .hero-symbol .jb-wrap{position:relative;width:60%;height:60%;animation:kvIn 1.25s var(--ease-expo-out) both}
+  @keyframes kvIn{from{opacity:0;transform:scale(.8) rotate(-9deg)}to{opacity:1;transform:none}}
+  .hero-symbol .jb-diamond{position:relative;width:100%;height:100%;overflow:hidden;border-radius:7px;
+    filter:drop-shadow(0 26px 60px rgba(2,29,73,.55)) drop-shadow(0 0 28px rgba(0,145,208,.40));
+    animation:kvFloat 13s ease-in-out infinite alternate}
+  .hero-symbol .jb-diamond svg{width:100%;height:100%;display:block}
+  @keyframes kvFloat{from{transform:translateY(-9px) rotate(-1.4deg)}to{transform:translateY(11px) rotate(1.8deg)}}
+  .hero-symbol .jb-diamond::after{content:"";position:absolute;inset:-25%;
+    background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.5) 50%,transparent 58%);
+    transform:translateX(-130%);animation:kvShine 6.5s ease-in-out 2.2s infinite}
+  @keyframes kvShine{0%{transform:translateX(-130%)}24%,100%{transform:translateX(130%)}}
+  @media(max-width:880px){ .hero-symbol{right:-16%;width:min(78vw,520px);opacity:.42} }
+  @media(max-width:560px){ .hero-symbol{opacity:.26} }
+  @media (prefers-reduced-motion: reduce){
+    .hero-symbol .kv-glow,.hero-symbol .kv-ring,.hero-symbol .jb-wrap,
+    .hero-symbol .jb-diamond,.hero-symbol .jb-diamond::after{animation:none!important}
+    .hero-symbol .jb-wrap{opacity:1}
+  }
   .hero-endorse{display:inline-flex;align-items:center;gap:11px;margin-top:30px;
     color:#9fb4d6;font-size:.74rem;font-weight:700;letter-spacing:.4px}
   .hero-endorse b{color:#cfe0f6;font-weight:800}
@@ -419,7 +439,9 @@
   html.intro-active .hero-stats,
   html.intro-active .hero-endorse,
   html.intro-active .scroll-hint{animation:none!important;opacity:0}
-  html.intro-active .blob,html.intro-active .spark,html.intro-active .hero-symbol{animation:none!important}
+  html.intro-active .blob,html.intro-active .spark,html.intro-active .hero-symbol,
+  html.intro-active .hero-symbol *{animation:none!important}
+  html.intro-active .hero-symbol .jb-wrap{opacity:0}
 
   /* 카메라 푸시인 — 10초 단일 transform (커튼/스킵은 cam 밖) */
   @keyframes i-cam{from{transform:scale(1)}to{transform:scale(1.06)}}
@@ -608,7 +630,32 @@
     <div class="hero-bg" style="position:absolute"></div>
     <div class="grid-lines"></div>
     <div class="blob b1"></div><div class="blob b2"></div>
-    <div class="hero-symbol" aria-hidden="true"></div>
+    <div class="hero-symbol" aria-hidden="true">
+      <div class="kv-glow"></div>
+      <div class="kv-ring"></div><div class="kv-ring r2"></div>
+      <div class="jb-wrap"><div class="jb-diamond">
+        <svg viewBox="7 63 32.8 32.8" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="JB DIAMOND">
+          <path d="M7.99963 64V94.794H38.7488V94.758L31.0593 87.0933L36.7635 81.3807L38.7488 83.2789V64H7.99963Z" fill="#0091D0"/>
+          <path d="M7.99963 64V79.3925L15.6892 71.7008L7.99963 64Z" fill="#009CD8"/>
+          <path d="M7.99963 64L15.6892 71.7008L23.3697 64H7.99963Z" fill="#0091D0"/>
+          <path d="M7.99951 79.3922H23.3696L15.689 71.7004L7.99951 79.3922Z" fill="#0091D0"/>
+          <path d="M23.369 64L15.6885 71.7008L23.369 79.3925V64Z" fill="#0082C9"/>
+          <path d="M23.3722 64V79.3925L31.0617 71.7008L23.3722 64Z" fill="#0070BB"/>
+          <path d="M23.3722 64L31.0617 71.7008L38.7513 64H23.3722Z" fill="#0060AF"/>
+          <path d="M23.3722 79.3922H38.7513L31.0617 71.7004L23.3722 79.3922Z" fill="#004C98"/>
+          <path d="M38.7507 64L31.0612 71.7008L38.7507 79.3925V64Z" fill="#00529C"/>
+          <path d="M7.99951 94.7943L15.689 87.0936L7.99951 79.3928V94.7943Z" fill="#0070BB"/>
+          <path d="M7.99951 79.3928L15.689 87.0936L23.3696 79.3928H7.99951Z" fill="#0082C9"/>
+          <path d="M7.99951 94.794H23.3696L15.689 87.0933L7.99951 94.794Z" fill="#0060AF"/>
+          <path d="M15.6885 87.0936L23.369 94.7943V79.3928L15.6885 87.0936Z" fill="#00529C"/>
+          <path d="M23.3722 79.3928V94.7943L31.0617 87.0936L23.3722 79.3928Z" fill="#004C98"/>
+          <path d="M38.7513 79.3928H23.3722L31.0617 87.0936L38.7513 79.3928Z" fill="#1C378A"/>
+          <path d="M38.7503 79.3928L36.765 81.381L38.7503 83.2792V79.3928Z" fill="#1C378A"/>
+          <path d="M23.3722 94.794H38.7513V94.758L31.0617 87.0933L23.3722 94.794Z" fill="#1C378A"/>
+          <path d="M28.8942 73.8687L38.7487 83.2787V94.7579L31.0591 87.0931L28.9301 84.961L19.417 94.344L13.9283 88.8563L28.8942 73.8687Z" fill="#fff"/>
+        </svg>
+      </div></div>
+    </div>
     <div class="spark" style="top:24%;left:18%;animation-delay:0s"></div>
     <div class="spark" style="top:40%;left:74%;animation-delay:1.2s"></div>
     <div class="spark" style="top:66%;left:30%;animation-delay:2.4s"></div>
@@ -616,22 +663,22 @@
     <div class="spark" style="top:72%;left:82%;animation-delay:1.8s"></div>
   </div>
   <div class="wrap">
-    <span class="eyebrow"><span class="dot"></span>JB FINANCIAL GROUP · FUTURE GROWTH</span>
+    <span class="eyebrow"><span class="dot"></span><span data-ax="hero.eyebrow">JB FINANCIAL GROUP · FUTURE GROWTH</span></span>
     <h1 class="display">
-      <span class="line"><span>AX로 여는</span></span>
-      <span class="line"><span>금융의 <span class="gold">다음 10년</span></span></span>
+      <span class="line"><span data-ax="hero.line1">AX로 여는</span></span>
+      <span class="line"><span><span data-ax="hero.line2_pre">금융의 </span><span class="gold" data-ax="hero.line2_gold">다음 10년</span></span></span>
     </h1>
-    <p class="lead">JB금융지주 미래성장본부는 인공지능 전환(AX)과 디지털 신성장 동력으로
+    <p class="lead" data-ax="hero.lead">JB금융지주 미래성장본부는 인공지능 전환(AX)과 디지털 신성장 동력으로
       그룹의 미래를 설계합니다. 데이터와 AI를 업(業)의 중심에 두고, 고객과 현장이 체감하는 변화를 만듭니다.</p>
     <div class="hero-cta">
-      <a href="#strategy" class="btn primary">추진전략 살펴보기 <span class="arrow">→</span></a>
-      <a href="#about" class="btn ghost">본부 소개</a>
+      <a href="#strategy" class="btn primary" data-ax-href="hero.cta_primary_href"><span data-ax="hero.cta_primary">추진전략 살펴보기</span> <span class="arrow">→</span></a>
+      <a href="#about" class="btn ghost" data-ax-href="hero.cta_ghost_href"><span data-ax="hero.cta_ghost">본부 소개</span></a>
     </div>
     <div class="hero-stats">
-      <div class="hs"><b class="count" data-to="6">0</b><span>핵심 추진 영역</span></div>
-      <div class="hs"><b class="count" data-to="120" data-suffix="+">0</b><span>AI 전환 과제</span></div>
-      <div class="hs"><b class="count" data-to="5">0</b><span>그룹 계열사 연계</span></div>
-      <div class="hs"><b class="count" data-to="2027" data-group="false">0</b><span>도약 목표연도</span></div>
+      <div class="hs"><b class="count" data-to="7104" data-suffix="억원">0</b><span>2025 그룹 당기순이익</span></div>
+      <div class="hs"><b class="count" data-to="73" data-prefix="약 " data-suffix="조원" data-group="false">0</b><span>그룹 총자산</span></div>
+      <div class="hs"><b class="count" data-to="12.4" data-decimals="1" data-suffix="%" data-group="false">0</b><span>자기자본이익률 ROE</span></div>
+      <div class="hs"><b class="count" data-to="45" data-suffix="%" data-group="false">0</b><span>총 주주환원율(2025)</span></div>
     </div>
     <div class="hero-endorse"><span class="ci-logo sm"><img src="assets/ci/ci-sig-1-rev.svg" alt="JB금융지주" width="370" height="170"></span><span>AX·미래성장본부 · JB Financial Group</span></div>
   </div>
@@ -643,17 +690,17 @@
   <div class="wrap about-grid">
     <div class="about-copy">
       <div class="sec-head reveal" style="margin-bottom:0">
-        <span class="kicker">ABOUT THE DIVISION</span>
-        <h2>업의 본질을 다시 쓰는<br><span class="gold">AI 전환의 컨트롤타워</span></h2>
+        <span class="kicker" data-ax="about.kicker">ABOUT THE DIVISION</span>
+        <h2><span data-ax="about.title_pre">업의 본질을 다시 쓰는</span><br><span class="gold" data-ax="about.title_gold">AI 전환의 컨트롤타워</span></h2>
       </div>
-      <p class="reveal d1">미래성장본부는 JB금융지주의 AX(AI Transformation) 전략을 총괄하는 그룹 차원의 컨트롤타워입니다.
+      <p class="reveal d1" data-ax="about.para1">미래성장본부는 JB금융지주의 AX(AI Transformation) 전략을 총괄하는 그룹 차원의 컨트롤타워입니다.
         전북은행·광주은행·JB우리캐피탈 등 계열사 전반에 AI와 데이터를 내재화하고,
         기존 금융의 경계를 넘는 디지털 신사업을 발굴·육성합니다.</p>
-      <p class="reveal d1">우리는 기술을 위한 기술이 아니라, 고객과 직원이 체감하는 변화를 지향합니다.
+      <p class="reveal d1" data-ax="about.para2">우리는 기술을 위한 기술이 아니라, 고객과 직원이 체감하는 변화를 지향합니다.
         실험을 빠르게 시도하고, 검증된 것을 그룹 표준으로 확산합니다.</p>
       <div class="mv">
-        <div class="cell reveal d2"><h4>MISSION</h4><p>AI와 데이터로 그룹의 일하는 방식과 고객 경험을 근본부터 혁신한다.</p></div>
-        <div class="cell reveal d3"><h4>VISION</h4><p>고객이 가장 먼저 떠올리는 'AI 네이티브' 금융그룹으로의 도약.</p></div>
+        <div class="cell reveal d2"><h4>MISSION</h4><p data-ax="about.mission">AI와 데이터로 그룹의 일하는 방식과 고객 경험을 근본부터 혁신한다.</p></div>
+        <div class="cell reveal d3"><h4>VISION</h4><p data-ax="about.vision">고객이 가장 먼저 떠올리는 'AI 네이티브' 금융그룹으로의 도약.</p></div>
       </div>
       <div class="ci-note reveal d3">
         <span class="ci-logo sm"><img src="assets/ci/ci-sig-1-rev.svg" alt="JB금융지주" width="370" height="170"></span>
@@ -733,10 +780,10 @@
       <p class="sub">미래성장본부가 그룹과 함께 만들어가는 변화의 규모입니다.</p>
     </div>
     <div class="stat-grid">
-      <div class="stat reveal"><div class="num"><span class="count" data-to="120" data-suffix="">0</span><span class="unit">+</span></div><div class="lab">진행 중인 AI 전환 과제</div></div>
-      <div class="stat reveal d1"><div class="num"><span class="count" data-to="40" data-suffix="">0</span><span class="unit">%</span></div><div class="lab">핵심 업무 처리시간 단축</div></div>
-      <div class="stat reveal d2"><div class="num"><span class="count" data-to="5">0</span></div><div class="lab">AI 연계 그룹 계열사</div></div>
-      <div class="stat reveal d3"><div class="num"><span class="count" data-to="24">0</span><span class="unit">/7</span></div><div class="lab">AI 기반 상시 고객 응대</div></div>
+      <div class="stat reveal"><div class="num"><span class="count" data-to="66" data-group="false">0</span><span class="unit">팀</span></div><div class="lab">AI NewTech 경진대회 참여팀(2026)</div></div>
+      <div class="stat reveal d1"><div class="num"><span class="count" data-to="4.9" data-decimals="1" data-group="false">0</span><span class="unit">%</span></div><div class="lab">전년 대비 순이익 증가율</div></div>
+      <div class="stat reveal d2"><div class="num"><span class="count" data-to="1.04" data-decimals="2" data-group="false">0</span><span class="unit">%</span></div><div class="lab">총자산이익률 ROA(2025)</div></div>
+      <div class="stat reveal d3"><div class="num"><span class="count" data-to="9" data-group="false">0</span><span class="unit">개사</span></div><div class="lab">그룹 계열사(국내5·해외4)</div></div>
     </div>
   </div>
 </section>
@@ -845,15 +892,15 @@
       <div class="blob b2" style="top:-60px;right:-40px;left:auto;background:rgba(40,210,217,.3)"></div>
       <div class="inner">
         <div>
-          <h2>함께 금융의 다음을<br>만들어 갈 파트너를 찾습니다</h2>
-          <p>AI·데이터·플랫폼 분야의 협업, 제휴, 투자 제안을 환영합니다.
+          <h2 data-ax="contact.title">함께 금융의 다음을<br>만들어 갈 파트너를 찾습니다</h2>
+          <p data-ax="contact.desc">AI·데이터·플랫폼 분야의 협업, 제휴, 투자 제안을 환영합니다.
             미래성장본부와의 협업이 궁금하시다면 언제든 문의해 주세요.</p>
-          <a href="mailto:ax@jbax.co.kr" class="btn primary" style="margin-top:28px">제휴·문의하기 <span class="arrow">→</span></a>
+          <a href="mailto:jbfgir@jbfg.com" class="btn primary" style="margin-top:28px" data-ax-mailto="contact.email">제휴·문의하기 <span class="arrow">→</span></a>
         </div>
         <div class="contact-card">
-          <div class="row"><div class="ic">📍</div><div><b>OFFICE</b><span>전북특별자치도 전주시 · JB금융지주</span></div></div>
-          <div class="row"><div class="ic">✉️</div><div><b>EMAIL</b><span>ax@jbax.co.kr</span></div></div>
-          <div class="row"><div class="ic">🤝</div><div><b>PARTNERSHIP</b><span>제휴 · 투자 · 오픈이노베이션</span></div></div>
+          <div class="row"><div class="ic">📍</div><div><b>OFFICE</b><span data-ax="contact.address">전북특별자치도 전주시 덕진구 백제대로 566 · JB금융지주</span></div></div>
+          <div class="row"><div class="ic">✉️</div><div><b>EMAIL</b><span data-ax="contact.email">jbfgir@jbfg.com</span></div></div>
+          <div class="row"><div class="ic">🤝</div><div><b>PARTNERSHIP</b><span data-ax="contact.partnership">제휴 · 투자 · 오픈이노베이션</span></div></div>
         </div>
       </div>
     </div>
@@ -867,7 +914,7 @@
       <div class="foot-brand">
         <div class="foot-ci">
           <span class="ci-logo"><img src="assets/ci/ci-sig-3-rev.svg" alt="JB금융그룹" width="370" height="170"></span>
-          <span class="slogan">“We are Raising Our Value As A Global Financial Group.”</span>
+          <span class="slogan" data-ax="footer.slogan">“We are Raising Our Value As A Global Financial Group.”</span>
         </div>
         <p>JB금융지주 미래성장본부 — AI 전환(AX)과 디지털 신성장으로 금융의 미래를 설계합니다.</p>
         <div class="foot-concept">
@@ -936,21 +983,24 @@
   },{threshold:0.14, rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
 
-  // count-up
+  // count-up (정수·소수·접두/접미 지원)
   function animateCount(el){
     var to=parseFloat(el.getAttribute('data-to'))||0;
     var suffix=el.getAttribute('data-suffix')||'';
+    var prefix=el.getAttribute('data-prefix')||'';
+    var dec=parseInt(el.getAttribute('data-decimals')||'0',10)||0;
     var group=el.getAttribute('data-group')!=='false';
-    var fmt=function(n){return group?n.toLocaleString('en-US'):String(n);};
+    var fmt=function(n){
+      var s=group?Number(n).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}):Number(n).toFixed(dec);
+      return prefix+s+suffix;
+    };
     var dur=1400, start=null;
     function step(ts){
       if(!start) start=ts;
       var p=Math.min((ts-start)/dur,1);
       var eased=1-Math.pow(1-p,3);
-      var val=Math.round(to*eased);
-      el.textContent=fmt(val)+suffix;
-      if(p<1) requestAnimationFrame(step);
-      else el.textContent=fmt(to)+suffix;
+      el.textContent=fmt(to*eased);
+      if(p<1) requestAnimationFrame(step); else el.textContent=fmt(to);
     }
     requestAnimationFrame(step);
   }
@@ -960,10 +1010,36 @@
       if(en.isIntersecting && !counted.has(en.target)){ counted.add(en.target); animateCount(en.target); cio.unobserve(en.target);}
     });
   },{threshold:0.5});
-  function startCounters(){ document.querySelectorAll('.count').forEach(function(el){cio.observe(el);}); }
+  function startCounters(){ document.querySelectorAll('.count').forEach(function(el){if(!counted.has(el))cio.observe(el);}); }
   if(document.documentElement.classList.contains('intro-active')){
     document.addEventListener('intro:done', startCounters, {once:true});
   } else { startCounters(); }
+
+  // 히어로 키비주얼 마우스 패럴랙스 (데스크톱·모션 허용 시)
+  (function(){
+    var sym=document.querySelector('.hero-symbol'), hero=document.getElementById('top');
+    if(!sym||!hero) return;
+    try{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+         if(matchMedia('(hover: none)').matches) return; }catch(e){}
+    if(window.innerWidth<880) return;
+    var tx=0,ty=0,cx=0,cy=0,raf=0;
+    function loop(){ cx+=(tx-cx)*.08; cy+=(ty-cy)*.08;
+      sym.style.transform='translateY(-50%) translate3d('+cx.toFixed(2)+'px,'+cy.toFixed(2)+'px,0)';
+      raf=(Math.abs(tx-cx)>.1||Math.abs(ty-cy)>.1)?requestAnimationFrame(loop):0; }
+    hero.addEventListener('mousemove',function(e){
+      var r=hero.getBoundingClientRect();
+      tx=((e.clientX-r.left)/r.width-.5)*42; ty=((e.clientY-r.top)/r.height-.5)*34;
+      if(!raf) raf=requestAnimationFrame(loop);
+    });
+    hero.addEventListener('mouseleave',function(){ tx=0; ty=0; if(!raf) raf=requestAnimationFrame(loop); });
+  })();
+
+  // ax-content.js가 DOM 교체 후 reveal/카운트업을 재적용할 수 있도록 노출
+  window.AX = window.AX || {};
+  window.AX.rescan = function(){
+    document.querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el);});
+    startCounters();
+  };
 })();
 </script>
 
@@ -1028,5 +1104,10 @@
   window.addEventListener('error', function(){ try{ finishIntro(); }catch(e){} }, {once:true});
 })();
 </script>
+
+<!-- ░░░ Supabase 연동: 콘텐츠를 ax_settings/ax_* 테이블에서 불러와 렌더(실패 시 정적 폴백) ░░░ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../config.js"></script>
+<script src="ax-content.js"></script>
 </body>
 </html>

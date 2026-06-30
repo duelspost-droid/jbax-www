@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>AX 콘텐츠 관리 · 미래성장본부</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#04162e; --navy-800:#06203f; --navy-700:#0a3157; --navy-600:#0e4377;
+    --blue-500:#1565c0; --gold-300:#ffe08a; --gold-400:#ffce6a; --gold-500:#e6b84d;
+    --teal:#28d2d9; --ink:#0d1b2e; --muted:#7f93ad; --line:rgba(255,255,255,.10);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:#e8eefb;background:
+      radial-gradient(1000px 600px at 85% -5%, rgba(40,210,217,.10), transparent 60%),
+      radial-gradient(900px 600px at 5% 105%, rgba(230,184,77,.08), transparent 58%),
+      linear-gradient(160deg,#061f3e,#04162e 60%,#030f22);
+    min-height:100vh;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .display{font-family:'Manrope','Noto Sans KR',sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+
+  /* ── top bar ── */
+  header.top{position:sticky;top:0;z-index:30;background:rgba(4,22,46,.86);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line)}
+  .top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:900}
+  .brand .mark{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--gold-400),var(--gold-500));
+    color:var(--navy-900);display:flex;align-items:center;justify-content:center;font-family:'Manrope';font-weight:800;font-size:.98rem;
+    box-shadow:0 6px 18px rgba(230,184,77,.35)}
+  .brand b{font-size:1rem;color:#fff}
+  .brand span{display:block;font-size:.62rem;font-weight:700;color:var(--gold-400);letter-spacing:2px;margin-top:1px}
+  .authchip{display:flex;align-items:center;gap:10px;font-size:.84rem;color:#c4d2e8;font-weight:700;flex-wrap:wrap}
+  .authchip .who{color:#fff}
+  .viewlink{font-size:.8rem;font-weight:800;color:var(--navy-900);background:linear-gradient(135deg,var(--gold-400),var(--gold-500));
+    padding:8px 14px;border-radius:999px}
+
+  /* ── buttons ── */
+  .btn{display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-weight:800;border:0;cursor:pointer;
+    border-radius:10px;padding:10px 16px;font-size:.86rem;transition:transform .14s,box-shadow .14s,background .14s,opacity .14s}
+  .btn:disabled{opacity:.55;cursor:default}
+  .btn.primary{background:linear-gradient(135deg,var(--gold-400),var(--gold-500));color:var(--navy-900);box-shadow:0 8px 22px rgba(230,184,77,.3)}
+  .btn.primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 28px rgba(230,184,77,.45)}
+  .btn.ghost{background:rgba(255,255,255,.06);color:#dbe6f7;border:1px solid var(--line)}
+  .btn.ghost:hover{background:rgba(255,255,255,.12)}
+  .btn.danger{background:rgba(229,72,72,.14);color:#ff9b9b;border:1px solid rgba(229,72,72,.4)}
+  .btn.danger:hover{background:rgba(229,72,72,.24)}
+  .btn.sm{padding:7px 12px;font-size:.78rem;border-radius:9px}
+
+  /* ── login gate ── */
+  .gate{max-width:380px;margin:14vh auto 0;background:rgba(255,255,255,.04);border:1px solid var(--line);
+    border-radius:20px;padding:34px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+  .gate .ic{font-size:2.2rem;margin-bottom:12px}
+  .gate h1{font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:8px}
+  .gate p{font-size:.86rem;color:var(--muted);line-height:1.6;margin-bottom:22px}
+  .gate form{display:flex;flex-direction:column;gap:12px;text-align:left}
+  .gate .err{color:#ff9b9b;font-size:.82rem;margin-top:4px}
+
+  /* ── inputs ── */
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:.74rem;font-weight:800;letter-spacing:.4px;color:var(--gold-400)}
+  input,textarea,select{font-family:inherit;font-size:.9rem;color:#eef4ff;background:rgba(4,16,34,.7);
+    border:1px solid var(--line);border-radius:10px;padding:11px 13px;width:100%;transition:border-color .15s,box-shadow .15s}
+  textarea{min-height:74px;resize:vertical;line-height:1.55}
+  input:focus,textarea:focus,select:focus{outline:0;border-color:var(--teal);box-shadow:0 0 0 3px rgba(40,210,217,.18)}
+  input[type=checkbox]{width:auto}
+  .chk{display:inline-flex;align-items:center;gap:8px;font-size:.86rem;font-weight:700;color:#dbe6f7;cursor:pointer}
+
+  /* ── tabs ── */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 18px}
+  .tab{font-family:inherit;font-size:.85rem;font-weight:800;color:#c4d2e8;background:rgba(255,255,255,.05);
+    border:1px solid var(--line);border-radius:999px;padding:9px 17px;cursor:pointer;transition:all .15s}
+  .tab:hover{background:rgba(255,255,255,.1)}
+  .tab.on{background:linear-gradient(135deg,var(--gold-400),var(--gold-500));color:var(--navy-900);border-color:transparent}
+
+  /* ── section + cards ── */
+  .panel{padding-bottom:80px}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+  .panel-head h2{font-size:1.18rem;font-weight:900;color:#fff}
+  .panel-head .desc{font-size:.82rem;color:var(--muted);margin-top:3px;font-weight:500}
+  .cards{display:flex;flex-direction:column;gap:14px}
+  .card{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px}
+  .card.unpub{opacity:.62;border-style:dashed}
+  .card .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+  .card .grid .col-full{grid-column:1/-1}
+  .card .row-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .card .left-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .badge{font-size:.68rem;font-weight:800;letter-spacing:.5px;padding:4px 9px;border-radius:7px}
+  .badge.on{color:#9be8c0;background:rgba(40,210,140,.14);border:1px solid rgba(40,210,140,.35)}
+  .badge.off{color:#ffb3b3;background:rgba(229,72,72,.12);border:1px solid rgba(229,72,72,.35)}
+  .dirty-dot{width:8px;height:8px;border-radius:50%;background:var(--gold-400);box-shadow:0 0 8px var(--gold-400)}
+
+  .empty{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px;font-size:.9rem}
+  .loading{padding:40px;text-align:center;color:var(--muted)}
+
+  /* settings groups */
+  .setgroup{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+  .setgroup h3{font-size:1rem;font-weight:900;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .setgroup .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:60;
+    background:#0a3157;border:1px solid var(--line);color:#fff;font-weight:700;font-size:.88rem;
+    padding:13px 22px;border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:all .3s}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast.err{background:#5c1d1d;border-color:rgba(255,120,120,.4)}
+
+  @media(max-width:640px){
+    .card .grid,.setgroup .grid{grid-template-columns:1fr}
+    .top .bar{padding:11px 0}
+    .gate{margin-top:8vh;padding:28px 22px}
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <div class="brand">
+      <div class="mark">AX</div>
+      <div><b>AX 콘텐츠 관리</b><span>FUTURE GROWTH · CMS</span></div>
+    </div>
+    <div class="authchip" id="auth"></div>
+  </div>
+</header>
+
+<main class="wrap" id="app">
+  <div class="loading">불러오는 중…</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
