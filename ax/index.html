@@ -454,8 +454,9 @@
   @keyframes i-fadeTo0{to{opacity:0}}
   @keyframes i-fadeTo1{to{opacity:.95}}
   @keyframes i-tipfly{from{transform:translate(0,0);opacity:1}to{transform:translate(-170px,46px);opacity:0}}
-  .intro__stage{position:relative;width:min(92vw,1040px)}
-  .intro__line{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);width:100%;
+  .intro__stage{position:relative;width:min(92vw,1040px);height:min(58vh,460px)}
+  /* 성장선: 하단 밴드(단어 아래) — 글씨와 안 겹치게 */
+  .intro__line{position:absolute;left:0;right:0;bottom:7%;width:100%;
     filter:drop-shadow(0 0 9px rgba(255,224,138,.5))}
   .intro__path{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
   .intro__path--gold{opacity:.95;animation:i-draw 1.76s var(--ease-expo-out) .76s both,i-fadeTo0 .55s var(--ease-out-soft) 6s both}
@@ -468,7 +469,7 @@
   @keyframes i-ul{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
   @keyframes i-fade{to{opacity:1}}
   @keyframes i-vanish{to{opacity:0}}
-  .intro__words{position:relative;height:1.18em;text-align:center;
+  .intro__words{position:absolute;left:0;right:0;top:40%;transform:translateY(-50%);height:1.18em;text-align:center;
     font-size:clamp(40px,9vw,124px);font-weight:800;line-height:1.08}
   .intro__words .kw{position:absolute;left:0;right:0;top:0;overflow:hidden;padding:.05em 0}
   /* 단어는 항상 한 줄 — 모바일에서 줄바꿈 방지(반응형 폰트로 너비 맞춤) */
@@ -483,10 +484,10 @@
   .intro__rule{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);height:3px;width:32vw;max-width:400px;
     background:linear-gradient(90deg,var(--gold-300),var(--gold-500));clip-path:inset(0 100% 0 0);
     animation:i-ul .42s var(--ease-wipe) 5.3s both}
-  .intro__counter{position:absolute;right:1vw;top:-1.85em;font-family:Manrope,sans-serif;font-weight:800;text-align:right;
-    font-size:clamp(20px,3vw,34px);font-variant-numeric:tabular-nums;color:var(--gold-400);letter-spacing:.04em;
+  .intro__counter{position:absolute;right:2%;top:3%;font-family:Manrope,sans-serif;font-weight:800;text-align:right;
+    font-size:clamp(24px,3.4vw,40px);font-variant-numeric:tabular-nums;color:var(--gold-400);letter-spacing:.04em;line-height:1;
     opacity:0;animation:i-fade .5s var(--ease-out-soft) 2.3s both}
-  .intro__counter small{font-size:.42em;color:#7f97bd;font-weight:700;letter-spacing:.2em;display:block;margin-top:3px}
+  .intro__counter small{font-size:.4em;color:#7f97bd;font-weight:700;letter-spacing:.2em;display:block;margin-top:4px}
 
   /* ── ACT III · 컬랩스 → 공식 CI 클라이맥스 (6.0–9.6s) ── */
   @keyframes i-collapse{to{transform:scale(.62) translateY(-12vh);opacity:0}}
@@ -496,7 +497,7 @@
   .intro__lockup{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;pointer-events:none}
   /* 공식 CI 무변형: 흰 박스 없이 다크 로고(심볼 블루+워드마크 화이트)를 opacity로만 등장 — transform/filter/clip 0 */
   .intro__lockup .ci-logo{position:relative;opacity:0;animation:i-logoIn .8s var(--ease-out-soft) 7.3s both}
-  .intro__lockup .ci-logo img{height:54px}
+  .intro__lockup .ci-logo img{height:clamp(64px,10vw,98px)}
   .intro__lockup .ci-logo::after{content:"";position:absolute;left:7%;right:7%;bottom:-16px;height:3px;border-radius:3px;
     background:linear-gradient(90deg,var(--gold-300),var(--jb-blue));clip-path:inset(0 100% 0 0);animation:i-ul .5s var(--ease-wipe) 7.85s both}
   .intro__div{text-align:center;opacity:0;animation:i-lift .55s var(--ease-settle) 8.1s both}
@@ -544,19 +545,19 @@
     </div>
 
     <div class="intro__stage">
-      <svg class="intro__line" viewBox="0 0 1040 360" preserveAspectRatio="xMidYMid meet" focusable="false">
+      <svg class="intro__line" viewBox="0 0 1040 150" preserveAspectRatio="xMidYMid meet" focusable="false">
         <defs>
           <linearGradient id="iGold" x1="0" y1="1" x2="1" y2="0">
             <stop offset="0" stop-color="#e6b84d"/><stop offset="1" stop-color="#ffe08a"/></linearGradient>
           <linearGradient id="iBlue" x1="0" y1="1" x2="1" y2="0">
             <stop offset="0" stop-color="#28d2d9"/><stop offset=".55" stop-color="#0091D0"/><stop offset="1" stop-color="#1C378A"/></linearGradient>
         </defs>
-        <path class="intro__path intro__path--gold" pathLength="1" d="M40 320 L280 250 L520 190 L760 110 L1000 50" stroke="url(#iGold)"/>
-        <path class="intro__path intro__path--blue" pathLength="1" d="M40 320 L280 250 L520 190 L760 110 L1000 50" stroke="url(#iBlue)"/>
-        <circle class="intro__tip" cx="1000" cy="50" r="7"/>
+        <path class="intro__path intro__path--gold" pathLength="1" d="M30 126 L280 104 L530 78 L780 50 L1010 22" stroke="url(#iGold)"/>
+        <path class="intro__path intro__path--blue" pathLength="1" d="M30 126 L280 104 L530 78 L780 50 L1010 22" stroke="url(#iBlue)"/>
+        <circle class="intro__tip" cx="1010" cy="22" r="6"/>
       </svg>
+      <div class="intro__counter">20<span id="introYear">17</span><small>FUTURE GROWTH</small></div>
       <div class="intro__words">
-        <div class="intro__counter">20<span id="introYear">17</span><small>FUTURE GROWTH</small></div>
         <div class="kw kw1"><span>AI</span></div>
         <div class="kw kw2"><span>전환</span></div>
         <div class="kw kw3"><span>미래성장, <span class="gd">다음 10년</span></span></div>
@@ -566,7 +567,7 @@
 
     <div class="intro__lockup">
       <span class="ci-logo lg intro__plate"><img src="assets/ci/ci-sig-1-dark.svg" alt="JB금융지주" width="370" height="170"></span>
-      <div class="intro__div"><b>미래성장본부</b><span>JB · AX Division</span></div>
+      <div class="intro__div"><b>AX·미래성장본부</b><span>JB · AX Division</span></div>
       <span class="eyebrow"><span class="dot"></span>JB FINANCIAL GROUP · FUTURE GROWTH</span>
     </div>
   </div>
@@ -583,7 +584,7 @@
     <a href="#top" class="brand" aria-label="JB금융지주 미래성장본부">
       <span class="ci-logo"><img src="assets/ci/ci-sig-1-dark.svg" alt="JB금융지주" width="370" height="170"></span>
       <span class="divider"></span>
-      <span class="txt"><b>미래성장본부</b><span>JB · AX DIVISION</span></span>
+      <span class="txt"><b>AX·미래성장본부</b><span>JB · AX DIVISION</span></span>
     </a>
     <nav class="menu" id="menu">
       <a href="#about">본부소개</a>
@@ -629,7 +630,7 @@
       <div class="hs"><b class="count" data-to="5">0</b><span>그룹 계열사 연계</span></div>
       <div class="hs"><b class="count" data-to="2027" data-group="false">0</b><span>도약 목표연도</span></div>
     </div>
-    <div class="hero-endorse"><span class="ci-logo sm"><img src="assets/ci/ci-sig-1-dark.svg" alt="JB금융지주" width="370" height="170"></span><span>미래성장본부 · JB Financial Group</span></div>
+    <div class="hero-endorse"><span class="ci-logo sm"><img src="assets/ci/ci-sig-1-dark.svg" alt="JB금융지주" width="370" height="170"></span><span>AX·미래성장본부 · JB Financial Group</span></div>
   </div>
   <div class="scroll-hint"><div class="mouse"></div>SCROLL</div>
 </section>
@@ -786,7 +787,7 @@
       <h2>본부 조직 구성</h2>
     </div>
     <div class="org-top reveal">
-      <div class="org-node"><b>미래성장본부</b><span>FUTURE GROWTH DIVISION</span></div>
+      <div class="org-node"><b>AX·미래성장본부</b><span>FUTURE GROWTH DIVISION</span></div>
     </div>
     <div class="org-grid">
       <div class="team reveal"><div class="tag">AX STRATEGY</div><h4>AX전략팀</h4><p>그룹 AI 전환 로드맵 수립과 과제 발굴·관리, 성과 측정을 총괄합니다.</p></div>
