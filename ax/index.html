@@ -10,7 +10,23 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<script>
+/* 인트로 프리페인트 부트 가드 — 페인트 전에 동기 실행: 인트로 재생 여부 결정 + 히어로 진입 게이트 */
+(function(){
+  var H=document.documentElement, play=true, reduce=false, seen=false, force=false;
+  try{ reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+  try{ seen = !!sessionStorage.getItem('jbax_ax_intro_v2'); }catch(e){}
+  try{ force = /[?&]intro=1\b/.test(location.search); }catch(e){}
+  if(force){ play=true; }
+  else if(reduce || seen){ play=false; }
+  if(play){
+    H.className += ' intro-active';
+    try{ sessionStorage.setItem('jbax_ax_intro_v2','1'); }catch(e){}
+    window.__jbIntroPlay = true;
+  } else { window.__jbIntroPlay = false; }
+})();
+</script>
 <style>
   :root{
     --navy-900:#04162e;
@@ -22,6 +38,8 @@
     --gold-400:#ffce6a;
     --gold-500:#e6b84d;
     --teal:#28d2d9;
+    /* JB금융그룹 공식 CI 전용색 (JB DIAMOND 블루 그라데이션) */
+    --jb-blue:#1C378A; --jb-deep:#021D49; --jb-royal:#113499; --jb-cyan:#0091D0; --jb-sky:#009CD8;
     --ink:#0d1b2e;
     --paper:#f6f8fc;
     --muted:#7f93ad;
@@ -37,7 +55,7 @@
   ::selection{background:var(--gold-400);color:var(--navy-900)}
   a{color:inherit;text-decoration:none}
   .display{font-family:'Manrope','Noto Sans KR',sans-serif}
-  .gold{background:linear-gradient(92deg,var(--gold-300),var(--gold-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .gold{color:var(--gold-300);background:linear-gradient(92deg,var(--gold-300),var(--gold-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 24px}
 
   /* ─────────── NAV ─────────── */
@@ -310,17 +328,207 @@
     .reveal{opacity:1!important;transform:none!important}
     html{scroll-behavior:auto}
   }
+
+  /* ===================================================================== */
+  /* ===============  JB금융그룹 공식 CI (시그니처·심볼·전용색)  ============ */
+  /* ===================================================================== */
+  /* 상단 CI 전용색 액센트 바 */
+  body::after{content:"";position:fixed;top:0;left:0;right:0;height:4px;z-index:70;
+    background:linear-gradient(90deg,var(--jb-deep),var(--jb-blue) 30%,var(--jb-cyan) 70%,var(--jb-sky));}
+  /* 흰색 CI 플레이트 — 다크 배경에서 공식 시그니처를 원형 그대로(가이드라인 준수) 노출 */
+  .ci-plate{display:inline-flex;align-items:center;background:#fff!important;border-radius:9px;position:relative;z-index:1;
+    padding:7px 12px;box-shadow:0 8px 22px rgba(0,0,0,.30);line-height:0}
+  .ci-plate img{display:block;height:26px;width:auto}
+  .ci-plate.lg img{height:38px}
+  .ci-sym{display:inline-block;width:18px;height:18px;line-height:0;background:url(assets/ci/jb-symbol.svg) center/contain no-repeat}
+  /* 섹션 키커 — CI 다이아몬드 글리프 + 전용색 라인 */
+  .kicker::before{background:linear-gradient(90deg,var(--jb-cyan),var(--jb-blue))}
+  .kicker .dia{display:inline-block;width:12px;height:12px;margin-right:8px;vertical-align:middle;
+    background:url(assets/ci/jb-symbol.svg) center/contain no-repeat;transform:translateY(-1px)}
+
+  /* 네비 브랜드 = 공식 CI 엔도스 + 본부 서브브랜드 */
+  .brand{gap:13px}
+  .brand .divider{width:1px;height:30px;background:rgba(255,255,255,.20);flex-shrink:0}
+  header.nav.scrolled .brand .ci-plate img{height:22px}
+  header.nav.scrolled .brand .divider{height:26px}
+  @media(max-width:640px){ .brand .divider,.brand .txt{display:none} .brand .ci-plate img{height:24px} }
+
+  /* 히어로 — 공식 심볼 워터마크 */
+  .hero-symbol{position:absolute;right:-7%;top:46%;transform:translateY(-50%);
+    width:min(48vw,580px);aspect-ratio:1;background:url(assets/ci/jb-symbol.svg) center/contain no-repeat;
+    opacity:.08;z-index:0;pointer-events:none;animation:symFloat 12s ease-in-out infinite alternate}
+  @keyframes symFloat{from{transform:translateY(-52%) rotate(-2deg)}to{transform:translateY(-46%) rotate(2deg)}}
+  .hero-endorse{display:inline-flex;align-items:center;gap:10px;margin-top:30px;
+    color:#9fb4d6;font-size:.74rem;font-weight:700;letter-spacing:.4px}
+  .hero-endorse .ci-sym{width:18px;height:18px}
+  .hero-endorse b{color:#cfe0f6;font-weight:800}
+
+  /* About — JB DIAMOND CI 의미 콜아웃 */
+  .ci-note{margin-top:30px;display:flex;gap:16px;align-items:flex-start;
+    background:linear-gradient(120deg,rgba(28,55,138,.22),rgba(0,145,208,.10));
+    border:1px solid rgba(40,120,210,.30);border-radius:16px;padding:18px 20px}
+  .ci-note .ci-sym{width:46px;height:46px;flex-shrink:0;margin-top:2px}
+  .ci-note h4{font-size:.72rem;letter-spacing:2px;color:var(--jb-cyan);font-weight:800;margin-bottom:7px}
+  .ci-note p{margin:0;color:#cdd9ec;font-size:.9rem;line-height:1.65;font-weight:500}
+  .ci-note p b{color:#fff}
+
+  /* 푸터 — 공식 CI 시그니처 + 그룹 슬로건 */
+  .foot-ci{display:flex;flex-direction:column;gap:14px;margin-bottom:6px}
+  .foot-ci .slogan{color:#8ea3c2;font-size:.82rem;font-weight:600;font-style:italic;letter-spacing:.2px}
+  .foot-concept{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px}
+  .foot-concept span{font-size:.72rem;color:#8ea3c2;font-weight:700}
+  .foot-concept span b{color:var(--jb-cyan)}
+
+  /* ===================================================================== */
+  /* ==================  시네마틱 인트로 (KINETIC ASCENT)  ================= */
+  /* ===================================================================== */
+  #intro{display:none}                       /* JS 미동작/no-JS 시 절대 노출 안 됨 */
+  html.intro-active #intro{display:grid;place-items:center;position:fixed;inset:0;
+    z-index:2147483600;background:#030f22;overflow:hidden}
+  html.intro-active,html.intro-active body{overflow:hidden;height:100%}
+  html.intro-active body{touch-action:none}
+
+  /* 히어로 진입 게이트 — 인트로 동안 히어로 자체 모션/카운터 보류 */
+  html.intro-active .hero h1 .line>span{animation:none!important;transform:translateY(110%)}
+  html.intro-active .hero p.lead,
+  html.intro-active .hero-cta,
+  html.intro-active .hero-stats,
+  html.intro-active .hero-endorse,
+  html.intro-active .scroll-hint{animation:none!important;opacity:0}
+  html.intro-active .blob,html.intro-active .spark,html.intro-active .hero-symbol{animation:none!important}
+
+  /* 콜드 오픈: 그리드 + 골드 점화 스파크 + 링 */
+  @keyframes i-gridIn{from{opacity:0}to{opacity:.07}}
+  @keyframes i-spark{0%{transform:scale(0);opacity:0}40%{opacity:1}100%{transform:scale(1);opacity:1}}
+  @keyframes i-glow{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:.85}}
+  @keyframes i-ring{from{transform:scale(0);opacity:.8}to{transform:scale(7);opacity:0}}
+  .intro__grid{position:absolute;inset:0;opacity:0;animation:i-gridIn .6s ease-out both;
+    background:repeating-linear-gradient(0deg,transparent 0 63px,rgba(255,224,138,.5) 63px 64px),
+               repeating-linear-gradient(90deg,transparent 0 63px,rgba(255,224,138,.5) 63px 64px);
+    mask-image:radial-gradient(circle at 50% 50%,#000,transparent 72%);
+    -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 72%)}
+  .intro__glow{position:absolute;width:540px;height:540px;border-radius:50%;will-change:transform,opacity;
+    background:radial-gradient(closest-side,rgba(255,224,138,.5),rgba(0,145,208,.14) 48%,transparent 72%);
+    filter:blur(28px);transform:scale(.3);opacity:0;animation:i-glow .9s ease-out both}
+  .intro__spark{position:absolute;width:12px;height:12px;border-radius:50%;will-change:transform,opacity;
+    background:radial-gradient(#fff6dc,#ffe08a 42%,rgba(255,206,106,0) 72%);
+    animation:i-spark .5s cubic-bezier(.2,.9,.25,1.4) both}
+  .intro__ring{position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid var(--teal);
+    animation:i-ring .75s ease-out both}
+
+  /* 성장선(SVG stroke draw) */
+  @keyframes i-draw{to{stroke-dashoffset:0}}
+  @keyframes i-tip{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+  .intro__stage{position:relative;width:min(92vw,1040px);will-change:transform}
+  .intro__line{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);width:100%;
+    opacity:.92;filter:drop-shadow(0 0 8px rgba(255,224,138,.55))}
+  .intro__path{stroke-dasharray:1;stroke-dashoffset:1;animation:i-draw 1.6s cubic-bezier(.22,1,.36,1) .42s both}
+  .intro__tip{transform-box:fill-box;transform-origin:center;animation:i-tip 1s ease-in-out 2s 2 both}
+
+  /* 키네틱 워드(마스크 라이즈 = 히어로와 동일 메커니즘) */
+  @keyframes i-wIn{from{transform:translateY(110%)}to{transform:translateY(0)}}
+  @keyframes i-wOut{from{transform:translateY(0)}to{transform:translateY(-110%)}}
+  @keyframes i-ul{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  @keyframes i-fade{to{opacity:1}}
+  @keyframes i-fadeOut{to{opacity:0}}
+  .intro__words{position:relative;height:1.1em;text-align:center;
+    font-size:clamp(46px,11vw,132px);font-weight:800;line-height:1.05}
+  .intro__words .kw{position:absolute;left:0;right:0;top:0;overflow:hidden}
+  .intro__words .kw>span{display:inline-block;transform:translateY(110%);color:#eaf1ff;will-change:transform}
+  .kw1>span{animation:i-wIn .52s cubic-bezier(.16,1,.3,1) .42s both,i-wOut .46s cubic-bezier(.7,0,.3,1) 1.12s both}
+  .kw2{font-family:'Noto Sans KR',sans-serif}
+  .kw2>span{animation:i-wIn .52s cubic-bezier(.16,1,.3,1) 1.24s both,i-wOut .46s cubic-bezier(.7,0,.3,1) 1.88s both}
+  .kw3{font-family:'Noto Sans KR',sans-serif}
+  .kw3>span{animation:i-wIn .54s cubic-bezier(.16,1,.3,1) 2s both}
+  .kw3>span .gd{background:linear-gradient(96deg,var(--gold-300),var(--gold-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .intro__rule{position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);height:3px;width:34vw;max-width:420px;
+    background:linear-gradient(90deg,var(--gold-300),var(--gold-500));clip-path:inset(0 100% 0 0);
+    animation:i-ul .4s ease-out 2.3s both}
+  .intro__counter{position:absolute;right:2vw;top:-1.5em;font-family:Manrope,sans-serif;font-weight:800;
+    font-size:clamp(20px,3vw,34px);font-variant-numeric:tabular-nums;color:var(--gold-400);letter-spacing:.04em;
+    opacity:0;animation:i-fade .4s ease 2s both}
+  .intro__counter small{font-size:.5em;color:#7f97bd;font-weight:700;letter-spacing:.18em;display:block;margin-top:2px}
+
+  /* 컬랩스 → 공식 CI 클라이맥스(시그니처 플레이트) */
+  @keyframes i-collapse{to{transform:scale(.6) translateY(-12vh);opacity:0}}
+  @keyframes i-plate{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  @keyframes i-lift{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  html.intro-active .intro__stage{animation:i-collapse .6s cubic-bezier(.65,0,.35,1) 2.82s both}
+  .intro__lockup{position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:16px;pointer-events:none}
+  .intro__lockup .ci-plate{transform:scale(.7);opacity:0;
+    animation:i-plate .6s cubic-bezier(.34,1.56,.64,1) 3.0s both;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .intro__lockup .ci-plate::after{content:"";position:absolute;left:14px;right:14px;bottom:-9px;height:3px;border-radius:3px;
+    background:linear-gradient(90deg,var(--gold-300),var(--gold-500));clip-path:inset(0 100% 0 0);animation:i-ul .5s ease-out 3.5s both}
+  .intro__lockup .ci-plate{position:relative}
+  .intro__div{text-align:center;opacity:0;animation:i-lift .55s ease-out 3.6s both}
+  .intro__div b{display:block;font-size:clamp(20px,3.4vw,30px);font-weight:900;color:#fff;letter-spacing:-.3px}
+  .intro__div span{display:block;margin-top:5px;font-family:Manrope,sans-serif;font-size:.72rem;font-weight:800;
+    letter-spacing:.34em;text-transform:uppercase;color:var(--gold-400)}
+  .intro__lockup .eyebrow{opacity:0;animation:i-lift .55s ease-out 3.78s both;margin:0}
+
+  /* 종료 커튼(네이비-온-네이비, 무점멸) */
+  @keyframes i-wipe{0%{transform:translateY(100%)}42%{transform:translateY(0)}100%{transform:translateY(-100%)}}
+  @keyframes i-vanish{to{opacity:0}}
+  .intro__curtain{position:absolute;inset:0;background:#030f22;transform:translateY(100%);transform-origin:bottom;z-index:5}
+  html.intro-exit .intro__curtain{animation:i-wipe .72s cubic-bezier(.7,0,.3,1) both;will-change:transform}
+  html.intro-exit .intro__stage,html.intro-exit .intro__lockup{opacity:0;transition:opacity .26s ease}
+  html.intro-skip #intro{animation:i-vanish .24s ease both}
+
+  /* SKIP 버튼 */
+  #introSkip{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));right:20px;z-index:6;
+    font-family:Manrope,sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;color:#e8eefb;opacity:.85;
+    background:rgba(255,255,255,.05);border:1px solid rgba(232,238,251,.4);border-radius:999px;padding:9px 16px;cursor:pointer;
+    animation:i-fade .4s ease .3s both;transition:opacity .2s,color .2s,border-color .2s,background .2s}
+  #introSkip:hover,#introSkip:focus-visible{opacity:1;color:var(--gold-300);background:rgba(255,224,138,.1);border-color:rgba(255,224,138,.6);outline:none}
+
+  @media(prefers-reduced-motion:reduce){ #intro{display:none!important} }
+  @media(max-width:640px){ .hero-symbol{opacity:.06;right:-22%} .intro__counter{right:4vw} }
 </style>
 </head>
 <body>
+
+<!-- ░░░ 시네마틱 인트로 (KINETIC ASCENT · ~5s) ░░░ -->
+<div id="intro" role="dialog" aria-modal="true" aria-label="JB 미래성장본부 인트로">
+  <div class="intro__grid" aria-hidden="true"></div>
+  <div class="intro__glow" aria-hidden="true"></div>
+  <span class="intro__spark" aria-hidden="true"></span>
+  <span class="intro__ring" aria-hidden="true"></span>
+
+  <div class="intro__stage" aria-hidden="true">
+    <svg class="intro__line" viewBox="0 0 1040 360" preserveAspectRatio="xMidYMid meet" focusable="false">
+      <defs><linearGradient id="iGold" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#e6b84d"/><stop offset="1" stop-color="#ffe08a"/></linearGradient></defs>
+      <path class="intro__path" pathLength="1" d="M40 320 L280 250 L520 190 L760 110 L1000 50"
+        fill="none" stroke="url(#iGold)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle class="intro__tip" cx="1000" cy="50" r="7" fill="#ffe08a"/>
+    </svg>
+    <div class="intro__words">
+      <div class="intro__counter">20<span id="introYear">17</span><small>FUTURE GROWTH</small></div>
+      <div class="kw kw1"><span>AI</span></div>
+      <div class="kw kw2"><span>전환</span></div>
+      <div class="kw kw3"><span>미래성장, <span class="gd">다음 10년</span></span></div>
+      <i class="intro__rule"></i>
+    </div>
+  </div>
+
+  <div class="intro__lockup" aria-hidden="true">
+    <span class="ci-plate lg"><img src="assets/ci/ci-sig-1.svg" alt="JB금융지주" width="370" height="170"></span>
+    <div class="intro__div"><b>미래성장본부</b><span>JB · AX Division</span></div>
+    <span class="eyebrow"><span class="dot"></span>JB FINANCIAL GROUP · FUTURE GROWTH</span>
+  </div>
+
+  <div class="intro__curtain" aria-hidden="true"></div>
+  <button id="introSkip" type="button" aria-label="인트로 건너뛰기 / Skip intro">SKIP <span aria-hidden="true">→</span></button>
+</div>
 
 <div class="progress" id="progress"></div>
 
 <!-- ░░░ NAV ░░░ -->
 <header class="nav" id="nav">
   <div class="wrap bar">
-    <a href="#top" class="brand">
-      <span class="mark">JB</span>
+    <a href="#top" class="brand" aria-label="JB금융지주 미래성장본부">
+      <span class="ci-plate"><img src="assets/ci/ci-sig-1.svg" alt="JB금융지주" width="370" height="170"></span>
+      <span class="divider"></span>
       <span class="txt"><b>미래성장본부</b><span>JB · AX DIVISION</span></span>
     </a>
     <nav class="menu" id="menu">
@@ -342,6 +550,7 @@
     <div class="hero-bg" style="position:absolute"></div>
     <div class="grid-lines"></div>
     <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="hero-symbol" aria-hidden="true"></div>
     <div class="spark" style="top:24%;left:18%;animation-delay:0s"></div>
     <div class="spark" style="top:40%;left:74%;animation-delay:1.2s"></div>
     <div class="spark" style="top:66%;left:30%;animation-delay:2.4s"></div>
@@ -366,6 +575,7 @@
       <div class="hs"><b class="count" data-to="5">0</b><span>그룹 계열사 연계</span></div>
       <div class="hs"><b class="count" data-to="2027" data-group="false">0</b><span>도약 목표연도</span></div>
     </div>
+    <div class="hero-endorse"><span class="ci-sym"></span><span><b>JB금융지주</b> 미래성장본부 · JB Financial Group</span></div>
   </div>
   <div class="scroll-hint"><div class="mouse"></div>SCROLL</div>
 </section>
@@ -386,6 +596,14 @@
       <div class="mv">
         <div class="cell reveal d2"><h4>MISSION</h4><p>AI와 데이터로 그룹의 일하는 방식과 고객 경험을 근본부터 혁신한다.</p></div>
         <div class="cell reveal d3"><h4>VISION</h4><p>고객이 가장 먼저 떠올리는 'AI 네이티브' 금융그룹으로의 도약.</p></div>
+      </div>
+      <div class="ci-note reveal d3">
+        <span class="ci-sym" aria-hidden="true"></span>
+        <div>
+          <h4>JB DIAMOND · 공식 심볼</h4>
+          <p>JB금융그룹 CI의 심볼마크는 <b>PEOPLE</b>(고객 중심 소통), <b>JB DIAMOND</b>(성장·혁신하는 종합금융그룹),
+          <b>SPACE</b>(신뢰의 금융공간)를 담습니다. 미래성장본부는 이 정체성 위에서 AX 혁신을 추진합니다.</p>
+        </div>
       </div>
     </div>
     <div class="about-visual reveal d2">
@@ -589,11 +807,14 @@
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <a href="#top" class="brand">
-          <span class="mark">JB</span>
-          <span class="txt"><b>미래성장본부</b><span>JB · AX DIVISION</span></span>
-        </a>
+        <div class="foot-ci">
+          <span class="ci-plate"><img src="assets/ci/ci-sig-3.svg" alt="JB금융그룹" width="370" height="170"></span>
+          <span class="slogan">“We are Raising Our Value As A Global Financial Group.”</span>
+        </div>
         <p>JB금융지주 미래성장본부 — AI 전환(AX)과 디지털 신성장으로 금융의 미래를 설계합니다.</p>
+        <div class="foot-concept">
+          <span><b>PEOPLE</b> 소통</span><span><b>JB DIAMOND</b> 성장·혁신</span><span><b>SPACE</b> 신뢰</span>
+        </div>
       </div>
       <div class="foot-links">
         <div class="col"><b>DIVISION</b>
@@ -681,7 +902,72 @@
       if(en.isIntersecting && !counted.has(en.target)){ counted.add(en.target); animateCount(en.target); cio.unobserve(en.target);}
     });
   },{threshold:0.5});
-  document.querySelectorAll('.count').forEach(function(el){cio.observe(el);});
+  function startCounters(){ document.querySelectorAll('.count').forEach(function(el){cio.observe(el);}); }
+  if(document.documentElement.classList.contains('intro-active')){
+    document.addEventListener('intro:done', startCounters, {once:true});
+  } else { startCounters(); }
+})();
+</script>
+
+<!-- ░░░ 인트로 오케스트레이션 ░░░ -->
+<script>
+(function(){
+  var H=document.documentElement, intro=document.getElementById('intro');
+  var done=false, timers=[];
+  function fire(){ try{ document.dispatchEvent(new Event('intro:done')); }catch(e){
+    var ev=document.createEvent('Event'); ev.initEvent('intro:done',true,true); document.dispatchEvent(ev); } }
+
+  // 인트로 미재생(reduced-motion·세션재방문·no-JS): 히어로 즉시 노출
+  if(!window.__jbIntroPlay){ H.classList.remove('intro-active'); if(intro) intro.parentNode&&intro.remove(); fire(); return; }
+  if(!intro){ H.classList.remove('intro-active'); fire(); return; }
+
+  var prevH=H.style.overflow, prevB=document.body.style.overflow;
+  document.body.style.overflow='hidden'; H.style.overflow='hidden';
+  var skipBtn=document.getElementById('introSkip');
+  try{ skipBtn && skipBtn.focus({preventScroll:true}); }catch(e){}
+
+  // 연도 카운터 2017 → 2027
+  function rollYear(){
+    var el=document.getElementById('introYear'); if(!el) return;
+    var start=null, dur=740;
+    function step(ts){ if(done) return; if(!start) start=ts;
+      var p=Math.min((ts-start)/dur,1), v=Math.round(17+(27-17)*(1-Math.pow(1-p,3)));
+      el.textContent=(v<10?'0':'')+v; if(p<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+
+  function finishIntro(){
+    if(done) return; done=true;
+    timers.forEach(clearTimeout); timers=[];
+    /* 동기적으로 게이트 해제 — rAF는 백그라운드 탭에서 throttle되어 히어로가 갇힐 수 있음 */
+    H.classList.remove('intro-active'); H.classList.add('intro-done'); fire();
+    H.style.overflow=prevH; document.body.style.overflow=prevB;
+    intro.style.pointerEvents='none';   /* 페이드아웃 잔존(최대 900ms) 동안 하단 클릭 가로채지 않도록 */
+    document.removeEventListener('keydown', onKey, true);
+    intro.removeEventListener('pointerdown', onTap, true);
+    skipBtn && skipBtn.removeEventListener('click', onSkipClick);
+    var curtain=intro.querySelector('.intro__curtain'), gone=false;
+    function remove(){ if(gone) return; gone=true; if(intro&&intro.parentNode) intro.remove();
+      var f=document.querySelector('.hero a,.hero button')||document.querySelector('a,button')||document.body;
+      try{ f&&f.focus&&f.focus({preventScroll:true}); }catch(e){} }
+    (curtain||intro).addEventListener('animationend', remove, {once:true});
+    timers.push(setTimeout(remove, 900));
+  }
+  function startExit(){ if(done) return; H.classList.add('intro-exit'); timers.push(setTimeout(finishIntro, 300)); }
+  function skip(){ if(done || H.classList.contains('intro-exit')) return; H.classList.add('intro-skip'); finishIntro(); }
+
+  var armedAt=Date.now()+250;
+  function onTap(e){ if(Date.now()<armedAt && e.target!==skipBtn) return; skip(); }
+  function onKey(e){ if(e.key==='Escape'||e.key==='Enter'){ skip(); } else if(e.key==='Tab'){ e.preventDefault(); try{ skipBtn&&skipBtn.focus(); }catch(e2){} } }
+  function onSkipClick(e){ e.stopPropagation(); skip(); }
+  intro.addEventListener('pointerdown', onTap, true);
+  document.addEventListener('keydown', onKey, true);
+  skipBtn && skipBtn.addEventListener('click', onSkipClick);
+
+  timers.push(setTimeout(rollYear, 2000));
+  timers.push(setTimeout(startExit, 4320));   // 커튼 시작
+  timers.push(setTimeout(finishIntro, 5100)); // 안전 백스톱 — 히어로 절대 갇히지 않음
+  window.addEventListener('error', function(){ try{ finishIntro(); }catch(e){} }, {once:true});
 })();
 </script>
 </body>
