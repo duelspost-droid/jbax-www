@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JB금융지주 미래성장본부 · AX</title>
+<meta name="description" content="JB금융지주 미래성장본부 — AI 전환(AX)과 디지털 신성장으로 금융의 미래를 설계합니다.">
+<meta property="og:title" content="JB금융지주 미래성장본부 · AX">
+<meta property="og:description" content="AI 전환(AX)과 디지털 신성장으로 금융의 미래를 설계합니다.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#04162e;
+    --navy-800:#06203f;
+    --navy-700:#0a3157;
+    --navy-600:#0e4377;
+    --blue-500:#1565c0;
+    --gold-300:#ffe08a;
+    --gold-400:#ffce6a;
+    --gold-500:#e6b84d;
+    --teal:#28d2d9;
+    --ink:#0d1b2e;
+    --paper:#f6f8fc;
+    --muted:#7f93ad;
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:#e8eefb; background:var(--navy-900);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  ::selection{background:var(--gold-400);color:var(--navy-900)}
+  a{color:inherit;text-decoration:none}
+  .display{font-family:'Manrope','Noto Sans KR',sans-serif}
+  .gold{background:linear-gradient(92deg,var(--gold-300),var(--gold-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ─────────── NAV ─────────── */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    transition:background .35s ease, box-shadow .35s ease, padding .35s ease;
+    padding:20px 0;
+  }
+  header.nav.scrolled{
+    background:rgba(4,22,46,.82); backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:0 1px 0 rgba(255,255,255,.06), 0 14px 40px rgba(0,0,0,.4); padding:12px 0;
+  }
+  .nav .bar{display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:900}
+  .brand .mark{
+    width:40px;height:40px;border-radius:11px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--gold-400),var(--gold-500));
+    color:var(--navy-900);display:flex;align-items:center;justify-content:center;
+    font-family:'Manrope';font-weight:800;font-size:1.02rem;letter-spacing:-.5px;
+    box-shadow:0 6px 18px rgba(230,184,77,.35);
+  }
+  .brand .txt b{font-size:1.02rem;letter-spacing:.2px;color:#fff}
+  .brand .txt span{display:block;font-size:.64rem;font-weight:700;color:var(--gold-400);letter-spacing:2.5px;margin-top:1px}
+  .menu{display:flex;align-items:center;gap:30px}
+  .menu a{font-size:.86rem;font-weight:700;color:#c4d2e8;position:relative;padding:6px 0;transition:color .2s}
+  .menu a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--gold-400);transition:width .25s}
+  .menu a:hover,.menu a.active{color:#fff}
+  .menu a:hover::after,.menu a.active::after{width:100%}
+  .nav .cta-mini{
+    background:linear-gradient(135deg,var(--gold-400),var(--gold-500));color:var(--navy-900);
+    padding:9px 18px;border-radius:999px;font-size:.82rem;font-weight:800;
+    transition:transform .15s, box-shadow .15s; box-shadow:0 8px 22px rgba(230,184,77,.32);
+  }
+  .nav .cta-mini:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(230,184,77,.45)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+
+  /* ─────────── HERO ─────────── */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:0}
+  .hero-bg::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(1100px 620px at 78% 8%, rgba(40,210,217,.16), transparent 60%),
+      radial-gradient(1000px 700px at 12% 92%, rgba(230,184,77,.14), transparent 58%),
+      linear-gradient(160deg,#061f3e 0%, #04162e 55%, #030f22 100%);
+  }
+  .grid-lines{position:absolute;inset:0;opacity:.5;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:64px 64px;mask-image:radial-gradient(circle at 50% 40%,#000 0%,transparent 75%)}
+  .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;animation:drift 14s ease-in-out infinite alternate}
+  .blob.b1{width:420px;height:420px;top:-80px;right:-60px;background:rgba(21,101,192,.55)}
+  .blob.b2{width:380px;height:380px;bottom:-120px;left:-40px;background:rgba(40,210,217,.30);animation-delay:-5s}
+  @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(-30px,28px) scale(1.12)}}
+  .spark{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--gold-300);box-shadow:0 0 12px 2px rgba(255,224,138,.7);opacity:.0;animation:twinkle 5s ease-in-out infinite}
+  @keyframes twinkle{0%,100%{opacity:0;transform:translateY(0)}50%{opacity:.9;transform:translateY(-12px)}}
+
+  .hero .wrap{position:relative;z-index:2;padding-top:90px;padding-bottom:60px}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.78rem;font-weight:800;letter-spacing:1.5px;
+    color:var(--gold-300);background:rgba(255,224,138,.08);border:1px solid rgba(255,224,138,.26);
+    padding:8px 16px;border-radius:999px;margin-bottom:26px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{font-size:clamp(2.5rem,6.4vw,5rem);line-height:1.05;font-weight:900;letter-spacing:-1.5px;color:#fff}
+  .hero h1 .line{display:block;overflow:hidden}
+  .hero h1 .line>span{display:block;animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+  .hero h1 .line:nth-child(2)>span{animation-delay:.12s}
+  .hero h1 .line:nth-child(3)>span{animation-delay:.24s}
+  @keyframes rise{from{transform:translateY(110%)}to{transform:none}}
+  .hero p.lead{max-width:560px;margin:26px 0 38px;font-size:clamp(1rem,1.9vw,1.18rem);line-height:1.75;color:#bccbe4;font-weight:500;
+    animation:fade .9s ease .5s both}
+  @keyframes fade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;animation:fade .9s ease .65s both}
+  .btn{display:inline-flex;align-items:center;gap:10px;font-weight:800;border-radius:999px;padding:15px 28px;font-size:.95rem;transition:transform .15s, box-shadow .15s}
+  .btn.primary{background:linear-gradient(135deg,var(--gold-400),var(--gold-500));color:var(--navy-900);box-shadow:0 14px 34px rgba(230,184,77,.34)}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(230,184,77,.5)}
+  .btn.ghost{border:1px solid rgba(255,255,255,.22);color:#fff;background:rgba(255,255,255,.04)}
+  .btn.ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-3px)}
+  .btn .arrow{transition:transform .2s}.btn:hover .arrow{transform:translateX(4px)}
+
+  .hero-stats{display:flex;gap:42px;margin-top:64px;flex-wrap:wrap;animation:fade .9s ease .8s both}
+  .hero-stats .hs b{font-family:'Manrope';font-size:2rem;font-weight:800;color:#fff;display:block;line-height:1}
+  .hero-stats .hs span{font-size:.78rem;color:var(--muted);font-weight:700;margin-top:7px;display:block}
+  .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;color:#6f86a5;font-size:.7rem;font-weight:700;letter-spacing:2px;text-align:center;animation:fade 1s ease 1.1s both}
+  .scroll-hint .mouse{width:22px;height:36px;border:2px solid #44597a;border-radius:14px;margin:0 auto 8px;position:relative}
+  .scroll-hint .mouse::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:3px;height:7px;border-radius:2px;background:var(--gold-400);animation:wheel 1.6s infinite}
+  @keyframes wheel{0%{opacity:0;top:6px}40%{opacity:1}80%,100%{opacity:0;top:16px}}
+
+  /* ─────────── SECTION SHELL ─────────── */
+  section{position:relative}
+  .sec{padding:108px 0}
+  .sec-head{max-width:760px;margin-bottom:54px}
+  .kicker{display:inline-block;font-size:.76rem;font-weight:800;letter-spacing:3px;color:var(--gold-400);margin-bottom:16px}
+  .kicker::before{content:"";display:inline-block;width:26px;height:2px;background:var(--gold-400);vertical-align:middle;margin-right:11px}
+  .sec h2{font-size:clamp(1.8rem,3.8vw,2.9rem);line-height:1.18;font-weight:900;letter-spacing:-.8px;color:#fff}
+  .sec .sub{margin-top:18px;font-size:1.04rem;line-height:1.8;color:#aebcd4;font-weight:500;max-width:680px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+  /* ABOUT */
+  #about{background:linear-gradient(180deg,#030f22,#061b38)}
+  .about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .about-copy p{color:#b6c5dd;line-height:1.9;font-size:1.02rem;margin-top:18px;font-weight:500}
+  .about-copy .mv{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px}
+  .mv .cell{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px}
+  .mv .cell h4{font-size:.74rem;letter-spacing:2px;color:var(--gold-400);font-weight:800;margin-bottom:10px}
+  .mv .cell p{margin:0;color:#dbe6f7;font-size:.96rem;line-height:1.6;font-weight:600}
+  .about-visual{position:relative;aspect-ratio:1/1;border-radius:28px;overflow:hidden;
+    background:radial-gradient(120% 120% at 20% 10%,#0e4377,#06203f);
+    border:1px solid rgba(255,255,255,.1);box-shadow:0 40px 90px rgba(0,0,0,.5)}
+  .orbit{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .orbit .core{width:108px;height:108px;border-radius:26px;background:linear-gradient(135deg,var(--gold-400),var(--gold-500));
+    display:flex;align-items:center;justify-content:center;color:var(--navy-900);font-family:'Manrope';font-weight:800;font-size:1.7rem;
+    box-shadow:0 0 60px rgba(230,184,77,.45);z-index:2}
+  .ring{position:absolute;border:1px dashed rgba(255,255,255,.18);border-radius:50%}
+  .ring.r1{width:54%;height:54%;animation:spin 18s linear infinite}
+  .ring.r2{width:78%;height:78%;animation:spin 28s linear infinite reverse}
+  .ring.r3{width:98%;height:98%;animation:spin 40s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .ring .node{position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:7px;
+    background:rgba(40,210,217,.9);box-shadow:0 0 18px rgba(40,210,217,.7);display:flex;align-items:center;justify-content:center;font-size:.6rem}
+  .ring.r2 .node{background:rgba(255,224,138,.95);box-shadow:0 0 18px rgba(255,224,138,.7)}
+  .ring.r3 .node{background:rgba(21,101,192,.95);box-shadow:0 0 18px rgba(21,101,192,.7)}
+
+  /* PILLARS */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .pcard{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:30px 26px;position:relative;overflow:hidden;
+    transition:transform .25s, border-color .25s, box-shadow .25s}
+  .pcard::before{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold-400),var(--teal));transition:width .35s}
+  .pcard:hover{transform:translateY(-8px);border-color:rgba(255,224,138,.35);box-shadow:0 28px 60px rgba(0,0,0,.45)}
+  .pcard:hover::before{width:100%}
+  .pcard .ic{width:54px;height:54px;border-radius:15px;background:rgba(40,210,217,.12);border:1px solid rgba(40,210,217,.28);
+    display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px}
+  .pcard h3{font-size:1.18rem;font-weight:900;color:#fff;margin-bottom:8px}
+  .pcard .en{font-size:.72rem;font-weight:800;letter-spacing:1.5px;color:var(--gold-400);margin-bottom:14px}
+  .pcard p{font-size:.92rem;line-height:1.7;color:#aab9d2;font-weight:500}
+  .pcard .tags{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px}
+  .pcard .tags span{font-size:.7rem;font-weight:700;color:#cdd9ec;background:rgba(255,255,255,.06);padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.08)}
+
+  /* STATS BAND */
+  #impact{background:
+    radial-gradient(900px 400px at 80% 0%, rgba(40,210,217,.12), transparent 60%),
+    linear-gradient(180deg,#061b38,#04162e)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:8px}
+  .stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:34px 26px;text-align:center}
+  .stat .num{font-family:'Manrope';font-size:clamp(2.2rem,4.5vw,3rem);font-weight:800;line-height:1;
+    background:linear-gradient(120deg,#fff,var(--gold-300));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .stat .num .unit{font-size:1.3rem;-webkit-text-fill-color:var(--gold-400)}
+  .stat .lab{margin-top:14px;font-size:.86rem;color:#9fb0ca;font-weight:700;line-height:1.5}
+
+  /* ROADMAP */
+  .road{position:relative;margin-top:20px;padding-left:0}
+  .road::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(180deg,var(--gold-400),rgba(40,210,217,.5),transparent)}
+  .phase{position:relative;padding:0 0 44px 40px}
+  .phase:last-child{padding-bottom:0}
+  .phase .yr{position:absolute;left:-9px;top:0;width:20px;height:20px;border-radius:50%;
+    background:var(--navy-900);border:3px solid var(--gold-400);box-shadow:0 0 0 5px rgba(255,206,106,.12)}
+  .phase .ylab{font-family:'Manrope';font-size:1.3rem;font-weight:800;color:var(--gold-400);margin-bottom:6px}
+  .phase .ptitle{font-size:1.14rem;font-weight:900;color:#fff;margin-bottom:8px}
+  .phase p{color:#aab9d2;line-height:1.7;font-size:.95rem;font-weight:500;max-width:620px}
+  .phase .chips{margin-top:13px;display:flex;flex-wrap:wrap;gap:8px}
+  .phase .chips span{font-size:.74rem;font-weight:700;color:#dbe6f7;background:rgba(40,210,217,.1);border:1px solid rgba(40,210,217,.22);padding:5px 12px;border-radius:8px}
+
+  /* ORG */
+  #org{background:linear-gradient(180deg,#04162e,#061b38)}
+  .org-top{display:flex;justify-content:center;margin-bottom:14px}
+  .org-node{background:linear-gradient(135deg,var(--navy-600),var(--navy-700));border:1px solid rgba(255,224,138,.3);
+    border-radius:16px;padding:18px 30px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.4)}
+  .org-node b{display:block;color:#fff;font-size:1.06rem;font-weight:900}
+  .org-node span{font-size:.74rem;color:var(--gold-300);font-weight:700;letter-spacing:1px}
+  .org-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px;position:relative}
+  .team{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:24px 20px;
+    transition:transform .2s, border-color .2s}
+  .team:hover{transform:translateY(-6px);border-color:rgba(40,210,217,.4)}
+  .team .tag{font-size:.68rem;font-weight:800;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px}
+  .team h4{font-size:1.04rem;font-weight:900;color:#fff;margin-bottom:10px}
+  .team p{font-size:.86rem;line-height:1.6;color:#9fb0ca;font-weight:500}
+
+  /* NEWS */
+  .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .news{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.09);
+    border-radius:18px;overflow:hidden;transition:transform .22s, box-shadow .22s}
+  .news:hover{transform:translateY(-7px);box-shadow:0 26px 56px rgba(0,0,0,.45)}
+  .news .thumb{height:140px;position:relative;display:flex;align-items:flex-end;padding:16px;
+    background:linear-gradient(135deg,var(--navy-600),var(--navy-800))}
+  .news .thumb.t2{background:linear-gradient(135deg,#0e4377,#0a3157)}
+  .news .thumb.t3{background:linear-gradient(135deg,#12525c,#06203f)}
+  .news .thumb .cat{font-size:.7rem;font-weight:800;letter-spacing:1px;color:var(--navy-900);background:var(--gold-400);padding:5px 11px;border-radius:7px}
+  .news .body{padding:22px}
+  .news .date{font-size:.74rem;color:var(--muted);font-weight:700;margin-bottom:9px}
+  .news h4{font-size:1.04rem;font-weight:800;color:#fff;line-height:1.45;margin-bottom:10px}
+  .news p{font-size:.86rem;color:#9fb0ca;line-height:1.6;font-weight:500}
+  .news .more{margin-top:14px;font-size:.8rem;font-weight:800;color:var(--gold-400);display:inline-flex;align-items:center;gap:6px}
+  .news .more .arrow{transition:transform .2s}.news:hover .more .arrow{transform:translateX(4px)}
+
+  /* CTA / CONTACT */
+  #contact{padding:120px 0}
+  .cta-box{position:relative;border-radius:30px;overflow:hidden;padding:70px 56px;
+    background:radial-gradient(120% 160% at 0% 0%,#0e4377,#06203f);border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 40px 100px rgba(0,0,0,.5)}
+  .cta-box .blob{filter:blur(70px)}
+  .cta-box .inner{position:relative;z-index:2;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center}
+  .cta-box h2{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:900;color:#fff;line-height:1.2;letter-spacing:-.6px}
+  .cta-box p{margin-top:16px;color:#bccbe4;line-height:1.75;font-size:1rem;font-weight:500}
+  .contact-card{background:rgba(4,22,46,.55);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px}
+  .contact-card .row{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+  .contact-card .row:last-child{border-bottom:0}
+  .contact-card .ic{width:34px;height:34px;border-radius:10px;background:rgba(255,224,138,.12);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+  .contact-card .row b{display:block;font-size:.72rem;color:var(--gold-400);font-weight:800;letter-spacing:1px;margin-bottom:3px}
+  .contact-card .row span{font-size:.92rem;color:#dbe6f7;font-weight:600;line-height:1.4}
+
+  /* FOOTER */
+  footer{background:#030d1f;border-top:1px solid rgba(255,255,255,.07);padding:54px 0 40px}
+  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
+  .foot-brand{max-width:340px}
+  .foot-brand p{margin-top:14px;color:#7d90ac;font-size:.86rem;line-height:1.7;font-weight:500}
+  .foot-links{display:flex;gap:54px;flex-wrap:wrap}
+  .foot-links .col b{display:block;font-size:.76rem;letter-spacing:1.5px;color:#9fb0ca;font-weight:800;margin-bottom:14px}
+  .foot-links .col a{display:block;font-size:.86rem;color:#bccbe4;margin-bottom:10px;font-weight:600;transition:color .2s}
+  .foot-links .col a:hover{color:var(--gold-400)}
+  .foot-bottom{margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,.07);
+    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .foot-bottom small{color:#5f748f;font-size:.78rem;font-weight:500}
+  .disclaimer{font-size:.72rem;color:#5f748f;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+    border-radius:10px;padding:9px 14px;line-height:1.5}
+
+  /* QUICK MENU */
+  .quick{position:fixed;right:20px;bottom:22px;z-index:40;display:flex;flex-direction:column;gap:10px}
+  .quick a{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+    background:rgba(6,32,63,.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);color:#fff;
+    box-shadow:0 10px 26px rgba(0,0,0,.4);transition:transform .15s, background .2s}
+  .quick a:hover{transform:translateY(-3px);background:var(--navy-600)}
+  .quick a.top{background:linear-gradient(135deg,var(--gold-400),var(--gold-500));color:var(--navy-900);border:0}
+
+  /* progress bar */
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;
+    background:linear-gradient(90deg,var(--gold-400),var(--teal))}
+
+  /* ─────────── RESPONSIVE ─────────── */
+  @media(max-width:920px){
+    .about-grid{grid-template-columns:1fr;gap:40px}
+    .pillars,.news-grid{grid-template-columns:repeat(2,1fr)}
+    .stat-grid,.org-grid{grid-template-columns:repeat(2,1fr)}
+    .cta-box .inner{grid-template-columns:1fr;gap:30px}
+    .cta-box{padding:48px 30px}
+  }
+  @media(max-width:640px){
+    .menu{position:fixed;inset:0 0 0 auto;width:78%;max-width:320px;flex-direction:column;align-items:flex-start;
+      justify-content:flex-start;gap:6px;padding:96px 30px;background:rgba(4,22,46,.97);backdrop-filter:blur(16px);
+      transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.7,.2,1);box-shadow:-20px 0 60px rgba(0,0,0,.5)}
+    .menu.open{transform:none}
+    .menu a{font-size:1.05rem;padding:12px 0;width:100%;border-bottom:1px solid rgba(255,255,255,.07)}
+    .menu .cta-mini{margin-top:14px}
+    .burger{display:flex;z-index:55}
+    .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0}
+    .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .pillars,.news-grid,.stat-grid,.org-grid,.about-copy .mv{grid-template-columns:1fr}
+    .sec{padding:74px 0}
+    .hero-stats{gap:28px}
+    .quick{right:14px;bottom:14px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important}
+    .reveal{opacity:1!important;transform:none!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- ░░░ NAV ░░░ -->
+<header class="nav" id="nav">
+  <div class="wrap bar">
+    <a href="#top" class="brand">
+      <span class="mark">JB</span>
+      <span class="txt"><b>미래성장본부</b><span>JB · AX DIVISION</span></span>
+    </a>
+    <nav class="menu" id="menu">
+      <a href="#about">본부소개</a>
+      <a href="#strategy">추진전략</a>
+      <a href="#impact">성과</a>
+      <a href="#roadmap">로드맵</a>
+      <a href="#org">조직</a>
+      <a href="#news">소식</a>
+      <a href="#contact" class="cta-mini">문의하기</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="메뉴"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ░░░ HERO ░░░ -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="hero-bg" style="position:absolute"></div>
+    <div class="grid-lines"></div>
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="spark" style="top:24%;left:18%;animation-delay:0s"></div>
+    <div class="spark" style="top:40%;left:74%;animation-delay:1.2s"></div>
+    <div class="spark" style="top:66%;left:30%;animation-delay:2.4s"></div>
+    <div class="spark" style="top:30%;left:52%;animation-delay:3.1s"></div>
+    <div class="spark" style="top:72%;left:82%;animation-delay:1.8s"></div>
+  </div>
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span>JB FINANCIAL GROUP · FUTURE GROWTH</span>
+    <h1 class="display">
+      <span class="line"><span>AX로 여는</span></span>
+      <span class="line"><span>금융의 <span class="gold">다음 10년</span></span></span>
+    </h1>
+    <p class="lead">JB금융지주 미래성장본부는 인공지능 전환(AX)과 디지털 신성장 동력으로
+      그룹의 미래를 설계합니다. 데이터와 AI를 업(業)의 중심에 두고, 고객과 현장이 체감하는 변화를 만듭니다.</p>
+    <div class="hero-cta">
+      <a href="#strategy" class="btn primary">추진전략 살펴보기 <span class="arrow">→</span></a>
+      <a href="#about" class="btn ghost">본부 소개</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><b class="count" data-to="6">0</b><span>핵심 추진 영역</span></div>
+      <div class="hs"><b class="count" data-to="120" data-suffix="+">0</b><span>AI 전환 과제</span></div>
+      <div class="hs"><b class="count" data-to="5">0</b><span>그룹 계열사 연계</span></div>
+      <div class="hs"><b class="count" data-to="2027" data-group="false">0</b><span>도약 목표연도</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="mouse"></div>SCROLL</div>
+</section>
+
+<!-- ░░░ ABOUT ░░░ -->
+<section class="sec" id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy">
+      <div class="sec-head reveal" style="margin-bottom:0">
+        <span class="kicker">ABOUT THE DIVISION</span>
+        <h2>업의 본질을 다시 쓰는<br><span class="gold">AI 전환의 컨트롤타워</span></h2>
+      </div>
+      <p class="reveal d1">미래성장본부는 JB금융지주의 AX(AI Transformation) 전략을 총괄하는 그룹 차원의 컨트롤타워입니다.
+        전북은행·광주은행·JB우리캐피탈 등 계열사 전반에 AI와 데이터를 내재화하고,
+        기존 금융의 경계를 넘는 디지털 신사업을 발굴·육성합니다.</p>
+      <p class="reveal d1">우리는 기술을 위한 기술이 아니라, 고객과 직원이 체감하는 변화를 지향합니다.
+        실험을 빠르게 시도하고, 검증된 것을 그룹 표준으로 확산합니다.</p>
+      <div class="mv">
+        <div class="cell reveal d2"><h4>MISSION</h4><p>AI와 데이터로 그룹의 일하는 방식과 고객 경험을 근본부터 혁신한다.</p></div>
+        <div class="cell reveal d3"><h4>VISION</h4><p>고객이 가장 먼저 떠올리는 'AI 네이티브' 금융그룹으로의 도약.</p></div>
+      </div>
+    </div>
+    <div class="about-visual reveal d2">
+      <div class="orbit">
+        <div class="ring r3"><div class="node">🏦</div></div>
+        <div class="ring r2"><div class="node">📊</div></div>
+        <div class="ring r1"><div class="node">🤖</div></div>
+        <div class="core display">AX</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ STRATEGY / PILLARS ░░░ -->
+<section class="sec" id="strategy">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">STRATEGIC PILLARS</span>
+      <h2>6대 핵심 추진 전략</h2>
+      <p class="sub">AI 전환부터 신사업, 데이터, 거버넌스까지 — 미래성장본부가 그룹의 성장을 견인하는 여섯 개의 축입니다.</p>
+    </div>
+    <div class="pillars">
+      <div class="pcard reveal">
+        <div class="ic">🤖</div><div class="en">AI TRANSFORMATION</div>
+        <h3>AI 전환(AX)</h3>
+        <p>여신심사·상담·내부업무 전반에 생성형 AI를 내재화해 속도와 정확도를 동시에 끌어올립니다.</p>
+        <div class="tags"><span>업무 자동화</span><span>AI 상담</span><span>여신 심사</span></div>
+      </div>
+      <div class="pcard reveal d1">
+        <div class="ic">🚀</div><div class="en">NEW BUSINESS</div>
+        <h3>디지털 신사업</h3>
+        <p>플랫폼·임베디드 금융 등 비(非)전통 영역에서 새로운 수익 모델과 고객 접점을 만듭니다.</p>
+        <div class="tags"><span>임베디드 금융</span><span>플랫폼</span><span>제휴</span></div>
+      </div>
+      <div class="pcard reveal d2">
+        <div class="ic">📊</div><div class="en">DATA &amp; ANALYTICS</div>
+        <h3>데이터 · 분석</h3>
+        <p>그룹 데이터를 한데 모아 리스크·마케팅·경영 의사결정을 데이터 기반으로 전환합니다.</p>
+        <div class="tags"><span>데이터 레이크</span><span>CRM</span><span>리스크</span></div>
+      </div>
+      <div class="pcard reveal">
+        <div class="ic">🧪</div><div class="en">AI LAB · R&amp;D</div>
+        <h3>미래기술 R&amp;D</h3>
+        <p>생성형 AI·자동화·차세대 인프라를 선제적으로 실험하고 검증하는 그룹 기술 실험실입니다.</p>
+        <div class="tags"><span>생성형 AI</span><span>RAG</span><span>MLOps</span></div>
+      </div>
+      <div class="pcard reveal d1">
+        <div class="ic">🌐</div><div class="en">VENTURE &amp; ALLIANCE</div>
+        <h3>투자 · 오픈이노베이션</h3>
+        <p>유망 핀테크·AI 스타트업과 협업하고 전략 투자를 통해 외부 혁신을 그룹 안으로 끌어옵니다.</p>
+        <div class="tags"><span>CVC</span><span>스타트업</span><span>오픈 API</span></div>
+      </div>
+      <div class="pcard reveal d2">
+        <div class="ic">🛡️</div><div class="en">AI GOVERNANCE</div>
+        <h3>AI 거버넌스</h3>
+        <p>책임 있는 AI를 위한 윤리·보안·규제 대응 체계를 세워 신뢰할 수 있는 전환을 보장합니다.</p>
+        <div class="tags"><span>AI 윤리</span><span>보안</span><span>규제 대응</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ IMPACT / STATS ░░░ -->
+<section class="sec" id="impact">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">OUR IMPACT</span>
+      <h2>숫자로 보는 전환의 속도</h2>
+      <p class="sub">미래성장본부가 그룹과 함께 만들어가는 변화의 규모입니다.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat reveal"><div class="num"><span class="count" data-to="120" data-suffix="">0</span><span class="unit">+</span></div><div class="lab">진행 중인 AI 전환 과제</div></div>
+      <div class="stat reveal d1"><div class="num"><span class="count" data-to="40" data-suffix="">0</span><span class="unit">%</span></div><div class="lab">핵심 업무 처리시간 단축</div></div>
+      <div class="stat reveal d2"><div class="num"><span class="count" data-to="5">0</span></div><div class="lab">AI 연계 그룹 계열사</div></div>
+      <div class="stat reveal d3"><div class="num"><span class="count" data-to="24">0</span><span class="unit">/7</span></div><div class="lab">AI 기반 상시 고객 응대</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ ROADMAP ░░░ -->
+<section class="sec" id="roadmap">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">ROADMAP</span>
+      <h2>2024 → 2027 추진 로드맵</h2>
+      <p class="sub">기반 구축에서 전사 확산, 그리고 AI 네이티브 도약까지 — 단계적으로 전환을 가속합니다.</p>
+    </div>
+    <div class="road">
+      <div class="phase reveal">
+        <div class="yr"></div>
+        <div class="ylab display">2024</div>
+        <div class="ptitle">기반 구축 · Foundation</div>
+        <p>그룹 데이터 통합 기반을 마련하고, AX 전략 체계와 거버넌스를 수립했습니다. 핵심 영역에서 첫 AI 파일럿을 가동했습니다.</p>
+        <div class="chips"><span>데이터 통합</span><span>AX 전략 수립</span><span>파일럿</span></div>
+      </div>
+      <div class="phase reveal d1">
+        <div class="yr"></div>
+        <div class="ylab display">2025</div>
+        <div class="ptitle">전사 확산 · Scale-up</div>
+        <p>검증된 AI 과제를 계열사 전반으로 확산하고, 생성형 AI 업무 비서와 AI 상담을 본격 도입합니다.</p>
+        <div class="chips"><span>AI 업무비서</span><span>AI 상담</span><span>계열사 확산</span></div>
+      </div>
+      <div class="phase reveal d2">
+        <div class="yr"></div>
+        <div class="ylab display">2026</div>
+        <div class="ptitle">고도화 · Intelligence</div>
+        <p>데이터·AI를 의사결정 핵심에 내재화하고, 임베디드 금융 등 디지털 신사업을 본격 확장합니다.</p>
+        <div class="chips"><span>의사결정 AI</span><span>임베디드 금융</span><span>신사업 확장</span></div>
+      </div>
+      <div class="phase reveal d3">
+        <div class="yr"></div>
+        <div class="ylab display">2027</div>
+        <div class="ptitle">도약 · AI-Native</div>
+        <p>AI를 기본값으로 삼는 'AI 네이티브 금융그룹'으로 도약합니다. 고객 경험과 일하는 방식 전반이 새롭게 정의됩니다.</p>
+        <div class="chips"><span>AI 네이티브</span><span>차세대 고객경험</span><span>지속 성장</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ ORG ░░░ -->
+<section class="sec" id="org">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;margin:0 auto 46px">
+      <span class="kicker">ORGANIZATION</span>
+      <h2>본부 조직 구성</h2>
+    </div>
+    <div class="org-top reveal">
+      <div class="org-node"><b>미래성장본부</b><span>FUTURE GROWTH DIVISION</span></div>
+    </div>
+    <div class="org-grid">
+      <div class="team reveal"><div class="tag">AX STRATEGY</div><h4>AX전략팀</h4><p>그룹 AI 전환 로드맵 수립과 과제 발굴·관리, 성과 측정을 총괄합니다.</p></div>
+      <div class="team reveal d1"><div class="tag">NEW BUSINESS</div><h4>디지털신사업팀</h4><p>플랫폼·임베디드 금융 등 신규 비즈니스 모델을 기획하고 실행합니다.</p></div>
+      <div class="team reveal d2"><div class="tag">DATA</div><h4>데이터팀</h4><p>그룹 데이터 거버넌스와 분석 기반을 운영하고 데이터 활용을 확산합니다.</p></div>
+      <div class="team reveal d3"><div class="tag">AI LAB</div><h4>AI Lab</h4><p>생성형 AI·자동화 기술을 선행 연구하고 PoC로 빠르게 검증합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ NEWS ░░░ -->
+<section class="sec" id="news">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">NEWS &amp; INSIGHTS</span>
+      <h2>본부 소식</h2>
+      <p class="sub">미래성장본부의 최근 활동과 인사이트를 전합니다.</p>
+    </div>
+    <div class="news-grid">
+      <article class="news reveal">
+        <div class="thumb"><span class="cat">AX</span></div>
+        <div class="body"><div class="date">2026.06.18</div>
+          <h4>그룹 생성형 AI 업무비서 'JB Copilot' 전 계열사 확대</h4>
+          <p>문서 작성·요약·검색을 돕는 AI 업무비서를 그룹 전 직원으로 확대 적용했습니다.</p>
+          <span class="more">자세히 <span class="arrow">→</span></span>
+        </div>
+      </article>
+      <article class="news reveal d1">
+        <div class="thumb t2"><span class="cat">신사업</span></div>
+        <div class="body"><div class="date">2026.05.30</div>
+          <h4>임베디드 금융 플랫폼 파트너십 체결</h4>
+          <p>커머스·플랫폼 사업자와 손잡고 일상 속에 녹아드는 금융 서비스를 선보입니다.</p>
+          <span class="more">자세히 <span class="arrow">→</span></span>
+        </div>
+      </article>
+      <article class="news reveal d2">
+        <div class="thumb t3"><span class="cat">R&amp;D</span></div>
+        <div class="body"><div class="date">2026.05.12</div>
+          <h4>AI Lab, 여신심사 자동화 모델 실증 완료</h4>
+          <p>심사 보조 AI 모델 실증으로 처리시간을 크게 단축하는 성과를 확인했습니다.</p>
+          <span class="more">자세히 <span class="arrow">→</span></span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ CONTACT / CTA ░░░ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="blob b2" style="top:-60px;right:-40px;left:auto;background:rgba(40,210,217,.3)"></div>
+      <div class="inner">
+        <div>
+          <h2>함께 금융의 다음을<br>만들어 갈 파트너를 찾습니다</h2>
+          <p>AI·데이터·플랫폼 분야의 협업, 제휴, 투자 제안을 환영합니다.
+            미래성장본부와의 협업이 궁금하시다면 언제든 문의해 주세요.</p>
+          <a href="mailto:ax@jbax.co.kr" class="btn primary" style="margin-top:28px">제휴·문의하기 <span class="arrow">→</span></a>
+        </div>
+        <div class="contact-card">
+          <div class="row"><div class="ic">📍</div><div><b>OFFICE</b><span>전북특별자치도 전주시 · JB금융지주</span></div></div>
+          <div class="row"><div class="ic">✉️</div><div><b>EMAIL</b><span>ax@jbax.co.kr</span></div></div>
+          <div class="row"><div class="ic">🤝</div><div><b>PARTNERSHIP</b><span>제휴 · 투자 · 오픈이노베이션</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░░ FOOTER ░░░ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#top" class="brand">
+          <span class="mark">JB</span>
+          <span class="txt"><b>미래성장본부</b><span>JB · AX DIVISION</span></span>
+        </a>
+        <p>JB금융지주 미래성장본부 — AI 전환(AX)과 디지털 신성장으로 금융의 미래를 설계합니다.</p>
+      </div>
+      <div class="foot-links">
+        <div class="col"><b>DIVISION</b>
+          <a href="#about">본부소개</a><a href="#strategy">추진전략</a><a href="#org">조직</a>
+        </div>
+        <div class="col"><b>EXPLORE</b>
+          <a href="#impact">성과</a><a href="#roadmap">로드맵</a><a href="#news">소식</a>
+        </div>
+        <div class="col"><b>JB GROUP</b>
+          <a href="/">JB×AX 허브</a><a href="#contact">문의하기</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <small>© 2026 JB · AX Future Growth Division. All rights reserved.</small>
+      <span class="disclaimer">본 페이지는 JB×AX 플레이그라운드의 비공식 쇼케이스이며, 공식 서비스·발표 자료가 아닙니다.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ░░░ QUICK MENU ░░░ -->
+<div class="quick">
+  <a href="#contact" title="문의">✉️</a>
+  <a href="#top" class="top" title="맨 위로">↑</a>
+</div>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  var progress=document.getElementById('progress');
+  var burger=document.getElementById('burger');
+  var menu=document.getElementById('menu');
+  var links=Array.prototype.slice.call(menu.querySelectorAll('a[href^="#"]'));
+  var sections=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+
+  // scroll: nav style + progress bar
+  function onScroll(){
+    var y=window.pageYOffset;
+    nav.classList.toggle('scrolled', y>40);
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    progress.style.width=(h>0?(y/h*100):0)+'%';
+    // active link
+    var cur=null, mid=y+window.innerHeight*0.35;
+    sections.forEach(function(s){ if(s && s.offsetTop<=mid) cur=s.id; });
+    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href')==='#'+cur); });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // mobile menu
+  burger.addEventListener('click',function(){
+    menu.classList.toggle('open'); burger.classList.toggle('open');
+  });
+  menu.addEventListener('click',function(e){
+    if(e.target.tagName==='A'){ menu.classList.remove('open'); burger.classList.remove('open'); }
+  });
+
+  // reveal on scroll
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+  },{threshold:0.14, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+  // count-up
+  function animateCount(el){
+    var to=parseFloat(el.getAttribute('data-to'))||0;
+    var suffix=el.getAttribute('data-suffix')||'';
+    var group=el.getAttribute('data-group')!=='false';
+    var fmt=function(n){return group?n.toLocaleString('en-US'):String(n);};
+    var dur=1400, start=null;
+    function step(ts){
+      if(!start) start=ts;
+      var p=Math.min((ts-start)/dur,1);
+      var eased=1-Math.pow(1-p,3);
+      var val=Math.round(to*eased);
+      el.textContent=fmt(val)+suffix;
+      if(p<1) requestAnimationFrame(step);
+      else el.textContent=fmt(to)+suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var counted=new WeakSet();
+  var cio=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting && !counted.has(en.target)){ counted.add(en.target); animateCount(en.target); cio.unobserve(en.target);}
+    });
+  },{threshold:0.5});
+  document.querySelectorAll('.count').forEach(function(el){cio.observe(el);});
+})();
+</script>
+</body>
+</html>
