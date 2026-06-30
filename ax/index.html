@@ -336,9 +336,9 @@
   /* 공식 컬러 시그니처 — 흰 플레이트 제거, 투명 배경에 다이렉트 노출 */
   .ci-logo{display:inline-flex;align-items:center;background:transparent;border-radius:0;padding:0;
     box-shadow:none;line-height:0}
-  .ci-logo img{display:block;height:24px;width:auto}
+  .ci-logo img{display:block;height:30px;width:auto}
   .ci-logo.lg{border-radius:0;padding:0}
-  .ci-logo.lg img{height:42px}
+  .ci-logo.lg img{height:54px}
   .ci-logo.sm{padding:0;border-radius:0;box-shadow:none}
   .ci-logo.sm img{height:16px}
   /* 섹션 키커 — 전용색 라인 (CI 색만, 로고 미사용) */
@@ -347,9 +347,9 @@
   /* 네비 브랜드 = 공식 CI 엔도스 + 본부 서브브랜드 */
   .brand{gap:13px}
   .brand .divider{width:1px;height:30px;background:rgba(20,42,80,.16);flex-shrink:0}
-  header.nav.scrolled .brand .ci-logo img{height:26px}
+  header.nav.scrolled .brand .ci-logo img{height:28px}
   header.nav.scrolled .brand .divider{height:26px}
-  @media(max-width:640px){ .brand .divider,.brand .txt{display:none} .brand .ci-logo img{height:26px} }
+  @media(max-width:640px){ .brand .divider,.brand .txt{display:none} .brand .ci-logo img{height:30px} }
 
   /* 히어로 — 자체 상승선 모티프(로고 미사용, 순수 장식) */
   .hero-symbol{position:absolute;right:-6%;top:46%;transform:translateY(-50%);
@@ -495,7 +495,7 @@
   /* 공식 CI 무변형: 흰 박스 없이 다크 로고(심볼 블루+워드마크 화이트)를 opacity로만 등장 — transform/filter/clip 0 */
   .intro__lockup .ci-logo{position:relative;opacity:0;animation:i-logoIn .8s var(--ease-out-soft) 7.3s both}
   .intro__lockup .ci-logo{padding:13px 22px;border-radius:14px}
-  .intro__lockup .ci-logo img{height:clamp(40px,6.5vw,62px)}
+  .intro__lockup .ci-logo img{height:clamp(64px,11vw,104px)}
   .intro__lockup .ci-logo::after{content:"";position:absolute;left:7%;right:7%;bottom:-16px;height:3px;border-radius:3px;
     background:linear-gradient(90deg,var(--gold-300),var(--jb-blue));clip-path:inset(0 100% 0 0);animation:i-ul .5s var(--ease-wipe) 7.85s both}
   .intro__div{text-align:center;opacity:0;animation:i-lift .55s var(--ease-settle) 8.1s both}
