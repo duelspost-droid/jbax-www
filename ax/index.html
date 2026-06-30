@@ -238,6 +238,29 @@
   .team .tag{font-size:.68rem;font-weight:800;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px}
   .team h4{font-size:1.04rem;font-weight:900;color:#fff;margin-bottom:10px}
   .team p{font-size:.86rem;line-height:1.6;color:#9fb0ca;font-weight:500}
+  /* 본부장 메시지 */
+  .leader{display:grid;grid-template-columns:210px 1fr;gap:32px;align-items:center;max-width:960px;margin:0 auto 36px;
+    background:linear-gradient(120deg,rgba(28,55,138,.22),rgba(0,145,208,.08));border:1px solid rgba(40,120,210,.28);
+    border-radius:24px;padding:32px;box-shadow:0 26px 64px rgba(0,0,0,.38)}
+  .leader-photo{position:relative;width:210px;height:252px;border-radius:18px;overflow:hidden;flex-shrink:0;
+    background:radial-gradient(120% 120% at 30% 10%,var(--navy-600),var(--navy-800));
+    border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center}
+  .leader-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .leader-photo .ph{text-align:center;padding:14px;font-family:'Manrope';font-weight:800;font-size:1.4rem;color:var(--gold-300);letter-spacing:1px}
+  .leader-photo .ph small{display:block;font-size:.6rem;color:var(--muted);font-weight:700;letter-spacing:.4px;margin-top:8px;line-height:1.5}
+  .leader-name{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .leader-name b{font-size:1.34rem;font-weight:900;color:#fff}
+  .leader-name span{font-size:.84rem;color:var(--gold-300);font-weight:700}
+  .leader-quote{font-size:1.14rem;line-height:1.62;color:#eaf1fc;font-weight:700;border-left:3px solid var(--gold-400);padding-left:16px;margin:0 0 8px}
+  .leader-src{font-size:.76rem;color:var(--muted);font-weight:600;margin-bottom:16px}
+  .leader-vision{font-size:.95rem;line-height:1.85;color:#b6c5dd;font-weight:500;margin-bottom:16px}
+  .leader-tags{display:flex;flex-wrap:wrap;gap:8px}
+  .leader-tags span{font-size:.74rem;font-weight:700;color:#dbe6f7;background:rgba(40,210,217,.1);border:1px solid rgba(40,210,217,.22);padding:5px 12px;border-radius:8px}
+  @media(max-width:680px){
+    .leader{grid-template-columns:1fr;gap:20px;padding:24px;text-align:center}
+    .leader-photo{width:170px;height:204px;margin:0 auto}
+    .leader-name{justify-content:center}.leader-quote{text-align:left}.leader-tags{justify-content:center}
+  }
 
   /* NEWS */
   .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -838,6 +861,19 @@
     </div>
     <div class="org-top reveal">
       <div class="org-node"><b>AX·미래성장본부</b><span>FUTURE GROWTH DIVISION</span></div>
+    </div>
+    <div class="leader reveal">
+      <div class="leader-photo">
+        <img data-ax-src="leader.photo" alt="박종춘 AX·미래성장본부장 부사장" style="display:none">
+        <span class="ph">박종춘<small>AX·미래성장본부장<br>부사장</small></span>
+      </div>
+      <div class="leader-body">
+        <div class="leader-name"><b data-ax="leader.name">박종춘</b><span data-ax="leader.title">JB금융지주 AX·미래성장본부장 부사장</span></div>
+        <blockquote class="leader-quote" data-ax="leader.quote">“10년 뒤를 준비하려면 은행 안에 없는 DNA를 들여와야 합니다.”</blockquote>
+        <div class="leader-src" data-ax="leader.quote_src">— 헤럴드경제 단독 인터뷰 (2026.06.11)</div>
+        <p class="leader-vision" data-ax="leader.vision">박종춘 부사장은 은행 내부에 없는 역량을 외부 혁신 기업에서 흡수하는 ‘인오가닉(Inorganic) 성장’을 핵심 전략으로 제시합니다. 단순 인수합병(M&amp;A)보다 상대 기업의 독립성·전문성을 유지한 전략적 파트너십, 디지털자산(지갑·수탁) 인프라 선점, 그리고 지역화폐·외국인 금융을 활용처로 한 신성장 기회 발굴에 집중합니다.</p>
+        <div class="leader-tags"><span>인오가닉 성장</span><span>전략적 파트너십</span><span>디지털자산 인프라</span><span>AI 에이전트 대비</span></div>
+      </div>
     </div>
     <div class="org-grid">
       <div class="team reveal"><div class="tag">AX STRATEGY</div><h4>AX전략팀</h4><p>그룹 AI 전환 로드맵 수립과 과제 발굴·관리, 성과 측정을 총괄합니다.</p></div>

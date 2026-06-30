@@ -105,6 +105,14 @@
       { k: "mission", t: "textarea", label: "MISSION", full: true },
       { k: "vision", t: "textarea", label: "VISION", full: true }
     ] },
+    { key: "leader", label: "본부장", icon: "👤", fields: [
+      { k: "name", t: "text", label: "이름" },
+      { k: "title", t: "text", label: "직책", full: true },
+      { k: "photo", t: "url", label: "사진 URL (공식/허가된 이미지만)", full: true, ph: "https://… (비우면 이니셜 플레이스홀더)" },
+      { k: "quote", t: "textarea", label: "대표 인용(따옴표 포함)", full: true },
+      { k: "quote_src", t: "text", label: "인용 출처", full: true },
+      { k: "vision", t: "textarea", label: "비전 요약", full: true }
+    ] },
     { key: "contact", label: "연락처", icon: "✉️", fields: [
       { k: "title", t: "text", label: "제목", full: true },
       { k: "desc", t: "textarea", label: "설명", full: true },

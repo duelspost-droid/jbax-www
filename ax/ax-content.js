@@ -90,6 +90,10 @@
     [].forEach.call(document.querySelectorAll("[data-ax-mailto]"), function (el) {
       var v = look(el.getAttribute("data-ax-mailto")); if (v) el.setAttribute("href", "mailto:" + v);
     });
+    [].forEach.call(document.querySelectorAll("[data-ax-src]"), function (el) {
+      var v = look(el.getAttribute("data-ax-src"));
+      if (v) { el.src = v; el.style.display = "block"; var ph = el.parentElement && el.parentElement.querySelector(".ph"); if (ph) ph.style.display = "none"; }
+    });
   }
 
   /* ───────── fetch & hydrate ───────── */
