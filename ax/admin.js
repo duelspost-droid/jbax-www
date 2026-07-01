@@ -302,16 +302,52 @@
     });
   }
 
+  /* ───────── 공개 페이지 정적 기본값 → 설정 폼 pre-fill ─────────
+   * ax_settings에 아직 저장 안 된 그룹(예: 섹션 제목)은 index.html에 박혀 있는
+   * 현재 문구를 그대로 읽어와 폼을 채운다. 그래야 "현재 값 위에서 수정 → 저장"이
+   * 자연스럽고, 저장 시 해당 key 행이 올바른 값들로 새로 생성된다.
+   * (fetch/parse 실패 시 조용히 빈 기본값 → 기존 동작으로 폴백) */
+  var _defaults = null;
+  function loadDefaults() {
+    if (_defaults) return Promise.resolve(_defaults);
+    return fetch("index.html", { cache: "no-store" })
+      .then(function (res) { return res.ok ? res.text() : ""; })
+      .then(function (html) {
+        var d = {};
+        if (html && window.DOMParser) {
+          var doc = new DOMParser().parseFromString(html, "text/html");
+          var put = function (key, v) {
+            if (v == null) return; v = String(v).trim(); if (v === "") return;
+            var p = key.split("."); if (p.length !== 2) return;
+            (d[p[0]] || (d[p[0]] = {}))[p[1]] = v;
+          };
+          [].forEach.call(doc.querySelectorAll("[data-ax]"), function (n) { put(n.getAttribute("data-ax"), n.textContent); });
+          [].forEach.call(doc.querySelectorAll("[data-ax-href]"), function (n) { put(n.getAttribute("data-ax-href"), n.getAttribute("href")); });
+          [].forEach.call(doc.querySelectorAll("[data-ax-mailto]"), function (n) { put(n.getAttribute("data-ax-mailto"), (n.getAttribute("href") || "").replace(/^mailto:/, "")); });
+          [].forEach.call(doc.querySelectorAll("[data-ax-src]"), function (n) { put(n.getAttribute("data-ax-src"), n.getAttribute("src")); });
+        }
+        _defaults = d; return d;
+      })
+      .catch(function () { _defaults = {}; return _defaults; });
+  }
+  function mergeVals(def, dbv) {
+    var out = {}, k; def = def || {}; dbv = dbv || {};
+    for (k in def) if (Object.prototype.hasOwnProperty.call(def, k)) out[k] = def[k];
+    for (k in dbv) if (Object.prototype.hasOwnProperty.call(dbv, k)) { var v = dbv[k]; if (v != null && v !== "") out[k] = v; }
+    return out;
+  }
+
   /* ───────── 설정(단일 텍스트) 패널 ───────── */
   function renderSettings() {
     var p = $("panel");
-    p.innerHTML = '<div class="panel-head"><div><h2>📝 문구·설정</h2><div class="desc">히어로·소개·연락처·푸터 등 고정 텍스트</div></div></div>'
+    p.innerHTML = '<div class="panel-head"><div><h2>📝 문구·설정</h2><div class="desc">히어로·소개·연락처·푸터 등 고정 텍스트 — 빈 칸은 현재 사이트 문구로 자동 채워집니다</div></div></div>'
       + '<div id="setbody"><div class="loading">불러오는 중…</div></div>';
-    sb.from("ax_settings").select("*").then(function (r) {
-      var map = {}; (r.data || []).forEach(function (row) { map[row.key] = row.value || {}; });
+    Promise.all([sb.from("ax_settings").select("*"), loadDefaults()]).then(function (res) {
+      var r = res[0], defs = res[1] || {};
+      var map = {}; ((r && r.data) || []).forEach(function (row) { map[row.key] = row.value || {}; });
       var body = $("setbody"); body.innerHTML = "";
       SETTINGS.forEach(function (g) {
-        var val = map[g.key] || {};
+        var val = mergeVals(defs[g.key], map[g.key]);
         var box = el('<div class="setgroup"></div>');
         box.innerHTML = "<h3>" + g.icon + " " + esc(g.label) + "</h3>"
           + '<div class="grid">' + g.fields.map(function (f) { return fieldHTML(f, val[f.k]); }).join("") + "</div>"
