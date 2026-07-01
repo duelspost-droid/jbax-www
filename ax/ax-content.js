@@ -11,6 +11,16 @@
   try { sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY); }
   catch (e) { return; }
 
+  /* 방문 로깅(익명) — 세션당 경로별 1회. 서버측(request.headers)에서 IP 캡처하는 RPC.
+     실패(테이블/RPC 미설치, 네트워크)해도 페이지에 영향 없음(fire-and-forget). */
+  try {
+    var _vk = "ax_visit_" + location.pathname;
+    if (!sessionStorage.getItem(_vk)) {
+      sessionStorage.setItem(_vk, "1");
+      sb.rpc("ax_log_visit", { p_page: location.pathname }).then(function () {}, function () {});
+    }
+  } catch (e) { /* sessionStorage 차단 등 → 무시 */ }
+
   /* ───────── util ───────── */
   function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
   function q(sel) { return document.querySelector(sel); }

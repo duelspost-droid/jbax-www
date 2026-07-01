@@ -12,8 +12,16 @@
   /* ───────── util ───────── */
   function $(id) { return document.getElementById(id); }
   function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+  function escA(s) { return esc(s).replace(/"/g, "&quot;"); }   // 속성값용(따옴표까지 escape) — 신뢰불가 IP/UA 방어
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
   function toast(msg, err) { var t = $("toast"); t.textContent = msg; t.className = "toast show" + (err ? " err" : ""); clearTimeout(t._t); t._t = setTimeout(function () { t.className = "toast"; }, 3200); }
+  /* 감사 로깅 — SECURITY DEFINER RPC(서버측 IP 캡처). 실패해도 UI 방해 안 함(fire-and-forget). */
+  function logAudit(action, entity, entityId, detail) {
+    try {
+      sb.rpc("ax_log", { p_action: action, p_entity: entity || null, p_entity_id: entityId != null ? String(entityId) : null, p_detail: detail || {} })
+        .then(function () {}, function () {});
+    } catch (e) { /* 테이블/RPC 미설치 등 → 무시 */ }
+  }
 
   /* ───────── 엔티티(목록형) 정의 ───────── */
   var ENTITIES = {
@@ -254,7 +262,7 @@
       a.innerHTML = '<a class="viewlink" href="./" target="_blank">사이트 보기 ↗</a>'
         + '<span class="who">👤 ' + esc(session.user.email || "관리자") + "</span>"
         + '<button class="btn ghost sm" id="logout">로그아웃</button>';
-      $("logout").onclick = function () { sb.auth.signOut().then(function () { toast("로그아웃되었습니다"); route(); }); };
+      $("logout").onclick = function () { logAudit("logout", "auth", null, {}); sb.auth.signOut().then(function () { toast("로그아웃되었습니다"); route(); }); };
     } else { a.innerHTML = ""; }
   }
   function route() { if (!session) renderLogin(); else renderApp(); }
@@ -273,7 +281,8 @@
       sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pw").value }).then(function (r) {
         b.disabled = false; b.textContent = "로그인";
         if (r.error) { var p = $("loginErr"); p.hidden = false; p.textContent = "로그인 실패: " + r.error.message; return; }
-        session = r.data.session; renderAuth(); toast("로그인되었습니다"); route();
+        session = r.data.session; renderAuth(); toast("로그인되었습니다");
+        logAudit("login", "auth", (r.data.user && r.data.user.email) || null, {}); route();
       });
     });
   }
@@ -283,7 +292,8 @@
     var tabs = ENTITY_ORDER.map(function (k) {
       var d = ENTITIES[k];
       return '<button class="tab" data-tab="' + k + '">' + d.icon + " " + esc(d.label) + "</button>";
-    }).join("") + '<button class="tab" data-tab="settings">📝 문구·설정</button>';
+    }).join("") + '<button class="tab" data-tab="settings">📝 문구·설정</button>'
+      + '<button class="tab" data-tab="audit">📊 로그·감사</button>';
     app.innerHTML = '<div class="tabs" id="tabs">' + tabs + '</div><div class="panel" id="panel"></div>';
     [].forEach.call(document.querySelectorAll("#tabs .tab"), function (t) {
       t.onclick = function () { selectTab(t.getAttribute("data-tab")); };
@@ -293,7 +303,7 @@
   function selectTab(key) {
     activeTab = key;
     [].forEach.call(document.querySelectorAll("#tabs .tab"), function (t) { t.classList.toggle("on", t.getAttribute("data-tab") === key); });
-    if (key === "settings") renderSettings(); else renderEntity(ENTITIES[key]);
+    if (key === "settings") renderSettings(); else if (key === "audit") renderAudit(); else renderEntity(ENTITIES[key]);
   }
 
   /* ───────── 엔티티 패널(목록형 CRUD) ───────── */
@@ -351,13 +361,14 @@
     obj.published = card.querySelector("[data-pub]").checked;
     var req = def.fields.filter(function (f) { return f.req; });
     for (var i = 0; i < req.length; i++) { if (!String(obj[req[i].k] || "").trim()) { toast(req[i].label + "은(는) 필수입니다", true); return; } }
-    var id = card.getAttribute("data-id");
+    var id = card.getAttribute("data-id"), wasNew = !id;
     var btn = card.querySelector("[data-save]"); btn.disabled = true; btn.textContent = "저장 중…";
     var done = function (r) {
       btn.disabled = false; btn.textContent = "저장";
       if (r.error) { toast("저장 실패: " + r.error.message, true); return; }
       if (r.data && r.data[0] && r.data[0].id) card.setAttribute("data-id", r.data[0].id);
       toast("저장되었습니다");
+      logAudit(wasNew ? "create" : "update", def.table, (r.data && r.data[0] && r.data[0].id) || id, { label: def.titleOf ? def.titleOf(obj) : "", published: !!obj.published });
     };
     if (id) sb.from(def.table).update(obj).eq("id", id).select().then(done);
     else sb.from(def.table).insert(obj).select().then(done);
@@ -371,6 +382,7 @@
     sb.from(def.table).delete().eq("id", id).then(function (r) {
       if (r.error) { btn.disabled = false; toast("삭제 실패: " + r.error.message, true); return; }
       card.remove(); toast("삭제되었습니다");
+      logAudit("delete", def.table, id, {});
       var c = $("cards"); if (c && !c.children.length) c.innerHTML = '<div class="empty">아직 항목이 없습니다.</div>';
     });
   }
@@ -438,6 +450,95 @@
       btn.disabled = false; btn.textContent = "저장";
       if (r.error) { toast("저장 실패: " + r.error.message, true); return; }
       toast(g.label + " 저장되었습니다");
+      logAudit("update_setting", "ax_settings", g.key, { label: g.label });
+    });
+  }
+
+  /* ───────── 로그·감사 패널 ───────── */
+  function auditTime(s) {
+    var d = new Date(s); if (isNaN(d.getTime())) return esc(s);
+    function p(n) { return (n < 10 ? "0" : "") + n; }
+    return d.getFullYear() + "." + p(d.getMonth() + 1) + "." + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+  }
+  function auditStatsHTML(rows) {
+    var now = Date.now(), ips = {}, users = {}, actions = {}, visits = 0, admins = 0, day = 0;
+    rows.forEach(function (x) {
+      if (x.ip) ips[x.ip] = (ips[x.ip] || 0) + 1;
+      if (x.actor_email) users[x.actor_email] = (users[x.actor_email] || 0) + 1;
+      actions[x.action] = (actions[x.action] || 0) + 1;
+      if (x.kind === "visit") visits++; else admins++;
+      if (now - new Date(x.created_at).getTime() < 864e5) day++;
+    });
+    var topIps = Object.keys(ips).map(function (k) { return [k, ips[k]]; }).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 6);
+    var actList = Object.keys(actions).map(function (k) { return [k, actions[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
+    var maxAct = actList.reduce(function (m, x) { return Math.max(m, x[1]); }, 1);
+    function card(lab, val) { return '<div class="stat-card"><div class="sc-val">' + val + '</div><div class="sc-lab">' + esc(lab) + "</div></div>"; }
+    var cards = '<div class="stat-cards">'
+      + card("총 기록(최근 1000)", rows.length) + card("최근 24시간", day)
+      + card("고유 접속 IP", Object.keys(ips).length) + card("관리 행위", admins)
+      + card("공개 방문", visits) + card("고유 관리자", Object.keys(users).length) + "</div>";
+    var bars = '<div class="audit-block"><h4>액션별 분포</h4><div class="bars">'
+      + (actList.length ? actList.map(function (a) {
+        return '<div class="bar-row"><span class="bar-lab" title="' + escA(a[0]) + '">' + esc(a[0]) + '</span>'
+          + '<span class="bar-track"><span class="bar-fill" style="width:' + Math.round(a[1] / maxAct * 100) + '%"></span></span>'
+          + '<span class="bar-num">' + a[1] + "</span></div>";
+      }).join("") : '<div class="muted">기록 없음</div>') + "</div></div>";
+    var iplist = '<div class="audit-block"><h4>상위 접속 IP</h4><div class="iplist">'
+      + (topIps.length ? topIps.map(function (x) { return '<div class="ip-row"><code>' + esc(x[0]) + "</code><span>" + x[1] + "회</span></div>"; }).join("") : '<div class="muted">기록 없음</div>')
+      + "</div></div>";
+    return cards + '<div class="audit-2col">' + bars + iplist + "</div>";
+  }
+  function auditRowsHTML(rows) {
+    if (!rows.length) return '<tr><td colspan="7" class="muted" style="text-align:center;padding:24px">기록이 없습니다.</td></tr>';
+    return rows.map(function (x) {
+      var isVisit = x.kind === "visit";
+      var who = isVisit ? '<span class="muted">익명 방문자</span>' : esc(x.actor_email || "(관리자)");
+      var badge = isVisit ? '<span class="badge-visit">방문</span>' : '<span class="badge-admin">관리</span>';
+      var tgt = [x.entity, x.entity_id].filter(Boolean).map(esc).join(" · ") || '<span class="muted">-</span>';
+      var ua = x.user_agent ? esc(String(x.user_agent).slice(0, 64)) : "";
+      return '<tr class="ar ' + (isVisit ? "ar-visit" : "ar-admin") + '">'
+        + '<td class="ar-time">' + auditTime(x.created_at) + "</td>"
+        + "<td>" + badge + "</td>"
+        + "<td>" + who + "</td>"
+        + '<td><code>' + esc(x.ip || "-") + "</code></td>"
+        + "<td>" + esc(x.action || "") + "</td>"
+        + '<td class="ar-tgt">' + tgt + "</td>"
+        + '<td class="ar-ua" title="' + escA(x.user_agent || "") + '">' + ua + "</td></tr>";
+    }).join("");
+  }
+  function renderAudit() {
+    var p = $("panel");
+    p.innerHTML = '<div class="panel-head"><div><h2>📊 로그·감사</h2><div class="desc">관리자 활동 · 공개 방문 접속 기록 — 누가 · 언제 · 어디서(IP) · 무엇을 <b style="color:var(--muted)">(통계·표는 최근 1000건 기준)</b></div></div>'
+      + '<button class="btn ghost sm" id="auditRefresh">↻ 새로고침</button></div>'
+      + '<div id="auditBody"><div class="loading">불러오는 중…</div></div>';
+    $("auditRefresh").onclick = renderAudit;
+    sb.from("ax_audit").select("*").order("created_at", { ascending: false }).limit(1000).then(function (r) {
+      var body = $("auditBody");
+      if (r.error) {
+        body.innerHTML = '<div class="empty">감사 로그 테이블이 아직 설치되지 않았습니다.<br>Supabase에서 <b>0015_ax_audit.sql</b> 마이그레이션을 실행하면 활성화됩니다.'
+          + '<br><span style="opacity:.55;font-size:.82em">(' + esc(r.error.message) + ")</span></div>";
+        return;
+      }
+      var rows = r.data || [];
+      body.innerHTML = auditStatsHTML(rows)
+        + '<div class="audit-filter"><label class="chk"><input type="radio" name="afk" value="all" checked> 전체</label>'
+        + '<label class="chk"><input type="radio" name="afk" value="admin"> 관리 행위</label>'
+        + '<label class="chk"><input type="radio" name="afk" value="visit"> 방문</label>'
+        + '<input type="search" id="afq" class="afsearch" placeholder="IP · 사용자 · 액션 검색"></div>'
+        + '<div class="audit-tablewrap"><table class="audit-table"><thead><tr>'
+        + "<th>시간</th><th>유형</th><th>사용자</th><th>IP</th><th>액션</th><th>대상</th><th>User-Agent</th>"
+        + '</tr></thead><tbody id="auditRows">' + auditRowsHTML(rows) + "</tbody></table></div>";
+      var kind = "all", q = "";
+      function apply() {
+        var f = rows.filter(function (x) {
+          if (kind !== "all" && x.kind !== kind) return false;
+          if (q) { var hay = ((x.actor_email || "") + " " + (x.ip || "") + " " + (x.action || "") + " " + (x.entity || "") + " " + (x.user_agent || "")).toLowerCase(); if (hay.indexOf(q) < 0) return false; }
+          return true;
+        });
+        var box = $("auditRows"); if (box) box.innerHTML = auditRowsHTML(f);
+      }
+      [].forEach.call(document.querySelectorAll('input[name="afk"]'), function (rd) { rd.onchange = function () { kind = rd.value; apply(); }; });
+      var s = $("afq"); if (s) s.oninput = function () { q = s.value.trim().toLowerCase(); apply(); };
     });
   }
 
