@@ -126,7 +126,7 @@
     { key: "leader", label: "본부장", icon: "👤", fields: [
       { k: "name", t: "text", label: "이름" },
       { k: "title", t: "text", label: "직책", full: true },
-      { k: "photo", t: "url", label: "사진 URL (공식/허가된 이미지만)", full: true, ph: "https://… (비우면 이니셜 플레이스홀더)" },
+      { k: "photo", t: "image", label: "본부장 사진 (공식/허가된 이미지만)", full: true, ph: "파일을 첨부하면 자동으로 축소·압축되어 저장됩니다. 비우면 이니셜 플레이스홀더로 표시됩니다." },
       { k: "quote", t: "textarea", label: "대표 인용(따옴표 포함)", full: true },
       { k: "quote_src", t: "text", label: "인용 출처", full: true },
       { k: "vision", t: "textarea", label: "비전 요약", full: true }
@@ -148,6 +148,19 @@
     if (f.t === "bool") {
       return '<label class="chk col-full"><input type="checkbox" data-k="' + f.k + '"' + (val ? " checked" : "") + "> " + esc(f.label) + "</label>";
     }
+    if (f.t === "image") {
+      var iv = val == null ? "" : String(val), has = iv.length > 0;
+      return '<div class="imgfield' + (f.full ? " col-full" : "") + '" data-image-field>'
+        + '<label>' + esc(f.label) + "</label>"
+        + '<input type="hidden" data-k="' + f.k + '" value="' + esc(iv) + '">'
+        + '<div class="imgprev">' + (has ? '<img src="' + esc(iv) + '" alt="">' : '<span class="imgph">이미지 없음</span>') + "</div>"
+        + '<div class="imgbtns">'
+        +   '<label class="btn ghost sm imgpick">📎 사진 첨부<input type="file" accept="image/*" hidden></label>'
+        +   '<button type="button" class="btn danger sm imgclear"' + (has ? "" : " hidden") + ">제거</button>"
+        + "</div>"
+        + '<div class="imghint">' + esc(f.ph || "권장: 정면 인물 사진. 첨부 시 자동으로 축소·압축됩니다.") + "</div>"
+        + "</div>";
+    }
     var cls = "field" + (f.full ? " col-full" : "");
     var lab = '<label>' + esc(f.label) + (f.req ? " *" : "") + "</label>";
     var v = val == null ? "" : val, inner;
@@ -167,6 +180,65 @@
       else out[f.k] = n.value;
     });
     return out;
+  }
+
+  /* ───────── 이미지 첨부: 브라우저에서 축소·압축 → data URL ─────────
+   * Supabase Storage 버킷 없이 동작하도록, 첨부 파일을 캔버스로 최대 640px·JPEG로
+   * 다운스케일해 data URL로 만들어 기존 photo 필드(jsonb)에 저장한다. 공개 페이지의
+   * data-ax-src 핸들러가 그대로 img.src에 넣는다. (원본 대용량 파일은 그대로 저장 안 함) */
+  function downscaleImage(file, maxDim, quality) {
+    return new Promise(function (resolve, reject) {
+      if (file.size > 15 * 1024 * 1024) { reject(new Error("too-large")); return; }
+      var fr = new FileReader();
+      fr.onerror = function () { reject(new Error("read")); };
+      fr.onload = function () {
+        var img = new Image();
+        img.onerror = function () { reject(new Error("decode")); };
+        img.onload = function () {
+          var w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+          if (!w || !h) { reject(new Error("empty")); return; }
+          var scale = Math.min(1, maxDim / Math.max(w, h));
+          var cw = Math.max(1, Math.round(w * scale)), ch = Math.max(1, Math.round(h * scale));
+          var c = document.createElement("canvas"); c.width = cw; c.height = ch;
+          var ctx = c.getContext("2d");
+          ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, cw, ch);   // 투명 PNG → 검은 배경 방지
+          ctx.drawImage(img, 0, 0, cw, ch);
+          var out; try { out = c.toDataURL("image/jpeg", quality); } catch (e) { out = String(fr.result); }
+          resolve(out);
+        };
+        img.src = String(fr.result);
+      };
+      fr.readAsDataURL(file);
+    });
+  }
+  function wireImageFields(scope) {
+    [].forEach.call(scope.querySelectorAll("[data-image-field]"), function (fld) {
+      if (fld._wired) return; fld._wired = true;
+      var hidden = fld.querySelector('input[type="hidden"]');
+      var prev = fld.querySelector(".imgprev");
+      var file = fld.querySelector('input[type="file"]');
+      var pick = fld.querySelector(".imgpick");
+      var clear = fld.querySelector(".imgclear");
+      function setVal(url) {
+        hidden.value = url || "";
+        if (url) { prev.innerHTML = '<img src="' + esc(url) + '" alt="">'; if (clear) clear.hidden = false; }
+        else { prev.innerHTML = '<span class="imgph">이미지 없음</span>'; if (clear) clear.hidden = true; }
+      }
+      file.addEventListener("change", function () {
+        var f = file.files && file.files[0]; if (!f) return;
+        if (!/^image\//.test(f.type || "")) { toast("이미지 파일만 첨부할 수 있습니다", true); file.value = ""; return; }
+        var old = pick.textContent; pick.style.pointerEvents = "none"; pick.textContent = "처리 중…";
+        downscaleImage(f, 640, 0.82).then(function (url) {
+          setVal(url); pick.textContent = old; pick.style.pointerEvents = "";
+          toast("사진이 첨부되었습니다 — 저장을 눌러 반영하세요");
+        }).catch(function (err) {
+          pick.textContent = old; pick.style.pointerEvents = "";
+          toast(err && err.message === "too-large" ? "파일이 너무 큽니다 (15MB 이하)" : "이미지를 읽지 못했습니다", true);
+        });
+        file.value = "";
+      });
+      if (clear) clear.addEventListener("click", function () { setVal(""); });
+    });
   }
 
   /* ───────── 인증 ───────── */
@@ -270,6 +342,7 @@
     });
     card.querySelector("[data-save]").onclick = function () { saveRow(def, card); };
     card.querySelector("[data-del]").onclick = function () { deleteRow(def, card); };
+    wireImageFields(card);
     return card;
   }
 
@@ -354,6 +427,7 @@
           + '<div class="row-actions"><span></span><button class="btn primary sm" data-savekey="' + g.key + '">저장</button></div>';
         box.querySelector("[data-savekey]").onclick = function () { saveSetting(g, box); };
         body.appendChild(box);
+        wireImageFields(box);
       });
     });
   }
