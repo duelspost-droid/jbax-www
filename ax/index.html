@@ -363,19 +363,19 @@
   /* 다크 배경: 흰 박스 없이 화이트 음각 로고 직접 노출 */
   .ci-logo{display:inline-flex;align-items:center;background:transparent;border-radius:0;padding:0;
     box-shadow:none;line-height:0}
-  .ci-logo img{display:block;height:clamp(40px,11vw,66px);width:auto}
+  .ci-logo img{display:block;height:clamp(52px,14vw,84px);width:auto}
   .ci-logo.lg{border-radius:0;padding:0}
   .ci-logo.lg img{height:54px}
   .ci-logo.sm{padding:0;border-radius:0;box-shadow:none}
-  .ci-logo.sm img{height:clamp(44px,14vw,78px)}
+  .ci-logo.sm img{height:clamp(52px,16vw,94px)}
   /* 섹션 키커 — 전용색 라인 (CI 색만, 로고 미사용) */
   .kicker::before{background:linear-gradient(90deg,var(--jb-cyan),var(--jb-blue))}
 
   /* 네비 브랜드 = 공식 CI 엔도스 + 본부 서브브랜드 */
   .brand{gap:13px}
-  .brand .divider{width:1px;height:clamp(34px,9vw,56px);background:rgba(255,255,255,.20);flex-shrink:0}
-  header.nav.scrolled .brand .ci-logo img{height:clamp(34px,8.5vw,52px)}
-  header.nav.scrolled .brand .divider{height:clamp(28px,7vw,44px)}
+  .brand .divider{width:1px;height:clamp(42px,11vw,70px);background:rgba(255,255,255,.20);flex-shrink:0}
+  header.nav.scrolled .brand .ci-logo img{height:clamp(42px,10.5vw,64px)}
+  header.nav.scrolled .brand .divider{height:clamp(34px,9vw,54px)}
   @media(max-width:640px){ .brand .divider,.brand .txt{display:none} }
 
   /* 히어로 키비주얼 — 공식 JB DIAMOND 심볼 모션그래픽 */
@@ -416,8 +416,8 @@
     background:linear-gradient(120deg,rgba(28,55,138,.22),rgba(0,145,208,.10));
     border:1px solid rgba(40,120,210,.30);border-radius:16px;padding:18px 20px}
   .ci-note .ci-logo.sm{flex-shrink:0;margin-top:2px}
-  .ci-note .ci-logo.sm img{height:clamp(52px,17vw,116px)}
-  .foot-ci .ci-logo img{height:clamp(70px,28vw,156px)}
+  .ci-note .ci-logo.sm img{height:clamp(62px,20vw,140px)}
+  .foot-ci .ci-logo img{height:clamp(84px,32vw,188px)}
   .ci-note h4{font-size:.72rem;letter-spacing:2px;color:var(--jb-cyan);font-weight:800;margin-bottom:7px}
   .ci-note p{margin:0;color:#cdd9ec;font-size:.9rem;line-height:1.65;font-weight:500}
   .ci-note p b{color:#fff}
@@ -545,7 +545,7 @@
   /* 공식 CI 무변형: 흰 박스 없이 다크 로고(심볼 블루+워드마크 화이트)를 opacity로만 등장 — transform/filter/clip 0 */
   .intro__lockup .ci-logo{position:relative;opacity:0;animation:i-logoIn .8s var(--ease-out-soft) 7.3s both}
   .intro__lockup .ci-logo{padding:13px 22px;border-radius:14px}
-  .intro__lockup .ci-logo img{height:clamp(76px,13vw,124px)}
+  .intro__lockup .ci-logo img{height:clamp(90px,15vw,148px)}
   .intro__lockup .ci-logo::after{content:"";position:absolute;left:7%;right:7%;bottom:-16px;height:3px;border-radius:3px;
     background:linear-gradient(90deg,var(--gold-300),var(--jb-blue));clip-path:inset(0 100% 0 0);animation:i-ul .5s var(--ease-wipe) 7.85s both}
   .intro__div{text-align:center;opacity:0;animation:i-lift .55s var(--ease-settle) 8.1s both}
