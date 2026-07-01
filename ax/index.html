@@ -531,10 +531,17 @@
   .kw3{font-family:'Noto Sans KR',sans-serif}
   .kw3>span{font-size:.82em;animation:i-wIn3 .52s var(--ease-expo-out) 5.02s both}
   .kw3>span .gd{color:var(--gold-300);background:linear-gradient(96deg,var(--gold-300),var(--gold-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .intro__counter{position:absolute;right:2%;top:3%;font-family:Manrope,sans-serif;font-weight:800;text-align:right;
-    font-size:clamp(24px,3.4vw,40px);font-variant-numeric:tabular-nums;color:var(--gold-400);letter-spacing:.04em;line-height:1;
-    opacity:0;animation:i-fade .5s var(--ease-out-soft) 2.3s both}
-  .intro__counter small{font-size:.4em;color:#7f97bd;font-weight:700;letter-spacing:.2em;display:block;margin-top:4px}
+  /* 성장선 오른쪽 끝(tip ≈ 우측 90%·높이 62%) 바로 위에 라벨 배치.
+     최종 문구(kw3)가 넓어 tip과 겹치므로, 성장선 구간에 2026→2036을 보여주고
+     kw3 등장(5.02s) 직전에 페이드아웃 → 시간 분리로 충돌 0 */
+  @keyframes i-counter{0%{opacity:0}11%{opacity:1}87%{opacity:1}100%{opacity:0}}
+  .intro__counter{position:absolute;right:6.5%;bottom:42%;top:auto;text-align:right;line-height:1;
+    font-family:Manrope,sans-serif;opacity:0;z-index:2;animation:i-counter 2.7s var(--ease-out-soft) 2.3s both}
+  .intro__counter .ic-lab{display:block;font-size:clamp(9px,1.15vw,13px);font-weight:800;letter-spacing:.22em;
+    color:#8aa0c4;text-transform:uppercase;margin-bottom:7px}
+  .intro__counter .ic-yr{display:block;font-family:Manrope,sans-serif;font-weight:800;
+    font-size:clamp(30px,4.6vw,56px);font-variant-numeric:tabular-nums;letter-spacing:.02em;
+    color:var(--gold-400);text-shadow:0 0 20px rgba(255,206,106,.4)}
 
   /* ── ACT III · 컬랩스 → 공식 CI 클라이맥스 (6.0–9.6s) ── */
   @keyframes i-collapse{to{transform:scale(.62) translateY(-12vh);opacity:0}}
@@ -570,7 +577,7 @@
   #introSkip:hover,#introSkip:focus-visible{opacity:1;color:var(--gold-300);background:rgba(255,224,138,.1);border-color:rgba(255,224,138,.6);outline:none}
 
   @media(prefers-reduced-motion:reduce){ #intro{display:none!important} }
-  @media(max-width:640px){ .intro__counter{right:3vw} .intro__glow,.intro__glow--blue{width:380px;height:380px} }
+  @media(max-width:640px){ .intro__glow,.intro__glow--blue{width:380px;height:380px} }
 </style>
 </head>
 <body>
@@ -605,7 +612,7 @@
         <path class="intro__path intro__path--blue" pathLength="1" d="M30 126 L280 104 L530 78 L780 50 L1010 22" stroke="url(#iBlue)"/>
         <circle class="intro__tip" cx="1010" cy="22" r="6"/>
       </svg>
-      <div class="intro__counter">20<span id="introYear">17</span><small>FUTURE GROWTH</small></div>
+      <div class="intro__counter"><span class="ic-lab">FUTURE GROWTH</span><span class="ic-yr">20<span id="introYear">26</span></span></div>
       <div class="intro__words">
         <div class="kw kw1"><span>AI</span></div>
         <div class="kw kw2"><span>전환</span></div>
@@ -1096,12 +1103,12 @@
   var skipBtn=document.getElementById('introSkip');
   try{ skipBtn && skipBtn.focus({preventScroll:true}); }catch(e){}
 
-  // 연도 카운터 2017 → 2027
+  // 연도 카운터 2026 → 2036 (성장선 끝 라벨)
   function rollYear(){
     var el=document.getElementById('introYear'); if(!el) return;
-    var start=null, dur=740;
+    var start=null, dur=800;
     function step(ts){ if(done) return; if(!start) start=ts;
-      var p=Math.min((ts-start)/dur,1), v=Math.round(17+(27-17)*(1-Math.pow(1-p,3)));
+      var p=Math.min((ts-start)/dur,1), v=Math.round(26+(36-26)*(1-Math.pow(1-p,3)));
       el.textContent=(v<10?'0':'')+v; if(p<1) requestAnimationFrame(step); }
     requestAnimationFrame(step);
   }
@@ -1134,7 +1141,7 @@
   document.addEventListener('keydown', onKey, true);
   skipBtn && skipBtn.addEventListener('click', onSkipClick);
 
-  timers.push(setTimeout(rollYear, 4180));    // 카운터: 전환 단어 홀드 구간
+  timers.push(setTimeout(rollYear, 3400));    // 카운터: 성장선 구간에 2036 완성(kw3 전 페이드아웃)
   timers.push(setTimeout(startExit, 9600));   // 커튼 시작 (9.6s)
   timers.push(setTimeout(finishIntro, 10100));// 안전 백스톱 — 히어로 절대 갇히지 않음
   window.addEventListener('error', function(){ try{ finishIntro(); }catch(e){} }, {once:true});
