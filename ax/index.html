@@ -39,9 +39,7 @@
     --gold-500:#e6b84d;
     --teal:#28d2d9;
     /* JB금융그룹 공식 CI 전용색 (JB DIAMOND 블루 그라데이션) */
-    --jb-blue:#1C378A; --jb-deep:#021D49; --jb-royal:#113499; --jb-cyan:#0091D0; --jb-sky:#009CD8;
-    --ink:#0d1b2e;
-    --paper:#f6f8fc;
+    --jb-blue:#1C378A; --jb-deep:#021D49; --jb-cyan:#0091D0; --jb-sky:#009CD8;
     --muted:#7f93ad;
     color-scheme: dark;
   }
@@ -94,7 +92,7 @@
   .burger span{width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s}
 
   /* ─────────── HERO ─────────── */
-  .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+  .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;overflow:hidden}
   .hero-bg{position:absolute;inset:0;z-index:0}
   .hero-bg::before{
     content:"";position:absolute;inset:0;
@@ -147,6 +145,7 @@
   /* ─────────── SECTION SHELL ─────────── */
   section{position:relative}
   .sec{padding:108px 0}
+  section[id]{scroll-margin-top:28px}   /* 앵커 이동 시 섹션 상단에 약간의 여유(섹션 패딩이 nav는 이미 비켜줌) */
   .sec-head{max-width:760px;margin-bottom:54px}
   .kicker{display:inline-block;font-size:.76rem;font-weight:800;letter-spacing:3px;color:var(--gold-400);margin-bottom:16px}
   .kicker::before{content:"";display:inline-block;width:26px;height:2px;background:var(--gold-400);vertical-align:middle;margin-right:11px}
@@ -203,7 +202,7 @@
   #impact{background:
     radial-gradient(900px 400px at 80% 0%, rgba(40,210,217,.12), transparent 60%),
     linear-gradient(180deg,#061b38,#04162e)}
-  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:8px}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
   .stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:34px 26px;text-align:center}
   .stat .num{font-family:'Manrope';font-size:clamp(2.2rem,4.5vw,3rem);font-weight:800;line-height:1;
     background:linear-gradient(120deg,#fff,var(--gold-300));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -211,7 +210,7 @@
   .stat .lab{margin-top:14px;font-size:.86rem;color:#9fb0ca;font-weight:700;line-height:1.5}
 
   /* ROADMAP */
-  .road{position:relative;margin-top:20px;padding-left:0}
+  .road{position:relative;padding-left:0}
   .road::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:2px;
     background:linear-gradient(180deg,var(--gold-400),rgba(40,210,217,.5),transparent)}
   .phase{position:relative;padding:0 0 44px 40px}
@@ -274,13 +273,13 @@
   .news .thumb .cat{font-size:.7rem;font-weight:800;letter-spacing:1px;color:var(--navy-900);background:var(--gold-400);padding:5px 11px;border-radius:7px}
   .news .body{padding:22px}
   .news .date{font-size:.74rem;color:var(--muted);font-weight:700;margin-bottom:9px}
-  .news h4{font-size:1.04rem;font-weight:800;color:#fff;line-height:1.45;margin-bottom:10px}
+  .news h4{font-size:1.04rem;font-weight:900;color:#fff;line-height:1.45;margin-bottom:10px}
   .news p{font-size:.86rem;color:#9fb0ca;line-height:1.6;font-weight:500}
   .news .more{margin-top:14px;font-size:.8rem;font-weight:800;color:var(--gold-400);display:inline-flex;align-items:center;gap:6px}
   .news .more .arrow{transition:transform .2s}.news:hover .more .arrow{transform:translateX(4px)}
 
   /* CTA / CONTACT */
-  #contact{padding:120px 0}
+  #contact{padding:108px 0}
   .cta-box{position:relative;border-radius:30px;overflow:hidden;padding:70px 56px;
     background:radial-gradient(120% 160% at 0% 0%,#0e4377,#06203f);border:1px solid rgba(255,255,255,.1);
     box-shadow:0 40px 100px rgba(0,0,0,.5)}
@@ -373,9 +372,9 @@
 
   /* 네비 브랜드 = 공식 CI 엔도스 + 본부 서브브랜드 */
   .brand{gap:13px}
-  .brand .divider{width:1px;height:clamp(42px,11vw,70px);background:rgba(255,255,255,.20);flex-shrink:0}
-  header.nav.scrolled .brand .ci-logo img{height:clamp(42px,10.5vw,64px)}
-  header.nav.scrolled .brand .divider{height:clamp(34px,9vw,54px)}
+  /* 네비 CI 로고·디바이더는 스크롤과 무관하게 일관된 크기 유지(배경·패딩만 부드럽게 변화) */
+  .nav .brand .ci-logo img{height:clamp(46px,10vw,66px)}
+  .brand .divider{width:1px;height:clamp(38px,8.5vw,52px);background:rgba(255,255,255,.20);flex-shrink:0}
   @media(max-width:640px){ .brand .divider,.brand .txt{display:none} }
 
   /* 히어로 키비주얼 — 공식 JB DIAMOND 심볼 모션그래픽 */
