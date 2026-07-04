@@ -18,6 +18,23 @@
   ];
   var SEV = { critical: { label: "치명", w: 40 }, high: { label: "높음", w: 18 }, medium: { label: "보통", w: 8 }, low: { label: "낮음", w: 3 }, info: { label: "정보", w: 0 }, pass: { label: "양호", w: 0 } };
   var SEV_ORDER = ["critical", "high", "medium", "low", "info", "pass"];
+
+  /* ---------- 조치 적용 가능성: 이 대상(호스팅)에 실제 반영되는지 ---------- */
+  // <meta>로 적용 가능한 헤더(스캐너도 메타를 인정) vs 응답 헤더 전용
+  var META_FIXABLE = { "Content-Security-Policy": 1, "Referrer-Policy": 1 };
+  function hostSupportsHeaders(hk) { return !!hk && hk !== "github_pages"; }
+  function fixApplicability(f) {
+    if (!f.auto_fixable) return { applicable: null, mech: "manual", reason: "" };
+    var m = f.meta || {}, hk = m.host_kind || "", hdr = m.header;
+    if (hdr) {
+      if (META_FIXABLE[hdr]) return { applicable: true, mech: "meta", reason: "HTML <meta> 태그로 이 사이트에 바로 적용됩니다." };
+      if (hostSupportsHeaders(hk)) return { applicable: true, mech: "header", reason: "호스팅의 응답 헤더로 적용됩니다." };
+      return { applicable: false, mech: "header", reason: "이 사이트(GitHub Pages)는 커스텀 응답 헤더를 설정할 수 없어 지금 호스팅에선 적용 불가 — Netlify·Cloudflare Pages 등으로 이전해야 반영됩니다." };
+    }
+    if (m.kind === "securitytxt") return { applicable: true, mech: "file", reason: "/.well-known/security.txt 파일로 적용됩니다." };
+    if (m.resources) return { applicable: true, mech: "code", reason: "스크립트/링크에 integrity(SRI)를 넣어 적용됩니다." };
+    return { applicable: true, mech: "file", reason: "산출물 적용으로 반영됩니다." };
+  }
   var OWASP = [
     { id: "A01", ko: "취약한 접근 통제" }, { id: "A02", ko: "암호화 실패" }, { id: "A03", ko: "인젝션" },
     { id: "A04", ko: "안전하지 않은 설계" }, { id: "A05", ko: "보안 설정 오류" }, { id: "A06", ko: "취약·구형 구성요소" },
@@ -256,10 +273,15 @@
     });
   }
   function findingCard(f) {
+    var ap = fixApplicability(f);
+    var naChip = ap.applicable === false
+      ? '<span title="현재 호스팅에서 적용 불가" style="font-size:.62rem;font-weight:800;color:#241000;background:#ffcf4a;padding:2px 7px;border-radius:5px;white-space:nowrap">⚠ 이 호스팅 미적용</span>'
+      : "";
     return '<div class="vs-find sev-' + f.severity + '">'
       + '<div class="vs-find-h"><span class="vs-find-sev sev-' + f.severity + '">' + (SEV[f.severity] ? SEV[f.severity].label : f.severity) + '</span>'
       + '<span class="vs-find-cat">' + f.owasp_id + '</span><span class="vs-find-title">' + esc(f.title) + '</span>'
       + (f.auto_fixable ? '<span class="vs-find-auto">자동조치</span>' : '<span class="vs-find-manual">수동</span>')
+      + naChip
       + (f.status === "remediation_generated" ? '<span class="vs-find-auto" style="background:#16d39a">조치안✓</span>' : (f.status === "ticket" ? '<span class="vs-find-manual">티켓</span>' : ""))
       + '<span class="vs-find-caret">▾</span></div>'
       + '<div class="vs-find-body">'
@@ -268,6 +290,7 @@
       + '<div class="vs-find-row"><span>증거</span><code>' + esc(f.evidence) + '</code></div>'
       + '<div class="vs-find-row"><span>권고</span><p>' + esc(f.recommendation) + '</p></div>'
       + (f.auto_fixable && f.fix_summary ? '<div class="vs-find-row"><span>조치</span><p>' + esc(f.fix_summary) + '</p></div>' : '')
+      + (f.auto_fixable ? '<div class="vs-find-row"><span>적용</span><p style="color:' + (ap.applicable === false ? '#e08600' : '#0a8f5b') + '">' + (ap.applicable === false ? '⚠ ' : '✅ ') + esc(ap.reason) + '</p></div>' : '')
       + '</div></div>';
   }
   function renderReport() {
@@ -279,12 +302,18 @@
     var autoOpen = S.findings.filter(function (f) { return f.auto_fixable && f.status === "open"; });
     var sorted = open.slice().sort(function (a, b) { return (SEV[b.severity] ? SEV[b.severity].w : 0) - (SEV[a.severity] ? SEV[a.severity].w : 0); });
     var proj = rec.summary && rec.summary.projected_score;
+    // 이 호스팅에서 실제 적용 가능한 조치만 반영한 예상 점수(응답헤더 미지원 항목 제외)
+    var autoNA = S.findings.filter(function (f) { return f.auto_fixable && f.status === "open" && fixApplicability(f).applicable === false; });
+    var remainW = 0; S.findings.forEach(function (f) { if (!(f.auto_fixable && fixApplicability(f).applicable === true)) remainW += (SEV[f.severity] ? SEV[f.severity].w : 0); });
+    var hostProj = Math.max(0, Math.min(100, 100 - remainW));
     var html = '<div class="vs-report-head"><div class="vs-scorecard grade-' + rec.grade + '"><div class="vs-grade">' + rec.grade + '</div><div class="vs-score">' + rec.score + '<span>/100</span></div><div class="vs-scorelbl">보안 점수</div></div>'
       + '<div class="vs-report-meta"><div class="vs-rm-t">' + (rec.target_name) + ' 진단 결과</div><div class="vs-rm-url">' + esc(rec.target_url) + '</div>'
       + '<div class="vs-sevbar">' + SEV_ORDER.filter(function (s) { return s !== "pass"; }).map(function (s) { return counts[s] ? '<span class="vs-sevchip sev-' + s + '">' + SEV[s].label + ' ' + counts[s] + '</span>' : ''; }).join("")
       + (passN ? '<span class="vs-sevchip" style="color:#16d39a">✓ 통과 ' + passN + '</span>' : '') + '</div>'
       + '<div class="vs-rm-sub">총 ' + open.length + '건 · 자동조치 가능 ' + autoOpen.length + '건 · 소요 ' + fmt(rec.duration_ms) + ' · ' + fmtDate(rec.finished_at || rec.created_at)
-      + (proj != null ? ' · <b>적용 시 예상 ' + proj + '점</b>' : '') + '</div></div></div>';
+      + ' · <b>이 호스팅 조치 시 ' + hostProj + '점</b>'
+      + (proj != null && proj > hostProj ? ' <span style="color:#7e93b5">(헤더 지원 호스팅 이전 시 ' + proj + '점)</span>' : '') + '</div></div></div>';
+    if (autoNA.length) html += '<div style="font-size:.76rem;color:#8a5a00;background:rgba(255,193,7,.12);border:1px solid rgba(255,193,7,.32);border-radius:10px;padding:9px 12px;margin-bottom:12px">ⓘ 자동조치 가능 ' + autoOpen.length + '건 중 <b>' + autoNA.length + '건</b>은 현재 호스팅(<b>GitHub Pages</b>)에서 <b>적용 불가</b>입니다 — 응답 헤더를 설정할 수 없어서예요. 나머지는 적용됩니다. 전부 반영하려면 Netlify·Cloudflare Pages 등으로 이전이 필요합니다.</div>';
     html += open.length ? '<div class="vs-findlist">' + sorted.map(findingCard).join("") + '</div>' : '<div class="vs-empty-ok">🎉 주요 취약점이 발견되지 않았습니다.</div>';
     html += '<div class="vs-actions"><button class="vs-btn ghost" id="vsRpHistory" type="button">📜 이력</button>'
       + '<button class="vs-btn ghost" id="vsRpRescan" type="button">다른 대상</button>'
