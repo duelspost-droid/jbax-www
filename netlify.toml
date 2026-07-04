@@ -1,0 +1,5 @@
+# Netlify 배포 설정 — 정적 사이트(빌드 없음), 레포 루트를 그대로 서빙.
+# 보안 응답 헤더는 `_headers` 파일이 담당(Netlify·Cloudflare Pages 공통 포맷).
+[build]
+  publish = "."
+  command = ""
