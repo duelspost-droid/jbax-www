@@ -1,6 +1,6 @@
 # JBAX 플레이그라운드 — 인수인계 (HANDOFF)
 
-다른 PC에서 이어서 작업하기 위한 전체 컨텍스트. (최종 업데이트: 2026-07-01 — 섹션 8 AX 페이지 CMS 추가)
+다른 PC에서 이어서 작업하기 위한 전체 컨텍스트. (최종 업데이트: 2026-09-28 — 섹션 9: 감사로그(0015 실행 완료)·인트로 연도라벨·디자인 정비)
 
 ## 1. 이 레포가 뭔가
 - **jbax-www** = JB×AX 비공식 플레이그라운드. GitHub Pages 정적 사이트.
@@ -126,4 +126,35 @@ npx -y serve -l 4321 .        # 정적 서버
 # http://localhost:4321/ax/admin.html  관리자 (동일 계정 로그인)
 ```
 - 로컬에서도 같은 Supabase(운영 DB)에 붙으므로 관리자 편집은 **실제 라이브 데이터에 반영**됨(주의).
+
+---
+
+# 9. 세션 갱신 (2026-09-28) — 감사로그·인트로 연도라벨·디자인 정비
+
+현재 HEAD `513eef8`(그 사이 다른 세션/PC에서 QR코드·Foresight 슬롯·CSP/보안헤더·`.nojekyll` 유입, pull로 동기화됨). 아래는 이 세션에서 추가된 것.
+
+## 9.1 새로 배포된 것 (전부 라이브 반영 확인)
+- **`41c0a20`** 시네마틱 인트로: 성장선 오른쪽 끝(tip) 위에 **"FUTURE GROWTH" + 연도 2026→2036 카운트업** 라벨. 최종 문구(kw3 "미래성장, 다음 10년") 등장 직전 페이드아웃으로 글자 겹침 0. rollYear 시작 3.4s·`i-counter` 키프레임.
+- **`2433c23`** 네비/디자인 정비: 스크롤 시 CI 로고·글씨 **크기 점프 제거**(일관 크기 고정, 배경·패딩만 변화). + #contact 패딩 108 통일·섹션 헤더 여백 잔여값 제거·news 카드 제목 900·히어로 `100svh`·`scroll-margin`·죽은 토큰(--jb-royal/--ink/--paper) 제거.
+- **본부장 사진 = URL → 파일 첨부**: 브라우저 캔버스로 최대 640px·JPEG(q0.82) 자동 축소 → data URL로 `leader.photo`(jsonb) 저장. Storage 버킷 불필요. admin.js `fieldHTML`의 `image` 타입 + `downscaleImage`/`wireImageFields`.
+- **관리자 설정 폼 pre-fill**: `ax_settings`에 값 없는 그룹(섹션 제목·본부장)은 `index.html`을 fetch/parse해 현재 문구로 폼 자동 채움 → 그 위에서 수정·저장 시 해당 key 행 생성. (0013·0014 미실행이어도 편집 가능해짐)
+
+## 9.2 ★ 로그·감사 기능 (`bf2cc78`) — 0015 실행 완료·라이브
+- 마이그 **`0015_ax_audit.sql` Supabase에서 실행 완료**(2026-07-01, Chrome로 SQL Editor Run → "Success", 검증: `ax_admins` 1건=`duels@jbfg.com`, 함수·정책 전부 생성, auth.users도 duels@jbfg.com 단 1개라 일치).
+- 테이블: `ax_audit`(관리자 행위 + 공개 방문 로그) · `ax_admins`(관리자 화이트리스트, PK=email).
+- RPC(SECURITY DEFINER): `ax_log`(관리자 행위, **ax_admins 계정만**) · `ax_log_visit`(익명 방문, 경로검증 + 같은 IP·경로 10분 중복억제) · `is_ax_admin()`(RLS 자기참조 재귀 회피) · `ax_audit_purge()`(방문 90일/관리 365일 보존).
+- **IP는 서버측 `request.headers` x-forwarded-for로 캡처**(클라 위조 주의 — 신뢰 프록시 없으면 위조 가능, 보안 단독근거로 쓰지 말 것). 열람·로깅은 `ax_admins`만(공유 Supabase라 `authenticated`≠관리자).
+- 클라: `admin.js`가 로그인/로그아웃/생성/수정/삭제/설정저장 시 자동 로깅(fire-and-forget). `ax-content.js`가 공개 페이지 방문 익명 로깅(세션당 경로별 1회). 관리자 **`📊 로그·감사` 탭**: 통계 카드(총기록·24h·고유 IP·관리/방문·고유 관리자) + 액션 분포 + 상위 IP + 활동 표(시간·유형·사용자·IP·액션·대상·UA). 신뢰불가 IP/UA는 `esc`/`escA`로 XSS 방어(속성값은 따옴표까지).
+- 적대적 보안리뷰(Workflow 3관점: DB보안·클라XSS·개인정보) 통과 후 하드닝 반영: allowlist 게이트·중복억제·보존·XFF 한계 주석·통계 "최근 1000건" 표기.
+
+## 9.3 남은 일 (신규 TODO)
+1. **개인정보처리방침 고지(미완)** — 공개 방문자 실제 IP를 저장 중. 국내 기준 접속기록(IP 포함) 수집엔 고지 필요. 푸터에 처리방침 링크/문구 추가 권장.
+2. (선택) 디자인 감사 '취향 판단' 항목 반영 여부: 마이크로 라벨 크기 통일, 카드 radius/hover 색 역할 정리, 칩/태그 두 시스템 일원화, 햄버거 브레이크포인트 640→860px 상향, 터치 타깃 44px.
+3. 0013·0014 시드 여전히 미실행(관리자 pre-fill로 편집 가능하므로 급하지 않음. 대시보드에서 붙여 실행하면 정리됨).
+
+## 9.4 점검·환경 메모 (2026-09-28)
+- 라이브·관리자 정상: 전역 HTTP 200(메인·/ax/·admin.html·admin.js·config.js), DNS 정상(www→GitHub Pages), Supabase Auth 200, 로그인 엔드포인트 정상(틀린 비번 → 정상 `400 invalid_credentials`). CSP는 admin에 없음(원인 아님). 사용자측 일시적 "페이지 안 뜸"은 캐시/네트워크로 자체 해소.
+- 프론트 스택 = **빌드/프레임워크 없는 바닐라 정적**(HTML + 인라인 CSS/JS) + **Supabase(BaaS: Postgres+PostgREST+Auth+RPC/RLS)** + **GitHub Pages**. 별도 서버 코드 없음.
+- 배포: **origin 리모트 SSH로 전환됨**(`git@github.com:duelspost-droid/jbax-www.git`, 토큰 불필요) → `git push origin master` → Pages 자동 반영(15~60초). 실행 완료 마이그레이션 = 0011·0012·**0015**(0013·0014만 미실행).
+- Supabase anon 키는 신형 `sb_publishable_…`(46자) 사용 중.
 - 모바일 점검 팁: 일부 도구가 뷰포트를 고정 렌더할 때, 390px 폭 `<iframe src="/ax/">`에 넣으면 실제 모바일 미디어쿼리로 렌더됨(iframe 높이는 폰 높이 ~844로).
